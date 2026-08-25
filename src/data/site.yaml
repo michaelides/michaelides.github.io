@@ -20,9 +20,8 @@ github: https://github.com/michaelides/
 researchgate: https://www.researchgate.net/profile/George-Michaelides
 uea_profile: https://research-portal.uea.ac.uk/en/persons/george-michaelides/
 
-# Portrait (downloaded from UEA research portal, B&W)
-portrait: /images/portrait2.jpg
-portraitCredit: University of East Anglia
+# Portrait
+portrait: /images/portrait.jpg
 
 # Last site-wide content update (YYYY-MM-DD). Bump when meaningful changes ship.
 lastUpdated: '2026-07-22'

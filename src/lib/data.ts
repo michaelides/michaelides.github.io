@@ -21,7 +21,6 @@ export interface SiteData {
   researchgate: string;
   uea_profile: string;
   portrait: string;
-  portraitCredit: string;
   lastUpdated: string;
   phdStatus: 'open' | 'closed' | 'seasonal';
   phdStatusNote: string;
