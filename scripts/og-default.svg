@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="g" cx="20%" cy="10%" r="80%">
+      <stop offset="0%" stop-color="#0F4C4C" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#0F4C4C" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#FAF8F5"/>
+  <rect width="1200" height="630" fill="url(#g)"/>
+
+  <g transform="translate(96, 96)">
+    <rect width="60" height="60" rx="8" fill="#D4E3E3"/>
+    <text x="50%" y="50%" dy="0.35em" text-anchor="middle"
+          font-family="Georgia, 'Times New Roman', serif"
+          font-size="32" font-weight="500" fill="#0F4C4C">GM</text>
+  </g>
+
+  <text x="96" y="280" font-family="Georgia, 'Times New Roman', serif"
+        font-size="38" font-weight="500" fill="#0F4C4C" letter-spacing="2"
+        font-style="italic">— Work psychology · UEA</text>
+
+  <text x="96" y="380" font-family="Georgia, 'Times New Roman', serif"
+        font-size="86" font-weight="500" fill="#1A1A1A"
+        letter-spacing="-2">George Michaelides</text>
+
+  <text x="96" y="445" font-family="Georgia, 'Times New Roman', serif"
+        font-size="40" font-style="italic" fill="#5C5C5C">Professor of Work Psychology</text>
+
+  <text x="96" y="500" font-family="Georgia, 'Times New Roman', serif"
+        font-size="34" font-style="italic" fill="#0F4C4C">Notes on non-standard deviations.</text>
+
+  <line x1="96" y1="555" x2="1104" y2="555" stroke="#E0DAD0" stroke-width="1"/>
+
+  <text x="96" y="585" font-family="Inter, sans-serif" font-size="18"
+        fill="#5C5C5C" letter-spacing="1.5"
+        text-transform="uppercase">UNIVERSITY OF EAST ANGLIA · NORWICH BUSINESS SCHOOL</text>
+
+  <text x="1104" y="585" font-family="Inter, sans-serif" font-size="18"
+        fill="#5C5C5C" letter-spacing="0.5"
+        text-anchor="end">michaelides.github.io</text>
+</svg>

@@ -1,0 +1,125 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { site } from '~/lib/data';
+import { formatDate } from '~/lib/format';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('news', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const typeLabel: Record<string, string> = {
+  talk: 'Talk',
+  podcast: 'Podcast',
+  press: 'Press',
+  reflection: 'Reflection',
+  award: 'Award',
+  publication: 'Publication',
+  note: 'Note',
+};
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.summary || post.data.title}
+  ogType="article"
+  publishedTime={post.data.date.toISOString()}
+>
+  <article class="post">
+    <div class="container-prose">
+      <header class="post__head">
+        <p class="eyebrow">
+          <a href="/news/">News</a> · {typeLabel[post.data.type] || post.data.type}
+        </p>
+        <h1 class="post__title">{post.data.title}</h1>
+        <p class="post__meta">
+          <time datetime={post.data.date.toISOString()}>
+            {formatDate(post.data.date, { style: 'long' })}
+          </time>
+          {post.data.venue && <> · {post.data.venue}</>}
+        </p>
+        {post.data.external && (
+          <p class="post__external">
+            <a href={post.data.external} rel="noopener" target="_blank">
+              Original source <span aria-hidden="true">↗</span>
+            </a>
+          </p>
+        )}
+      </header>
+
+      <div class="post__body has-dropcap">
+        <Content />
+      </div>
+
+      <footer class="post__foot">
+        <a href="/news/" class="more-link">← All news</a>
+      </footer>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post__head {
+    margin-bottom: var(--space-7);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--colour-rule);
+  }
+  .post__title {
+    font-family: var(--font-display);
+    font-size: var(--step-5);
+    font-weight: 300;
+    line-height: var(--leading-tight);
+    color: var(--colour-ink);
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.025em;
+  }
+  .post__meta {
+    font-size: 0.9375rem;
+    color: var(--colour-ink-muted);
+  }
+  .post__external {
+    margin-top: var(--space-3);
+    font-size: 0.875rem;
+  }
+
+  .post__body {
+    font-size: 1.0625rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink);
+  }
+  .post__body :global(p) { margin-bottom: var(--space-5); }
+  .post__body :global(h2) {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    color: var(--colour-ink);
+    margin-top: var(--space-7);
+    margin-bottom: var(--space-4);
+  }
+  .post__body :global(a) {
+    color: var(--colour-accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--colour-rule);
+  }
+  .post__body :global(a:hover) { border-color: var(--colour-accent); }
+
+  .post__foot {
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--colour-rule);
+  }
+  .more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 0.9375rem;
+    color: var(--colour-accent);
+    text-decoration: none;
+  }
+</style>

@@ -1,0 +1,199 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { site } from '~/lib/data';
+import { formatDate } from '~/lib/format';
+
+const posts = (await getCollection('news', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const typeLabel: Record<string, string> = {
+  talk: 'Talk',
+  podcast: 'Podcast',
+  press: 'Press',
+  reflection: 'Reflection',
+  award: 'Award',
+  publication: 'Publication',
+  note: 'Note',
+};
+---
+
+<BaseLayout
+  title="News"
+  description={`News, talks, press, awards, and brief reflections from ${site.name}.`}
+>
+  <section class="news section">
+    <div class="container-prose">
+      <header class="news__head fade-in">
+        <p class="eyebrow">News</p>
+        <h1 class="news__title">Recent notes.</h1>
+        <p class="news__lede">
+          A short log of what I have been doing: talks, podcasts, press, awards, occasional
+          reflections. Subscribe via <a href="/rss.xml">RSS</a> if you would like updates
+          without checking the page.
+        </p>
+      </header>
+
+      {posts.length === 0 ? (
+        <p class="news__empty">No posts yet.</p>
+      ) : (
+        <ol class="news__list">
+          {posts.map((post) => (
+            <li class="news__item">
+              <div class="news__meta">
+                <time datetime={post.data.date.toISOString()} class="news__date">
+                  {formatDate(post.data.date, { style: 'numeric' })}
+                </time>
+                <span class={`news__type news__type--${post.data.type}`}>
+                  {typeLabel[post.data.type] || post.data.type}
+                </span>
+              </div>
+              <div class="news__body">
+                <h2 class="news__heading">
+                  {post.data.external ? (
+                    <a href={post.data.external} rel="noopener" target="_blank">
+                      {post.data.title}
+                      <span class="news__ext" aria-hidden="true">↗</span>
+                    </a>
+                  ) : (
+                    <a href={`/news/${post.id}/`}>{post.data.title}</a>
+                  )}
+                </h2>
+                {post.data.venue && (
+                  <p class="news__venue">{post.data.venue}</p>
+                )}
+                {post.data.summary && (
+                  <p class="news__summary">{post.data.summary}</p>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .news__head {
+    margin-bottom: var(--space-7);
+  }
+  .news__title {
+    font-family: var(--font-display);
+    font-size: var(--step-5);
+    font-weight: 300;
+    color: var(--colour-ink);
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.025em;
+  }
+  .news__lede {
+    font-size: 1.0625rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink-muted);
+  }
+  .news__empty {
+    color: var(--colour-ink-muted);
+    font-style: italic;
+  }
+
+  .news__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+  }
+  /* Vertical brush-stroke timeline rule */
+  .news__list::before {
+    content: '';
+    position: absolute;
+    top: 0.75rem;
+    bottom: 0.75rem;
+    left: 3px;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--colour-rule) 6%,
+      var(--colour-rule) 94%,
+      transparent
+    );
+  }
+  .news__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    padding-left: var(--space-5);
+  }
+  /* Node on the timeline */
+  .news__item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: calc(var(--space-6) + 0.45em);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--colour-paper);
+    border: 2px solid var(--colour-accent);
+  }
+
+  .news__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .news__date {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--colour-ink-muted);
+    letter-spacing: 0;
+  }
+  .news__type {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--colour-accent);
+    font-weight: 500;
+  }
+
+  .news__heading {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--colour-ink);
+    margin-bottom: var(--space-2);
+    line-height: var(--leading-snug);
+    letter-spacing: -0.01em;
+  }
+  .news__heading a {
+    color: var(--colour-ink);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+  .news__heading a:hover {
+    color: var(--colour-accent);
+  }
+  .news__ext {
+    font-size: 0.7em;
+    margin-left: 0.2em;
+    color: var(--colour-ink-faint);
+  }
+  .news__venue {
+    font-size: 0.875rem;
+    color: var(--colour-ink-muted);
+    font-style: italic;
+    margin-bottom: var(--space-2);
+  }
+  .news__summary {
+    font-size: 1rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink);
+  }
+
+  @media (max-width: 600px) {
+    .news__item { grid-template-columns: 1fr; gap: var(--space-2); padding-left: var(--space-5); }
+    .news__meta { flex-direction: row; gap: var(--space-3); align-items: baseline; }
+  }
+</style>

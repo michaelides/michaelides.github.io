@@ -1,0 +1,808 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { site, publications } from '~/lib/data';
+import { formatDate } from '~/lib/format';
+
+/* ------------------------------------------------------------------------- */
+/* Selected publications for the home page                                   */
+/* ------------------------------------------------------------------------- */
+
+const selected = [
+  {
+    year: 2026,
+    authors: 'Petrou, P., den Dulk, L., & Michaelides, G.',
+    authorList: ['Petrou, P.', 'den Dulk, L.', 'Michaelides, G.'],
+    title: 'The leisure crafting intervention: Effects on work and non-work outcomes and the moderating role of age',
+    venue: 'Human Relations',
+    doi: '10.1177/00187267251407641',
+    gloss: 'A field intervention showing that helping employees deliberately shape their non-work time improves work outcomes, with younger workers benefiting most.',
+  },
+  {
+    year: 2016,
+    authors: 'Jackson, D. J. R., Michaelides, G., Dewberry, C., & Kim, Y. J.',
+    authorList: ['Jackson, D. J. R.', 'Michaelides, G.', 'Dewberry, C.', 'Kim, Y. J.'],
+    title: 'Everything that you have ever been told about assessment center ratings is confounded',
+    venue: 'Journal of Applied Psychology',
+    doi: '10.1037/apl0000102',
+    gloss: 'A widely-cited paper that re-examined the statistical foundations of assessment centres and reset the conversation about what we can actually conclude from rating data.',
+  },
+  {
+    year: 2020,
+    authors: 'Jackson, D. J., Michaelides, G., Dewberry, C., Schwencke, B., & Toms, S.',
+    authorList: ['Jackson, D. J.', 'Michaelides, G.', 'Dewberry, C.', 'Schwencke, B.', 'Toms, S.'],
+    title: 'The implications of unconfounding multisource performance ratings',
+    venue: 'Journal of Applied Psychology',
+    doi: '10.1037/apl0000434',
+    gloss: 'Building on that thread: a closer look at how the standard approach to combining multi-source ratings has been quietly misleading, and what to do instead.',
+  },
+  {
+    year: 2024,
+    authors: 'Michaelides, G., Niven, K., Wood, S., & Inceoglu, I.',
+    authorList: ['Michaelides, G.', 'Niven, K.', 'Wood, S.', 'Inceoglu, I.'],
+    title: 'A dual-process model of the effects of boundary segmentation enactment on work–nonwork conflict',
+    venue: 'Journal of Occupational and Organizational Psychology',
+    doi: '10.1111/joop.12526',
+    gloss: 'My signature recent piece: a model explaining why integrating work and life is not always better than keeping them apart, and what predicts the difference.',
+  },
+  {
+    year: 2024,
+    authors: 'Fitzhugh, H., Michaelides, G., Daniels, K., Connolly, S., & Nasamu, E.',
+    authorList: ['Fitzhugh, H.', 'Michaelides, G.', 'Daniels, K.', 'Connolly, S.', 'Nasamu, E.'],
+    title: 'Mindfulness for performance and wellbeing in the police',
+    venue: 'Review of Public Personnel Administration',
+    award: 'Best Paper Award 2024',
+    doi: '10.1177/0734371X231155794',
+    gloss: 'Work with the College of Policing on a mindfulness programme that improved both wellbeing and operational performance, recognised as the journal\'s best paper of the year.',
+  },
+];
+
+const publicationCount = publications.length;
+
+/* JSON-LD: same Person as BaseLayout, plus the works collection */
+const worksJsonLd = selected.map((s) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  name: s.title,
+  author: s.authorList.map((a) => ({ '@type': 'Person', name: a })),
+  datePublished: String(s.year),
+  isPartOf: { '@type': 'Periodical', name: s.venue },
+  identifier: s.doi ? `https://doi.org/${s.doi}` : undefined,
+}));
+---
+
+<BaseLayout
+  title={site.name}
+  description={site.description}
+  jsonLd={worksJsonLd}
+>
+  <!-- ============================================================== -->
+  <!-- Hero                                                           -->
+  <!-- ============================================================== -->
+  <section class="hero">
+    <!-- Faint scatter-cloud backdrop -->
+    <svg class="hero__scatter" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g fill="currentColor">
+        {Array.from({ length: 46 }, (_, i) => {
+          const seed = (i * 137.508) % 100;
+          const x = 60 + ((seed * 11.3) % 1080);
+          const y = 80 + ((seed * 5.7) % 440);
+          const r = 1 + ((i * 7) % 3) * 0.8;
+          return <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r={r.toFixed(1)} opacity={(0.25 + ((i * 13) % 40) / 100).toFixed(2)} />;
+        })}
+      </g>
+      <path
+        d="M100 480 C 300 430, 500 360, 700 280 S 1050 140, 1140 110"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        stroke-dasharray="3 6"
+        opacity="0.35"
+      />
+    </svg>
+
+    <div class="container-wide hero__inner">
+      <div class="hero__text fade-in">
+        <p class="hero__eyebrow">Work psychology · UEA</p>
+        <h1 class="hero__name">{site.name}</h1>
+        <p class="hero__role">
+          {site.role}<span class="hero__sep"> · </span><span class="hero__inst">University of East Anglia</span>
+        </p>
+        <p class="hero__tagline">{site.tagline}</p>
+
+        <div class="hero__cta">
+          <a href="/publications/" class="btn btn--primary">Read my work</a>
+          <a href="/phd-supervision/" class="btn btn--ghost">PhD supervision</a>
+        </div>
+      </div>
+
+      <div class="hero__figure fade-in fade-in-3">
+        <figure class="hero__portrait">
+          <img
+            src={site.portrait}
+            alt={`Portrait of ${site.name}`}
+            width="270"
+            height="360"
+            fetchpriority="high"
+            decoding="async"
+          />
+          <span class="hero__seal" aria-hidden="true">GM</span>
+          <figcaption class="hero__credit">{site.portraitCredit}</figcaption>
+        </figure>
+
+        <!-- Signature piece: ensū circle framing a living density curve -->
+        <div class="hero__enso" data-enso aria-hidden="true">
+          <svg viewBox="0 0 340 340" width="340" height="340">
+            <!-- ensū arc -->
+            <path
+              class="enso-arc"
+              d="M262 78 C 236 52, 202 38, 168 41 C 116 46, 74 88, 70 141 C 66 196, 109 241, 163 245 C 205 248, 243 224, 260 187"
+              fill="none"
+              stroke="var(--colour-accent)"
+              stroke-width="5"
+              stroke-linecap="round"
+            />
+            <!-- measurement axis -->
+            <line class="enso-axis" x1="86" y1="212" x2="254" y2="212" stroke="var(--motif-stroke)" stroke-width="1" />
+            <g class="enso-ticks" stroke="var(--motif-stroke)" stroke-width="1">
+              <line x1="112" y1="209" x2="112" y2="215" />
+              <line x1="146" y1="209" x2="146" y2="215" />
+              <line x1="180" y1="209" x2="180" y2="215" />
+              <line x1="214" y1="209" x2="214" y2="215" />
+            </g>
+            <!-- density curve -->
+            <path class="enso-fill" fill="var(--colour-accent)" opacity="0.12" d="" />
+            <path class="enso-curve" fill="none" stroke="var(--colour-accent)" stroke-width="2" stroke-linecap="round" d="" />
+          </svg>
+          <p class="hero__enso-note">f(x), gently breathing</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- Intro / Bio                                                    -->
+  <!-- ============================================================== -->
+  <section class="section container-prose">
+    <p class="eyebrow fade-in">In brief</p>
+    <p class="lead fade-in fade-in-2">
+      I study how people navigate the boundary between work and the rest of their lives,
+      and how organisations can design work that leaves people more whole than it found
+      them. Most of my work lives in work and organisational psychology: assessment,
+      wellbeing, personality, the daily texture of working life. On methods I lean
+      Bayesian by persuasion (statistics for people who can admit they had opinions
+      before they saw the data), and have spent an unreasonable
+      amount of time on Generalizability theory, telling anyone who'll listen that their
+      ratings are probably confounded.
+    </p>
+
+    <div class="bio has-dropcap fade-in fade-in-3">
+      <p>
+        I'm Professor of Work Psychology at Norwich Business School, University of East
+        Anglia, where I am Programme Director for the <a href="https://www.uea.ac.uk/course/postgraduate/msc-organisational-psychology" rel="noopener" target="_blank">MSc in Organisational Psychology</a>. I
+        arrived in 2018 as an Associate Professor and was promoted to full Professor in
+        2024.
+      </p>
+      <p>
+        My route here has been non-linear: a PhD in Business and Management at
+        Nottingham, then Research Associate spells at Sheffield and Nottingham Trent, with
+        teaching posts at Birkbeck and the LSE along the way. Each place left a mark; none
+        of them left me with a sensible accent.
+      </p>
+      <p>
+        My research has been funded by the ESRC, SIOP, the Defence Science and Technology
+        Laboratory, and the College of Policing, a list that sounds incongruous until you
+        realise it's all "how do people cope at work, and can we measure it?" I'm an
+        Associate Editor at the <em>Journal of Occupational and Organizational
+        Psychology</em>, sit on the editorial board of <em>Human Performance</em>, and
+        review for the
+        ESRC Peer Review College and a rogues' gallery of leading journals. Chartered
+        Psychologist, Fellow of the Higher Education Academy, and, despite everything, an
+        optimist about measurement.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- Currently                                                      -->
+  <!-- ============================================================== -->
+  <section class="section container-prose">
+    <p class="eyebrow">Currently</p>
+    <h2 class="section-heading">Where things stand.</h2>
+
+    <ul class="currently">
+      <li class="currently__item currently__item--flag">
+        <span class="currently__label">PhD applications</span>
+        <span class="currently__value">
+          <span class="dot dot--on" aria-hidden="true"></span>
+          Open for 2026/27 entry
+        </span>
+      </li>
+      <li class="currently__item">
+        <span class="currently__label">Research group</span>
+        <span class="currently__value">
+          <a href="/research/">Employment Systems and Institutions</a> · NBS
+        </span>
+      </li>
+      <li class="currently__item">
+        <span class="currently__label">Editorial</span>
+        <span class="currently__value">
+          Associate Editor, <em>Journal of Occupational and Organizational Psychology</em>
+        </span>
+      </li>
+      <li class="currently__item">
+        <span class="currently__label">Editorial</span>
+        <span class="currently__value">
+          Editorial Board, <em>Human Performance</em>
+        </span>
+      </li>
+      <li class="currently__item">
+        <span class="currently__label">Programme Director</span>
+        <span class="currently__value">
+          <a href="https://www.uea.ac.uk/course/postgraduate/msc-organisational-psychology" rel="noopener" target="_blank">MSc Organisational Psychology</a> · NBS
+        </span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- Selected publications                                          -->
+  <!-- ============================================================== -->
+  <section class="section container-prose">
+    <p class="eyebrow">Selected publications</p>
+    <h2 class="section-heading">A short reading list.</h2>
+    <p class="selected__sub">
+      Five papers that, taken together, sketch the shape of what I work on. For the full list
+      (sorted, filterable, and updated as things go to press), see the
+      <a href="/publications/">publications page</a>.
+    </p>
+
+    <ol class="selected">
+      {selected.map((paper, i) => (
+        <li class="selected__item reveal">
+          <div class="selected__num">{String(i + 1).padStart(2, '0')}</div>
+          <div class="selected__body">
+            <p class="selected__cite">
+              {paper.authors} ({paper.year}).{' '}
+              <em class="selected__title">{paper.title}</em>.{' '}
+              <span class="selected__venue">{paper.venue}</span>.
+              {paper.doi && (
+                <>
+                  {' '}
+                  <a href={`https://doi.org/${paper.doi}`} class="selected__doi" rel="noopener">
+                    doi:{paper.doi}
+                  </a>
+                </>
+              )}
+            </p>
+            <p class="selected__gloss">{paper.gloss}</p>
+            <div class="selected__tags">
+              {paper.award && <span class="badge">{paper.award}</span>}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <p class="selected__more">
+      <a href="/publications/" class="more-link">
+        See all {publicationCount} publications
+        <span aria-hidden="true">→</span>
+      </a>
+    </p>
+  </section>
+
+  <!-- ============================================================== -->
+  <!-- Get in touch                                                   -->
+  <!-- ============================================================== -->
+  <section class="section container-prose getintouch">
+    <p class="eyebrow">Get in touch</p>
+    <h2 class="section-heading">If my work is relevant to yours.</h2>
+    <p class="getintouch__lede">
+      I read everything that lands in my inbox, though I cannot always reply quickly. The
+      quickest way to reach me is by email. For prospective PhD applicants, please see the
+      <a href="/phd-supervision/">supervision page</a> before writing.
+    </p>
+    <ul class="getintouch__links">
+      <li>
+        <span class="getintouch__label">Email</span>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </li>
+      <li>
+        <span class="getintouch__label">ORCID</span>
+        <a href={`https://orcid.org/${site.orcid}`} rel="noopener" target="_blank">0000-0002-4224-7728</a>
+      </li>
+      <li>
+        <span class="getintouch__label">Office</span>
+        <span>Norwich Business School · UEA · NR4 7TJ</span>
+      </li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<script>
+  /* ----------------------------------------------------------------
+     Signature piece: the ensū frames a kernel-density curve that
+     draws itself on load and breathes near the cursor.
+     ---------------------------------------------------------------- */
+  const enso = document.querySelector<HTMLElement>('[data-enso]');
+  const curve = enso?.querySelector<SVGPathElement>('.enso-curve');
+  const fill = enso?.querySelector<SVGPathElement>('.enso-fill');
+
+  if (enso && curve && fill) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Draw the ensū arc on load
+    const arc = enso.querySelector<SVGPathElement>('.enso-arc');
+    if (arc && !reduced) {
+      const len = arc.getTotalLength();
+      arc.style.strokeDasharray = `${len}`;
+      arc.style.strokeDashoffset = `${len}`;
+      arc.getBoundingClientRect(); // force layout
+      arc.style.transition = 'stroke-dashoffset 1600ms cubic-bezier(0.22, 1, 0.36, 1)';
+      requestAnimationFrame(() => { arc.style.strokeDashoffset = '0'; });
+    }
+
+    const W = 340, BASE = 212, LEFT = 86, RIGHT = 254, AMP = 96;
+    const curveEl = curve;
+    const fillEl = fill;
+
+    // Two-component Gaussian mixture; the second component follows the cursor
+    let m1 = 0.42, s1 = 0.16, w1 = 0.75;
+    let m2 = 0.62, s2 = 0.10, w2 = 0.45;
+    let targetM2 = m2, targetW2 = w2;
+    let t = 0;
+
+    const gauss = (x: number, mu: number, sigma: number) =>
+      Math.exp(-((x - mu) ** 2) / (2 * sigma * sigma));
+
+    function render() {
+      let d = `M ${LEFT} ${BASE}`;
+      let fd = `M ${LEFT} ${BASE}`;
+      for (let px = LEFT; px <= RIGHT; px += 4) {
+        const u = (px - LEFT) / (RIGHT - LEFT);
+        const y =
+          BASE -
+          AMP * (w1 * gauss(u, m1, s1) + w2 * gauss(u, m2, s2)) -
+          Math.sin(t * 0.9 + u * 5) * 1.6 * w2;
+        d += ` L ${px} ${y.toFixed(2)}`;
+        fd += ` L ${px} ${y.toFixed(2)}`;
+      }
+      fd += ` L ${RIGHT} ${BASE} Z`;
+      curveEl.setAttribute('d', d);
+      fillEl.setAttribute('d', fd);
+    }
+
+    if (reduced) {
+      render();
+    } else {
+      enso.addEventListener('pointermove', (e) => {
+        const rect = enso.getBoundingClientRect();
+        const ux = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+        const uy = Math.min(1, Math.max(0, (e.clientY - rect.top) / rect.height));
+        targetM2 = 0.18 + ux * 0.64;
+        targetW2 = 0.25 + uy * 0.55;
+      });
+      enso.addEventListener('pointerleave', () => { targetW2 = 0.45; });
+
+      const tick = () => {
+        t += 0.016;
+        m2 += (targetM2 - m2) * 0.06;
+        w2 += (targetW2 - w2) * 0.06;
+        s2 = 0.08 + 0.03 * Math.sin(t * 0.7);
+        render();
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }
+</script>
+
+<style>
+  /* ============================================================ */
+  /* Hero                                                          */
+  /* ============================================================ */
+  .hero {
+    position: relative;
+    padding-top: var(--space-9);
+    padding-bottom: var(--space-8);
+    overflow: hidden;
+  }
+
+  .hero__scatter {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--motif-stroke);
+    pointer-events: none;
+  }
+
+  .hero__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  @media (max-width: 880px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-7);
+    }
+  }
+
+  .hero__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--colour-accent);
+    margin-bottom: var(--space-5);
+  }
+
+  .hero__name {
+    font-family: var(--font-display);
+    font-size: var(--step-7);
+    font-weight: 300;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--colour-ink);
+    margin-bottom: var(--space-4);
+  }
+
+  .hero__role {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-style: italic;
+    color: var(--colour-ink-muted);
+    margin-bottom: var(--space-5);
+  }
+  .hero__sep { color: var(--colour-ink-faint); font-style: normal; }
+  .hero__inst { font-style: italic; }
+
+  .hero__tagline {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    font-weight: 300;
+    line-height: var(--leading-snug);
+    color: var(--colour-accent);
+    margin-bottom: var(--space-6);
+    max-width: 28ch;
+  }
+
+  .hero__cta {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.75em 1.4em;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.005em;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    transition: all var(--duration-fast) var(--ease-out);
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .btn--primary {
+    background: var(--colour-accent);
+    color: var(--colour-on-accent);
+  }
+  .btn--primary:hover, .btn--primary:focus-visible {
+    background: var(--colour-accent-deep);
+    color: var(--colour-on-accent);
+  }
+  .btn--ghost {
+    background: transparent;
+    color: var(--colour-ink);
+    border-color: var(--colour-rule);
+  }
+  .btn--ghost:hover, .btn--ghost:focus-visible {
+    border-color: var(--colour-accent);
+    color: var(--colour-accent);
+  }
+
+  /* Figure column: kakejiku portrait + ensū */
+  .hero__figure {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+
+  .hero__portrait {
+    position: relative;
+    margin: 0;
+    max-width: 240px;
+    padding: var(--space-3);
+    background: var(--colour-paper-raise);
+    border: 1px solid var(--colour-rule);
+    box-shadow: var(--shadow-2);
+    transform: rotate(-1.2deg);
+  }
+  .hero__portrait img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    filter: sepia(0.14) saturate(0.92);
+  }
+  .hero__seal {
+    position: absolute;
+    right: calc(-1 * var(--space-2));
+    bottom: var(--space-5);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: var(--colour-accent);
+    color: var(--colour-on-accent);
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    box-shadow: var(--shadow-1);
+  }
+  .hero__credit {
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--colour-ink-faint);
+    text-align: right;
+  }
+
+  .hero__enso {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    touch-action: none;
+  }
+  .hero__enso svg {
+    width: min(300px, 72vw);
+    height: auto;
+  }
+  .hero__enso-note {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    color: var(--colour-ink-faint);
+  }
+
+  @media (max-width: 880px) {
+    .hero { padding-top: var(--space-7); }
+    .hero__figure { gap: var(--space-6); }
+  }
+
+  /* ============================================================ */
+  /* Bio / lead                                                    */
+  /* ============================================================ */
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    font-weight: 400;
+    color: var(--colour-ink);
+    margin-bottom: var(--space-5);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
+  }
+
+  .lead {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    font-weight: 300;
+    line-height: var(--leading-snug);
+    color: var(--colour-ink);
+    margin-bottom: var(--space-6);
+  }
+
+  .bio p {
+    margin-bottom: var(--space-5);
+    font-size: 1.0625rem;
+    line-height: var(--leading-loose);
+  }
+  .bio p:last-child { margin-bottom: 0; }
+  .bio em {
+    font-style: italic;
+    color: var(--colour-ink);
+  }
+
+  /* ============================================================ */
+  /* Currently                                                     */
+  /* ============================================================ */
+  .currently {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .currently__item {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: var(--space-5);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--colour-rule);
+    align-items: baseline;
+  }
+  .currently__item:last-child { border-bottom: 1px solid var(--colour-rule); }
+
+  .currently__label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--colour-ink-muted);
+    font-weight: 500;
+  }
+  .currently__value {
+    font-size: 1rem;
+    color: var(--colour-ink);
+    line-height: var(--leading-snug);
+  }
+  .currently__value em {
+    font-style: italic;
+  }
+
+  .currently__item--flag .currently__value {
+    color: var(--colour-accent);
+    font-weight: 500;
+  }
+
+  .dot {
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    vertical-align: 0.1em;
+  }
+  .dot--on {
+    background: var(--colour-accent);
+    box-shadow: 0 0 0 4px var(--colour-accent-soft);
+  }
+
+  @media (max-width: 600px) {
+    .currently__item { grid-template-columns: 1fr; gap: var(--space-2); }
+  }
+
+  /* ============================================================ */
+  /* Selected publications                                         */
+  /* ============================================================ */
+  .selected__sub {
+    font-size: 1rem;
+    color: var(--colour-ink-muted);
+    line-height: var(--leading-loose);
+    max-width: 56ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .selected {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .selected__item {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--colour-rule);
+  }
+  .selected__item:last-child { border-bottom: 1px solid var(--colour-rule); }
+
+  .selected__num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--colour-accent);
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  .selected__cite {
+    font-size: 1rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink);
+    margin-bottom: var(--space-3);
+  }
+  .selected__title { font-style: italic; }
+  .selected__venue { font-style: italic; color: var(--colour-ink-muted); }
+  .selected__doi {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--colour-ink-muted);
+    word-break: break-all;
+  }
+  .selected__doi:hover { color: var(--colour-accent); }
+
+  .selected__gloss {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.0625rem;
+    line-height: var(--leading-snug);
+    color: var(--colour-ink-muted);
+    margin-bottom: var(--space-4);
+    max-width: 56ch;
+  }
+
+  .selected__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .selected__more {
+    margin-top: var(--space-6);
+    text-align: right;
+  }
+  .more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--colour-accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--colour-accent);
+    padding-bottom: 2px;
+    transition: gap var(--duration-fast) var(--ease-out);
+  }
+  .more-link:hover { gap: 0.7em; }
+
+  @media (max-width: 600px) {
+    .selected__item { grid-template-columns: 1fr; gap: var(--space-2); }
+  }
+
+  /* ============================================================ */
+  /* Get in touch                                                  */
+  /* ============================================================ */
+  .getintouch__lede {
+    font-size: 1.0625rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink);
+    margin-bottom: var(--space-6);
+    max-width: 56ch;
+  }
+
+  .getintouch__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .getintouch__links li {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: var(--space-4);
+    padding-block: var(--space-3);
+    border-top: 1px solid var(--colour-rule);
+    align-items: baseline;
+  }
+  .getintouch__links li:last-child { border-bottom: 1px solid var(--colour-rule); }
+  .getintouch__label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--colour-ink-muted);
+    font-weight: 500;
+  }
+
+  @media (max-width: 600px) {
+    .getintouch__links li { grid-template-columns: 1fr; gap: var(--space-1); }
+  }
+</style>

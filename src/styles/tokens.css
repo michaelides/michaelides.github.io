@@ -1,0 +1,125 @@
+/* ============================================================
+   Design Tokens - George Michaelides personal site
+   "Sumi & Washi" - calm zen editorial with a psychometric pulse
+   Light = day studio · Dark = night studio
+   ============================================================ */
+
+:root {
+  /* ---------- Colour - light ("day studio") ---------- */
+  --colour-paper:        #F6F1E8;   /* washi paper background */
+  --colour-paper-deep:   #EFE8DB;   /* secondary surface */
+  --colour-paper-raise:  #FBF8F1;   /* raised card surface */
+  --colour-ink:          #26221C;   /* sumi charcoal text */
+  --colour-ink-muted:    #6B6357;
+  --colour-ink-faint:    #9A9184;
+  --colour-rule:         #DDD3C2;   /* hairlines */
+  --colour-accent:       #B3432B;   /* vermilion shu */
+  --colour-accent-deep:  #8E3220;
+  --colour-accent-soft:  #F0DCD2;   /* vermilion wash */
+  --colour-accent-2:     #64745A;   /* matcha sage */
+  --colour-accent-2-soft:#E4E8DB;
+  --colour-on-accent:    #FBF8F1;
+  --colour-selection:    #B3432B;
+  --colour-on-selection: #FBF8F1;
+
+  /* Washes & overlays */
+  --wash-hero-a: rgba(179, 67, 43, 0.05);
+  --wash-hero-b: rgba(100, 116, 90, 0.06);
+  --nav-bg:      rgba(246, 241, 232, 0.86);
+  --motif-stroke: rgba(38, 34, 28, 0.10);   /* line-art strokes */
+
+  /* ---------- Typography ---------- */
+  --font-display: 'Newsreader', 'Iowan Old Style', 'Apple Garamond', 'Times New Roman', serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Modular type scale (1.250 - major third) */
+  --step--1: 0.875rem;
+  --step-0:  1.0625rem;
+  --step-1:  1.25rem;
+  --step-2:  1.5rem;
+  --step-3:  1.875rem;
+  --step-4:  2.25rem;
+  --step-5:  3rem;
+  --step-6:  clamp(2.75rem, 6vw, 4.5rem);
+  --step-7:  clamp(3.25rem, 8vw, 6rem);
+
+  --leading-tight:  1.12;
+  --leading-snug:   1.32;
+  --leading-normal: 1.58;
+  --leading-loose:  1.72;
+
+  --tracking-tight:  -0.02em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-caps:    0.12em;
+
+  /* ---------- Spacing ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* ---------- Layout ---------- */
+  --container-wide:  1140px;
+  --container-prose: 68ch;
+  --container-narrow: 44rem;
+
+  /* ---------- Radii ---------- */
+  --radius-1: 2px;
+  --radius-2: 4px;
+  --radius-3: 10px;
+  --radius-pill: 999px;
+
+  /* ---------- Motion ---------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 160ms;
+  --duration-base: 240ms;
+  --duration-slow: 480ms;
+
+  /* ---------- Shadows (soft, warm) ---------- */
+  --shadow-1: 0 1px 2px rgba(38, 34, 28, 0.05), 0 0 0 1px rgba(38, 34, 28, 0.03);
+  --shadow-2: 0 4px 14px rgba(38, 34, 28, 0.07), 0 0 0 1px rgba(38, 34, 28, 0.03);
+  --shadow-3: 0 14px 36px rgba(38, 34, 28, 0.11), 0 0 0 1px rgba(38, 34, 28, 0.04);
+
+  /* ---------- Z-index ---------- */
+  --z-base: 1;
+  --z-raised: 10;
+  --z-nav: 50;
+  --z-overlay: 100;
+}
+
+/* ---------- Dark ("night studio") ---------- */
+[data-theme='dark'] {
+  --colour-paper:        #191D24;
+  --colour-paper-deep:   #20252E;
+  --colour-paper-raise:  #232935;
+  --colour-ink:          #EDE7DA;
+  --colour-ink-muted:    #A79E8F;
+  --colour-ink-faint:    #6E6759;
+  --colour-rule:         #333945;
+  --colour-accent:       #E06A4A;
+  --colour-accent-deep:  #C55537;
+  --colour-accent-soft:  #3A2B26;
+  --colour-accent-2:     #8FA07E;
+  --colour-accent-2-soft:#2A3028;
+  --colour-on-accent:    #191D24;
+  --colour-selection:    #E06A4A;
+  --colour-on-selection: #191D24;
+
+  --wash-hero-a: rgba(224, 106, 74, 0.07);
+  --wash-hero-b: rgba(143, 160, 126, 0.06);
+  --nav-bg:      rgba(25, 29, 36, 0.86);
+  --motif-stroke: rgba(237, 231, 218, 0.12);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(237, 231, 218, 0.04);
+  --shadow-2: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(237, 231, 218, 0.05);
+  --shadow-3: 0 14px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(237, 231, 218, 0.06);
+}

@@ -1,0 +1,35 @@
+# Site identity & contact - single source of truth.
+# Update here, push to git, the site rebuilds.
+
+name: George Michaelides
+shortName: GM
+role: Professor of Work Psychology
+affiliation: University of East Anglia
+tagline: Work, life, and non-standard deviations.
+
+description: >-
+  Personal academic site of Dr George Michaelides, Professor of Work Psychology
+  at the University of East Anglia. Research on work-nonwork boundary, wellbeing,
+  assessment centres, team resilience, and personality at work.
+
+email: g.michaelides@uea.ac.uk
+orcid: 0000-0002-4224-7728
+scholar: https://scholar.google.com/citations?user=v9Rzv3kAAAAJ&hl=en
+linkedin: https://www.linkedin.com/in/george-michaelides-53850040/
+github: https://github.com/michaelides/
+researchgate: https://www.researchgate.net/profile/George-Michaelides
+uea_profile: https://research-portal.uea.ac.uk/en/persons/george-michaelides/
+
+# Portrait (downloaded from UEA research portal, B&W)
+portrait: /images/portrait2.jpg
+portraitCredit: University of East Anglia
+
+# Last site-wide content update (YYYY-MM-DD). Bump when meaningful changes ship.
+lastUpdated: '2026-07-22'
+
+# PhD recruitment status (single line shown on the home page and PhD Supervision page)
+phdStatus: open
+phdStatusNote: I am currently welcoming applications for PhD supervision starting in the 2026/27 academic year.
+
+# Defaults for content collections
+defaultNewsType: note

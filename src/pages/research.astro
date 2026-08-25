@@ -1,0 +1,337 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { site } from '~/lib/data';
+
+const themes = [
+  {
+    id: 'work-nonwork',
+    title: 'Work–nonwork boundaries and hybrid work',
+    summary:
+      'How people draw, defend, and dissolve the line between their working lives and everything else, and what happens to that line when work moves into the home. I am interested in what predicts successful boundary management, when integration helps and when it hurts, and what the everyday rituals of segmentation look like in practice. The pandemic made remote and hybrid work an unavoidable research setting; the questions it raised are not going away. What does the loss of a commute buy people, and what does it cost? When does homeworking help those with caring responsibilities, and when does it quietly redistribute the work to them?',
+    projects: ['dual-process model of segmentation enactment', 'boundary management in portfolio work', 'workplace embitterment and rumination', 'homeworker wellbeing and uncertainty (COVID longitudinal)', 'two-wave study of job satisfaction and homeworking', 'diary study of homeworker recovery'],
+  },
+  {
+    id: 'assessment-centres',
+    title: 'Assessment centres',
+    summary:
+      'Long-running methodological work on what assessment centres actually measure. The thread through this programme is that many of the inferences we draw from ratings depend on unmodelled confounds, and that being honest about that changes which designs are worth running.',
+    projects: ['rater variance and dimension effects', 'the unconfounding of multisource performance ratings', 'task-based versus dimension-based scoring'],
+  },
+  {
+    id: 'wellbeing',
+    title: 'Wellbeing at work',
+    summary:
+      'The daily texture of working life: engagement, burnout, rumination, embitterment, and the small organisational conditions that shift them. Much of this work is diary-based, capturing state and trait at the level of a single day or week.',
+    projects: ['workplace embitterment and illegitimate tasks', 'engagement crossover between colleagues', 'wellbeing during the COVID-19 transition'],
+  },
+  {
+    id: 'ai-ratings',
+    title: 'Psychometric evaluation of AI-generated ratings',
+    summary:
+      'As AI tools start producing ratings of people (of personality, performance, job-fit), the psychometric questions we have always asked of human raters apply, and then some. This stream treats algorithmic outputs the way the assessment-centre literature treats assessor judgments: as ratings with their own reliability, dimensionality, and bias structure, to be uncovered rather than assumed. The early questions are basic in the best way: are AI ratings stable across prompts and models, what do they actually measure, and what is the right criterion to triangulate them against when no gold standard exists?',
+    projects: ['reliability of LLM-generated personality ratings across prompts and models', 'generalizability-theoretic decomposition of AI rater variance', 'bias and drift in AI-scored performance assessments'],
+  },
+];
+
+const methods = [
+  'Daily diary studies (within-person, multilevel)',
+  'Multilevel / hierarchical modelling',
+  'Bayesian structural equation modelling',
+  'Vector autoregressive models for intensive longitudinal data',
+  'Survey design and measurement (including generalizability theory)',
+  'Assessment-centre design and psychometrics',
+  'Cross-sectional and longitudinal survey research',
+  'Meta-analytic thinking (less as a method, more as a discipline)',
+];
+
+/* A gentle item-characteristic-curve motif used as a divider */
+const iccPath =
+  'M0 26 C 60 26, 110 24, 160 16 S 260 2, 340 2';
+
+/* Bell-curve paths for the converging-distributions divider */
+const bell = (cx: number, sigma: number, h: number): string => {
+  const pts: string[] = [];
+  const x0 = Math.max(4, cx - 3 * sigma);
+  const x1 = Math.min(676, cx + 3 * sigma);
+  for (let x = x0; x <= x1; x += 6) {
+    const y = 100 - h * Math.exp(-((x - cx) ** 2) / (2 * sigma * sigma));
+    pts.push(`${pts.length === 0 ? 'M' : 'L'} ${x.toFixed(1)} ${y.toFixed(1)}`);
+  }
+  return pts.join(' ');
+};
+const dists = [
+  { d: bell(180, 90, 24), accent: false },
+  { d: bell(300, 56, 42), accent: false },
+  { d: bell(390, 32, 60), accent: false },
+  { d: bell(450, 15, 82), accent: true },
+];
+---
+
+<BaseLayout
+  title="Research"
+  description={`Research themes, current projects, and methods of ${site.name}, Professor of Work Psychology at the University of East Anglia.`}
+>
+  <section class="research section">
+    <div class="container-wide">
+      <header class="research__head fade-in">
+        <p class="eyebrow">Research</p>
+        <h1 class="research__title">What I work on, and how.</h1>
+        <p class="research__lede">
+          My work sits at the intersection of work and organisational psychology, quantitative
+          methodology, and the applied concerns of organisations that have hired me (or my
+          students) to look at things carefully. It is mostly quantitative, mostly diary-based
+          or multilevel, and increasingly interested in what the right answer to a question
+          actually is, methodologically, before it tries to be useful.
+        </p>
+      </header>
+
+      <!-- Themes -->
+      <section class="research__section">
+        <p class="eyebrow">Themes</p>
+        <h2 class="section-heading">Four threads that keep coming back.</h2>
+
+        <div class="themes">
+          {themes.map((t, i) => (
+            <>
+              {i > 0 && (
+                <svg class="curve-divider" viewBox="0 0 340 28" preserveAspectRatio="none" aria-hidden="true">
+                  <path d={iccPath} fill="none" stroke="currentColor" stroke-width="1" />
+                </svg>
+              )}
+              <article class="theme reveal" id={t.id}>
+                <div class="theme__mark">
+                  <span class="theme__num">{String(i + 1).padStart(2, '0')}</span>
+                  <svg class="theme__glyph" viewBox="0 0 56 56" aria-hidden="true">
+                    {t.id === 'work-nonwork' && (
+                      <>
+                        <line x1="4" y1="28" x2="52" y2="28" stroke="var(--colour-accent)" stroke-width="1.5" stroke-linecap="round" data-draw />
+                        <line x1="18" y1="20" x2="18" y2="36" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+                        <line x1="38" y1="20" x2="38" y2="36" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+                      </>
+                    )}
+                    {t.id === 'assessment-centres' && (
+                      <>
+                        <path d="M2 46 C 10 46, 13 26, 19 26 C 25 26, 28 46, 36 46" fill="none" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+                        <path d="M12 46 C 20 46, 23 14, 29 14 C 35 14, 38 46, 46 46" fill="none" stroke="var(--colour-accent)" stroke-width="1.5" stroke-linecap="round" data-draw />
+                        <path d="M20 46 C 28 46, 31 30, 37 30 C 43 30, 46 46, 54 46" fill="none" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+                      </>
+                    )}
+                    {t.id === 'wellbeing' && (
+                      <path d="M2 28 Q 9 8, 16 28 T 30 28 T 44 28" fill="none" stroke="var(--colour-accent)" stroke-width="1.5" stroke-linecap="round" data-draw />
+                    )}
+                    {t.id === 'ai-ratings' && (
+                      <>
+                        <g data-fade fill="var(--motif-stroke)">
+                          <circle cx="10" cy="44" r="1.6" />
+                          <circle cx="16" cy="40" r="1.6" />
+                          <circle cx="22" cy="34" r="1.6" />
+                          <circle cx="27" cy="32" r="1.6" />
+                          <circle cx="33" cy="24" r="1.6" />
+                          <circle cx="39" cy="20" r="1.6" />
+                          <circle cx="46" cy="16" r="1.6" />
+                        </g>
+                        <line x1="5" y1="49" x2="51" y2="9" stroke="var(--colour-accent)" stroke-width="1.5" stroke-linecap="round" data-draw />
+                      </>
+                    )}
+                  </svg>
+                </div>
+                <div class="theme__body">
+                  <h3 class="theme__title">{t.title}</h3>
+                  <p class="theme__summary">{t.summary}</p>
+                  {t.projects.length > 0 && (
+                    <details class="theme__projects">
+                      <summary>Current threads in this area</summary>
+                      <ul>
+                        {t.projects.map((p) => <li>{p}</li>)}
+                      </ul>
+                    </details>
+                  )}
+                </div>
+              </article>
+            </>
+          ))}
+        </div>
+      </section>
+
+      <!-- Methods -->
+      <section class="research__section">
+        <!-- Converging distributions, sketching themselves into view -->
+        <svg
+          class="converge-divider"
+          viewBox="0 0 680 110"
+          role="img"
+          aria-label="A sequence of distributions converging on a finding"
+          data-draw-root
+          data-stagger="450"
+          style="--draw-duration: 1500ms;"
+        >
+          <line x1="6" y1="100" x2="674" y2="100" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+          {dists.map((c) => (
+            <path
+              d={c.d}
+              fill="none"
+              stroke={c.accent ? 'var(--colour-accent)' : 'var(--motif-stroke)'}
+              stroke-width={c.accent ? 1.5 : 1}
+              stroke-linecap="round"
+              data-draw
+            />
+          ))}
+        </svg>
+
+        <p class="eyebrow">Methods</p>
+        <h2 class="section-heading">The toolkit.</h2>
+        <p class="research__lede">
+          A short list of the methods I reach for most often. I am wary of method-led research:
+          the question should pick the method, not the other way around. But here is what the
+          questions have picked lately.
+        </p>
+        <ul class="methods">
+          {methods.map((m) => <li>{m}</li>)}
+        </ul>
+      </section>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .research__head {
+    margin-bottom: var(--space-8);
+    max-width: 64ch;
+  }
+  .research__title {
+    font-family: var(--font-display);
+    font-size: var(--step-5);
+    font-weight: 300;
+    line-height: var(--leading-tight);
+    color: var(--colour-ink);
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.025em;
+  }
+  .research__lede {
+    font-size: 1.0625rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink-muted);
+  }
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    font-weight: 400;
+    color: var(--colour-ink);
+    margin-bottom: var(--space-5);
+    letter-spacing: -0.02em;
+  }
+  .research__section {
+    position: relative;
+    margin-bottom: var(--space-9);
+  }
+
+  /* Themes */
+  .themes {
+    display: flex;
+    flex-direction: column;
+  }
+  .theme {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+  }
+
+  .theme__mark {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .theme__glyph {
+    width: 56px;
+    height: 56px;
+  }
+  @media (max-width: 600px) {
+    .theme__mark {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-4);
+    }
+  }
+
+  /* Converging-distributions divider */
+  .converge-divider {
+    display: block;
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    margin-block: var(--space-7);
+    overflow: visible;
+  }
+
+  .theme__num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--colour-accent);
+    line-height: 1;
+    font-weight: 300;
+  }
+  .theme__title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--colour-ink);
+    margin-bottom: var(--space-3);
+    letter-spacing: -0.015em;
+  }
+  .theme__summary {
+    font-size: 1.0625rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink);
+    margin-bottom: var(--space-3);
+    max-width: 64ch;
+  }
+  .theme__projects {
+    margin-top: var(--space-3);
+  }
+  .theme__projects summary {
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--colour-accent);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .theme__projects summary::marker { color: var(--colour-accent); }
+  .theme__projects ul {
+    margin-top: var(--space-3);
+    padding-left: var(--space-5);
+    color: var(--colour-ink-muted);
+    font-size: 0.9375rem;
+    line-height: var(--leading-loose);
+  }
+
+  @media (max-width: 600px) {
+    .theme { grid-template-columns: 1fr; gap: var(--space-2); }
+  }
+
+  /* Methods */
+  .methods {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-2) var(--space-5);
+  }
+  .methods li {
+    position: relative;
+    padding-left: 1.25em;
+    font-size: 1rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink);
+  }
+  .methods li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--colour-accent);
+  }
+</style>

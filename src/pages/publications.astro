@@ -1,0 +1,557 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { site, publications } from '~/lib/data';
+
+/* Group by year, newest first; sort within year alphabetically by title */
+const byYear = new Map<number, typeof publications>();
+for (const p of publications) {
+  if (!byYear.has(p.year)) byYear.set(p.year, []);
+  byYear.get(p.year)!.push(p);
+}
+for (const arr of byYear.values()) {
+  arr.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const counts = {
+  all: publications.length,
+  article: publications.filter((p) => p.type === 'article').length,
+  chapter: publications.filter((p) => p.type === 'chapter').length,
+  report: publications.filter((p) => p.type === 'report' || p.type === 'preprint').length,
+};
+
+const formatAuthors = (authors: string[]) => {
+  if (!authors || authors.length === 0) return '';
+  if (authors.length === 1) return authors[0];
+  if (authors.length === 2) return authors.join(' & ');
+  if (authors.length <= 6) return authors.slice(0, -1).join(', ') + ', & ' + authors[authors.length - 1];
+  return authors.slice(0, 3).join(', ') + ', … ' + authors[authors.length - 1];
+};
+
+/* Format an author name as APA: "Forename Surname" -> "Surname, F.".
+   Names that already contain a comma (e.g. "den Dulk, L.") are kept as-is. */
+const toApaName = (name: string): string => {
+  const trimmed = name.trim();
+  if (!trimmed) return '';
+  if (trimmed.includes(',')) {
+    // Already surname-first: ensure single spacing around initials
+    return trimmed.replace(/\s+/g, ' ').replace(/,\s*&/, ', &');
+  }
+  const parts = trimmed.split(/\s+/);
+  const last = parts.pop()!;
+  const initials = parts
+    .map((p) => p.replace(/\./g, ''))
+    .filter(Boolean)
+    .map((p) => `${p.charAt(0).toUpperCase()}.`)
+    .join(' ');
+  return initials ? `${last}, ${initials}` : last;
+};
+
+const apaAuthors = (authors: string[]): string => {
+  if (!authors || authors.length === 0) return '';
+  const names = authors.map(toApaName).filter(Boolean);
+  if (names.length === 1) return names[0];
+  if (names.length === 2) return `${names[0]} & ${names[1]}`;
+  if (names.length <= 20) return names.slice(0, -1).join(', ') + ', & ' + names[names.length - 1];
+  return names.slice(0, 19).join(', ') + ', … ' + names[names.length - 1];
+};
+
+const buildCitation = (p: (typeof publications)[number]): string => {
+  const parts: string[] = [];
+  const authors = apaAuthors(p.authors || []);
+  if (authors) parts.push(authors);
+  parts.push(`(${p.year}).`);
+  if (p.title) parts.push(`${p.title}.`);
+  if (p.venue) parts.push(`${p.venue}.`);
+  if (p.doi) parts.push(`https://doi.org/${p.doi}`);
+  return parts.join(' ');
+};
+
+const yearSpan = years.length > 0 ? `${years[years.length - 1]}–${years[0]}` : '';
+const venueCount = new Set(publications.map((p) => p.venue).filter(Boolean)).size;
+
+/* JSON-LD for the publications collection */
+const worksJsonLd = publications
+  .filter((p) => p.type === 'article' && p.doi)
+  .slice(0, 50)  // cap for sanity
+  .map((p) => ({
+    '@context': 'https://schema.org',
+    '@type': 'ScholarlyArticle',
+    name: p.title,
+    author: (p.authors || []).map((a) => ({ '@type': 'Person', name: a })),
+    datePublished: String(p.year),
+    isPartOf: p.venue ? { '@type': 'Periodical', name: p.venue } : undefined,
+    identifier: p.doi ? `https://doi.org/${p.doi}` : undefined,
+  }));
+---
+
+<BaseLayout
+  title="Publications"
+  description={`Full list of ${publications.length} peer-reviewed publications by ${site.name}.`}
+  jsonLd={worksJsonLd}
+>
+  <section class="pubs section">
+    <div class="container-wide">
+      <header class="pubs__head fade-in">
+        <p class="eyebrow">Publications</p>
+        <h1 class="pubs__title">Everything I've published</h1>
+        <p class="pubs__lede">
+          A complete, chronologically ordered list of my peer-reviewed outputs, fetched
+          automatically from <a href="https://openalex.org" rel="noopener" target="_blank">OpenAlex</a>
+          and curated by hand. For citation counts, see
+          <a href={site.scholar} rel="noopener" target="_blank">Google Scholar</a>.
+        </p>
+      </header>
+
+      <!-- Stats strip -->
+      <dl class="pubs__stats fade-in fade-in-2" aria-label="Publication statistics">
+        <div class="pubs__stat">
+          <dt>Works</dt>
+          <dd>{counts.all}</dd>
+        </div>
+        <div class="pubs__stat">
+          <dt>Span</dt>
+          <dd>{yearSpan}</dd>
+        </div>
+        <div class="pubs__stat">
+          <dt>Venues</dt>
+          <dd>{venueCount}</dd>
+        </div>
+      </dl>
+
+      <div class="pubs__controls">
+        <div class="pubs__filters" role="toolbar" aria-label="Filter publications by type">
+          <button class="chip is-active" data-filter="all" aria-pressed="true">All <span class="chip__count">{counts.all}</span></button>
+          <button class="chip" data-filter="article" aria-pressed="false">Articles <span class="chip__count">{counts.article}</span></button>
+          <button class="chip" data-filter="chapter" aria-pressed="false">Chapters <span class="chip__count">{counts.chapter}</span></button>
+          <button class="chip" data-filter="report" aria-pressed="false">Reports &amp; preprints <span class="chip__count">{counts.report}</span></button>
+        </div>
+
+        <div class="pubs__search">
+          <label class="pubs__search-label" for="pubs-search">Search</label>
+          <input
+            id="pubs-search"
+            class="pubs__search-input"
+            type="search"
+            placeholder="Title, author, venue…"
+            autocomplete="off"
+            data-pubs-search
+          />
+        </div>
+      </div>
+
+      <div class="pubs__controls pubs__controls--secondary">
+        <button class="chip chip--surprise" type="button" data-surprise>Random paper</button>
+      </div>
+
+      <p class="pubs__empty" data-pubs-empty hidden>
+        Nothing matches that search; try a different term.
+      </p>
+
+      <div class="pubs__list" data-pubs-list>
+        {years.map((year) => (
+          <section class="pubs__year" data-year={year}>
+            <h2 class="pubs__year-label">
+              <span class="pubs__year-num">{year}</span>
+              <span class="pubs__year-rule" aria-hidden="true"></span>
+              <span class="pubs__year-count">{byYear.get(year)!.length} {byYear.get(year)!.length === 1 ? 'item' : 'items'}</span>
+            </h2>
+            <ol class="pubs__entries">
+              {byYear.get(year)!.map((p) => (
+                <li
+                  class="pubs__entry"
+                  data-type={p.type}
+                  data-year={p.year}
+                  data-text={`${formatAuthors(p.authors || [])} ${p.title} ${p.venue || ''} ${p.year}`.toLowerCase()}
+                >
+                  <div class="pubs__entry-body">
+                    <p class="pubs__cite">
+                      <span class="pubs__authors">{formatAuthors(p.authors || [])}</span>{' '}
+                      (<span class="pubs__year-inline">{p.year}</span>).{' '}
+                      <em class="pubs__paper-title">{p.title}</em>.{' '}
+                      <span class="pubs__venue">{p.venue}</span>.
+                    </p>
+                    <div class="pubs__links">
+                      {p.doi && (
+                        <a href={`https://doi.org/${p.doi}`} class="pubs__link" rel="noopener" target="_blank">
+                          doi:{p.doi}
+                        </a>
+                      )}
+                      {p.url && !p.doi && (
+                        <a href={p.url} class="pubs__link" rel="noopener" target="_blank">Link</a>
+                      )}
+                      {p.pdf && (
+                        <a href={p.pdf} class="pubs__link pubs__link--pdf" target="_blank">PDF</a>
+                      )}
+                      {(p.doi || p.title) && (
+                        <button
+                          type="button"
+                          class="pubs__copy"
+                          data-copy-citation={buildCitation(p)}
+                          aria-label={`Copy citation for ${p.title}`}
+                        >
+                          Copy citation
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div class="pubs__badges">
+                    {p.award && <span class="badge badge--award">{p.award}</span>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>('.pubs__filters .chip');
+  // Only the year <section> wrappers — entry <li> elements also carry data-year,
+  // and treating them as sections would hide every entry on the first apply().
+  const yearSections = document.querySelectorAll<HTMLElement>('section.pubs__year[data-year]');
+  const searchInput = document.querySelector<HTMLInputElement>('[data-pubs-search]');
+  const emptyNote = document.querySelector<HTMLElement>('[data-pubs-empty]');
+
+  let activeFilter = 'all';
+  let query = '';
+
+  function apply() {
+    let totalShown = 0;
+    yearSections.forEach((y) => {
+      const entries = y.querySelectorAll<HTMLElement>('.pubs__entry');
+      let shown = 0;
+      entries.forEach((e) => {
+        const t = e.dataset.type || 'article';
+        const matchType = activeFilter === 'all' || (
+          activeFilter === 'report' ? (t === 'report' || t === 'preprint') : t === activeFilter
+        );
+        const matchQuery =
+          query === '' ||
+          (e.dataset.text || '').includes(query);
+        const match = matchType && matchQuery;
+        e.hidden = !match;
+        if (match) shown += 1;
+      });
+      y.hidden = shown === 0;
+      const countEl = y.querySelector('.pubs__year-count');
+      if (countEl) countEl.textContent = `${shown} ${shown === 1 ? 'item' : 'items'}`;
+      totalShown += shown;
+    });
+    if (emptyNote) emptyNote.hidden = totalShown !== 0;
+  }
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => {
+        c.classList.remove('is-active');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      chip.classList.add('is-active');
+      chip.setAttribute('aria-pressed', 'true');
+      activeFilter = chip.dataset.filter || 'all';
+      apply();
+    });
+  });
+
+  if (searchInput) {
+    let debounce: ReturnType<typeof setTimeout>;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(debounce);
+      debounce = setTimeout(() => {
+        query = searchInput.value.trim().toLowerCase();
+        apply();
+      }, 120);
+    });
+  }
+
+  // Copy-citation buttons
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-citation]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const text = btn.getAttribute('data-copy-citation') || '';
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.classList.add('is-copied');
+        btn.textContent = 'Copied';
+        window.setTimeout(() => {
+          btn.classList.remove('is-copied');
+          btn.textContent = original;
+        }, 1600);
+      } catch {
+        window.location.href = `mailto:?subject=Citation&body=${encodeURIComponent(text)}`;
+      }
+    });
+  });
+
+  // Random-paper highlight
+  const surpriseBtn = document.querySelector<HTMLButtonElement>('[data-surprise]');
+  if (surpriseBtn) {
+    surpriseBtn.addEventListener('click', () => {
+      const visible = Array.from(document.querySelectorAll<HTMLElement>('.pubs__entry:not([hidden])'));
+      if (visible.length === 0) return;
+      const pick = visible[Math.floor(Math.random() * visible.length)];
+      visible.forEach((e) => e.classList.remove('is-highlight'));
+      pick.classList.add('is-highlight');
+      pick.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      window.setTimeout(() => pick.classList.remove('is-highlight'), 3500);
+    });
+  }
+</script>
+
+<style>
+  .pubs__head {
+    margin-bottom: var(--space-6);
+    max-width: 64ch;
+  }
+  h1.pubs__title {
+    font-family: var(--font-display);
+    font-size: var(--step-5);
+    font-weight: 300;
+    line-height: var(--leading-tight);
+    color: var(--colour-ink);
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.025em;
+  }
+  .pubs__lede {
+    font-size: 1.0625rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink-muted);
+  }
+
+  /* Stats strip */
+  .pubs__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-7);
+    margin: 0 0 var(--space-6);
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--colour-rule);
+    border-bottom: 1px solid var(--colour-rule);
+  }
+  .pubs__stat dt {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--colour-ink-muted);
+    margin-bottom: 0.3em;
+  }
+  .pubs__stat dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 300;
+    color: var(--colour-accent);
+    letter-spacing: -0.01em;
+  }
+
+  .pubs__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+
+  .pubs__controls--secondary {
+    justify-content: flex-end;
+    gap: var(--space-4);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--colour-rule);
+  }
+
+  .chip--surprise {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .chip--surprise:hover {
+    color: var(--colour-on-accent);
+    background: var(--colour-ink);
+    border-color: var(--colour-ink);
+  }
+
+  .pubs__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  /* Search */
+  .pubs__search {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .pubs__search-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--colour-ink-muted);
+  }
+  .pubs__search-input {
+    padding: 0.5em 1em;
+    font-size: 0.9375rem;
+    color: var(--colour-ink);
+    background: var(--colour-paper-raise);
+    border: 1px solid var(--colour-rule);
+    border-radius: var(--radius-pill);
+    min-width: 16rem;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+  .pubs__search-input:focus {
+    outline: none;
+    border-color: var(--colour-accent);
+  }
+  .pubs__search-input::placeholder { color: var(--colour-ink-faint); }
+
+  @media (max-width: 700px) {
+    .pubs__controls { flex-direction: column; align-items: stretch; }
+    .pubs__search-input { min-width: 0; width: 100%; }
+  }
+
+  .pubs__empty {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.125rem;
+    color: var(--colour-ink-muted);
+    margin-bottom: var(--space-6);
+  }
+
+  .pubs__year {
+    margin-bottom: var(--space-7);
+  }
+  .pubs__year-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+  .pubs__year-num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--colour-accent);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .pubs__year-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--colour-rule);
+  }
+  .pubs__year-count {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--colour-ink-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .pubs__entries {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .pubs__entry {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--colour-rule);
+    align-items: start;
+  }
+  .pubs__entry[hidden] { display: none; }
+  .pubs__year[hidden] { display: none; }
+  .pubs__entries li:last-child { border-bottom: 1px solid var(--colour-rule); }
+
+  .pubs__cite {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--colour-ink);
+  }
+  .pubs__authors { color: var(--colour-ink); }
+  .pubs__year-inline { color: var(--colour-ink-muted); }
+  .pubs__paper-title { font-style: italic; }
+  .pubs__venue { font-style: italic; color: var(--colour-ink-muted); }
+
+  .pubs__links {
+    margin-top: var(--space-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .pubs__link {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--colour-ink-muted);
+    text-decoration: none;
+    letter-spacing: 0;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+  .pubs__link:hover { color: var(--colour-accent); }
+  .pubs__link--pdf { color: var(--colour-accent); }
+
+  /* Copy-citation button */
+  .pubs__copy {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--colour-ink-muted);
+    padding: 0.15em 0.7em;
+    border: 1px solid var(--colour-rule);
+    border-radius: var(--radius-pill);
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+  .pubs__copy:hover {
+    color: var(--colour-accent);
+    border-color: var(--colour-accent);
+  }
+  .pubs__copy.is-copied {
+    color: var(--colour-on-accent);
+    background: var(--colour-ink);
+    border-color: var(--colour-ink);
+  }
+
+  /* Random-paper highlight */
+  .pubs__entry {
+    transition: background-color var(--duration-base) var(--ease-out),
+                box-shadow var(--duration-base) var(--ease-out);
+  }
+  .pubs__entry.is-highlight {
+    background: var(--colour-accent-soft);
+    box-shadow: inset 0 0 0 1px var(--colour-accent);
+    border-radius: var(--radius-3);
+  }
+
+  .pubs__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: flex-start;
+    padding-top: 2px;
+  }
+  .badge--award {
+    background: #F4E4C1;
+    color: #6B4F1A;
+  }
+  [data-theme='dark'] .badge--award {
+    background: #3A3323;
+    color: #D8BC7E;
+  }
+
+  @media (max-width: 600px) {
+    .pubs__entry {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+    .pubs__badges { padding-top: 0; }
+  }
+</style>

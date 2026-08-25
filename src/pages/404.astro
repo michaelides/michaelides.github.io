@@ -1,0 +1,58 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { site } from '~/lib/data';
+---
+
+<BaseLayout title="Not found" description={`The page you were looking for could not be found on ${site.name}'s site.`}>
+  <section class="nf section">
+    <div class="container-narrow">
+      <p class="eyebrow">404</p>
+      <h1 class="nf__title">That page has slipped through the boundary.</h1>
+      <p class="nf__lede">
+        The page you were looking for has either moved, was never here, or is sitting in a
+        draft folder I have not pushed yet. A few places that might be useful:
+      </p>
+      <ul class="nf__links">
+        <li><a href="/">Home</a>: who I am and what I work on</li>
+        <li><a href="/publications/">Publications</a>: the full list, with filters</li>
+        <li><a href="/research/">Research</a>: themes, current projects, grants</li>
+        <li><a href="/news/">News</a>: talks, press, awards, notes</li>
+        <li><a href="/phd-supervision/">PhD supervision</a>: if you were looking for this</li>
+        <li><a href="/contact/">Contact</a>: how to email me</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf__title {
+    font-family: var(--font-display);
+    font-size: var(--step-5);
+    font-weight: 300;
+    color: var(--colour-ink);
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.025em;
+  }
+  .nf__lede {
+    font-size: 1.0625rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink);
+    margin-bottom: var(--space-5);
+  }
+  .nf__links {
+    list-style: none;
+    padding: 0;
+  }
+  .nf__links li {
+    position: relative;
+    padding: var(--space-3) 0 var(--space-3) var(--space-5);
+    border-top: 1px solid var(--colour-rule);
+  }
+  .nf__links li:last-child { border-bottom: 1px solid var(--colour-rule); }
+  .nf__links li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--colour-accent);
+  }
+</style>

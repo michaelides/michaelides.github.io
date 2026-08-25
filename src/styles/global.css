@@ -1,0 +1,241 @@
+/* ============================================================
+   Global styles - George Michaelides personal site
+   "Sumi & Washi" - zen editorial, warm paper, sumi ink, shu accent
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..700;1,6..72,200..700&family=Inter:wght@300..600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import './tokens.css';
+
+/* ---------- Reset (light) ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html, body { height: 100%; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; }
+p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+
+/* ---------- Base ---------- */
+html {
+  background: var(--colour-paper);
+  color: var(--colour-ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: var(--leading-normal);
+  font-feature-settings: 'kern', 'liga', 'calt', 'onum';
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--colour-paper);
+  /* Washi warmth: barely-there washes of shu and matcha */
+  background-image:
+    radial-gradient(ellipse 60% 40% at 12% 0%, var(--wash-hero-a) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 45% at 88% 30%, var(--wash-hero-b) 0%, transparent 55%);
+  background-attachment: fixed;
+  transition: background-color var(--duration-slow) var(--ease-in-out),
+              color var(--duration-slow) var(--ease-in-out);
+}
+
+::selection {
+  background: var(--colour-selection);
+  color: var(--colour-on-selection);
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* ---------- Typography ---------- */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+a {
+  color: var(--colour-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--colour-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-1);
+}
+
+/* ---------- Utility: container ---------- */
+.container-wide   { width: 100%; max-width: var(--container-wide); margin-inline: auto; padding-inline: var(--space-5); }
+.container-prose  { width: 100%; max-width: var(--container-prose); margin-inline: auto; padding-inline: var(--space-5); }
+.container-narrow { width: 100%; max-width: var(--container-narrow); margin-inline: auto; padding-inline: var(--space-5); }
+
+.section { padding-block: var(--space-8); }
+.section-tight { padding-block: var(--space-6); }
+.section-hero { padding-block: var(--space-9) var(--space-7); }
+
+/* ---------- Utility: eyebrow (mono measurement label) ---------- */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--colour-accent);
+  margin-bottom: var(--space-4);
+}
+
+/* Hairline statistical divider (inline SVG supplied by pages) */
+.curve-divider {
+  display: block;
+  width: 100%;
+  height: 28px;
+  color: var(--motif-stroke);
+  margin-block: var(--space-6);
+}
+
+/* ---------- Ink-stroke scroll progress ---------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--colour-accent);
+  z-index: calc(var(--z-overlay) + 1);
+  pointer-events: none;
+}
+
+/* ---------- Self-drawing line-art ----------
+   JS sets stroke-dasharray/dashoffset from getTotalLength(),
+   then flips dashoffset to 0 when the container is revealed. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-draw] {
+    transition: stroke-dashoffset var(--draw-duration, 1200ms) var(--ease-out);
+  }
+  .reveal [data-fade] {
+    opacity: 0;
+    transition: opacity 700ms var(--ease-out) 500ms;
+  }
+  .reveal.is-visible [data-fade] {
+    opacity: 1;
+  }
+}
+
+/* ---------- Utility: badge / tag ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.25em 0.7em;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  border-radius: var(--radius-pill);
+  background: var(--colour-accent-soft);
+  color: var(--colour-accent-deep);
+}
+[data-theme='dark'] .badge { color: var(--colour-accent); }
+.badge--solid {
+  background: var(--colour-accent-2-soft);
+  color: var(--colour-accent-2);
+}
+
+/* ---------- Utility: chip (filter pills) ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.45em 1em;
+  font-size: 0.875rem;
+  font-weight: 450;
+  color: var(--colour-ink-muted);
+  background: transparent;
+  border: 1px solid var(--colour-rule);
+  border-radius: var(--radius-pill);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+.chip:hover, .chip:focus-visible {
+  color: var(--colour-ink);
+  border-color: var(--colour-ink-faint);
+}
+.chip[aria-pressed='true'], .chip.is-active {
+  color: var(--colour-on-accent);
+  background: var(--colour-ink);
+  border-color: var(--colour-ink);
+}
+.chip__count {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  opacity: 0.65;
+}
+
+/* ---------- Skip link ---------- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: var(--z-overlay);
+  padding: 0.75em 1.25em;
+  background: var(--colour-accent);
+  color: var(--colour-on-accent);
+  border-radius: 0 0 var(--radius-2) 0;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+.skip-link:focus-visible {
+  left: 0;
+}
+
+/* ---------- Motion: page-load fade + scroll reveal ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in {
+    animation: fade-in var(--duration-slow) var(--ease-out) both;
+  }
+  .fade-in-2 { animation-delay: 80ms; }
+  .fade-in-3 { animation-delay: 160ms; }
+  .fade-in-4 { animation-delay: 240ms; }
+  .fade-in-5 { animation-delay: 320ms; }
+  .fade-in-6 { animation-delay: 400ms; }
+
+  /* Scroll-triggered reveal (JS adds .is-visible) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  .site-nav, .site-footer { display: none; }
+  body { background: white; }
+  .container-prose { max-width: 100%; }
+}

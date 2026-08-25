@@ -1,0 +1,300 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { site } from '~/lib/data';
+
+const links = [
+  {
+    label: 'Email',
+    handle: site.email,
+    href: `mailto:${site.email}`,
+    note: 'The quickest way to reach me. I read everything that comes in.',
+  },
+  {
+    label: 'ORCID',
+    handle: site.orcid,
+    href: `https://orcid.org/${site.orcid}`,
+    note: 'My canonical academic identifier, the same on every grant, every paper.',
+    badge: true,
+  },
+  {
+    label: 'Google Scholar',
+    handle: 'George Michaelides',
+    href: site.scholar,
+    note: 'For citation counts, h-index, and the full citation graph.',
+  },
+  {
+    label: 'LinkedIn',
+    handle: 'in/george-michaelides-53850040/',
+    href: site.linkedin,
+    note: 'Same construct, different platform.',
+  },
+  {
+    label: 'GitHub',
+    handle: '@michaelides',
+    href: site.github,
+    note: 'For code, data, and materials associated with my papers.',
+  },
+  {
+    label: 'ResearchGate',
+    handle: 'George-Michaelides',
+    href: site.researchgate,
+    note: 'A secondary profile; the canonical record is on ORCID and Scholar.',
+  },
+  {
+    label: 'UEA Research Portal',
+    handle: 'Norwich Business School',
+    href: site.uea_profile,
+    note: 'My institutional profile at the University of East Anglia.',
+  },
+];
+---
+
+<BaseLayout
+  title="Contact"
+  description={`How to get in touch with ${site.name}: email, ORCID, Scholar, and other profiles.`}
+>
+  <section class="contact section">
+    <div class="container-prose">
+      <header class="contact__head fade-in">
+        <p class="eyebrow">Contact</p>
+        <h1 class="contact__title">How to reach me.</h1>
+        <p class="contact__lede">
+          A consolidated list of the places I can be found online. For academic and research
+          enquiries, email is best. For PhD supervision enquiries specifically, please
+          <a href="/phd-supervision/">read the supervision page first</a>; it answers the most
+          common questions and will save us both a round of email.
+        </p>
+      </header>
+
+      <ul class="contact__list">
+        {links.map((link) => (
+          <li class="contact__item">
+            <div class="contact__label">
+              {link.label}
+              {link.badge && (
+                <span class="contact__orcid-badge" aria-hidden="true">
+                  <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+                    <circle cx="128" cy="128" r="128" fill="#A6CE39"/>
+                    <path fill="#fff" d="M86.3 186.2H70.9V79.1h15.4v107.1zm22.6-107.1h41.6c39.6 0 57 28.3 57 53.6 0 27.5-21.5 53.5-56.8 53.5h-41.8V79.1zm15.4 93.3h24.5c34.9 0 42.9-26.5 42.9-39.7C191.7 111.2 178 93 152 93h-27.7v79.4zM88.7 56.8c0 5.5-4.5 10.1-10.1 10.1s-10.1-4.6-10.1-10.1c0-5.6 4.5-10.1 10.1-10.1s10.1 4.6 10.1 10.1z"/>
+                  </svg>
+                </span>
+              )}
+            </div>
+            <a href={link.href} class="contact__handle" rel="noopener" target={link.href.startsWith('http') ? '_blank' : undefined}>
+              {link.handle}
+              <svg class="contact__brush" viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true">
+                <path
+                  d="M2 7 C 52 10.2, 138 9.4, 197 4.8"
+                  vector-effect="non-scaling-stroke"
+                  stroke-linecap="round"
+                />
+              </svg>
+              {link.href.startsWith('http') && <span class="contact__ext" aria-hidden="true">↗</span>}
+            </a>
+            <p class="contact__note">{link.note}</p>
+          </li>
+        ))}
+      </ul>
+
+      <figure class="contact__portrait fade-in fade-in-2">
+        <div class="contact__portrait-frame">
+          <img
+            src={site.portrait}
+            alt={`Portrait of ${site.name}`}
+            width="270"
+            height="360"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <figcaption class="contact__portrait-caption">
+          {site.portraitCredit}
+        </figcaption>
+      </figure>
+
+      <div class="contact__office">
+        <p class="eyebrow">Office</p>
+        <p class="contact__office-addr">
+          2.30 Thomas Paine Study Centre<br />
+          Norwich Business School<br />
+          University of East Anglia<br />
+          Norwich Research Park<br />
+          Norwich NR4 7TJ<br />
+          United Kingdom
+        </p>
+        <p class="contact__office-meta">
+          Telephone (internal): 2310 · by appointment, please
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+
+<style>
+  .contact__head {
+    margin-bottom: var(--space-8);
+  }
+  .contact__title {
+    font-family: var(--font-display);
+    font-size: var(--step-5);
+    font-weight: 300;
+    color: var(--colour-ink);
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.025em;
+  }
+  .contact__lede {
+    font-size: 1.0625rem;
+    line-height: var(--leading-loose);
+    color: var(--colour-ink);
+  }
+
+  .contact__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-8) 0;
+  }
+  .contact__item {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    column-gap: var(--space-5);
+    row-gap: var(--space-1);
+    padding: var(--space-5) 0;
+    border-top: 1px solid var(--colour-rule);
+  }
+  .contact__list li:last-child { border-bottom: 1px solid var(--colour-rule); }
+
+  .contact__label {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--colour-ink-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+  }
+  .contact__orcid-badge {
+    display: inline-flex;
+  }
+
+  .contact__handle {
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    color: var(--colour-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--colour-rule);
+    padding-bottom: 4px;
+    position: relative;
+    justify-self: start; /* hug the text so the brush matches its width */
+    word-break: break-word;
+    transition: color var(--duration-fast) var(--ease-out),
+                border-color 400ms var(--ease-out);
+  }
+  .contact__handle:hover,
+  .contact__handle:focus-visible {
+    color: var(--colour-accent);
+    border-bottom-color: transparent; /* hairline yields to the brushstroke */
+  }
+  .contact__brush {
+    position: absolute;
+    left: -3px;
+    bottom: -6px;
+    width: calc(100% + 6px);
+    height: 12px;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .contact__brush path {
+    fill: none;
+    stroke: var(--colour-accent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    opacity: 0;
+    stroke-dasharray: 230;
+    stroke-dashoffset: 230;
+    transition: opacity var(--duration-base) var(--ease-out),
+                stroke-dashoffset 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .contact__handle:hover .contact__brush path,
+  .contact__handle:focus-visible .contact__brush path {
+    opacity: 0.85;
+    stroke-dashoffset: 0;
+  }
+  .contact__handle:hover {
+    color: var(--colour-accent);
+    border-color: var(--colour-accent);
+  }
+  .contact__ext {
+    font-family: var(--font-body);
+    color: var(--colour-ink-faint);
+    margin-left: 0.3em;
+  }
+
+  .contact__note {
+    grid-column: 2;
+    margin-top: var(--space-2);
+    font-size: 0.9375rem;
+    color: var(--colour-ink-muted);
+    line-height: var(--leading-loose);
+  }
+
+  .contact__office {
+    padding: var(--space-5);
+    background: var(--colour-paper-deep);
+    border-radius: var(--radius-3);
+  }
+  .contact__office-addr {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--colour-ink);
+  }
+
+  .contact__portrait {
+    margin: 0 0 var(--space-8) 0;
+    max-width: 270px;
+    margin-left: auto;
+  }
+  .contact__portrait-frame {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: var(--radius-3);
+    background: var(--colour-paper-deep);
+    box-shadow: var(--shadow-2);
+  }
+  .contact__portrait-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--colour-rule);
+    border-radius: var(--radius-3);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .contact__portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: sepia(0.14) saturate(0.92);
+  }
+  .contact__portrait-caption {
+    margin-top: var(--space-3);
+    font-size: 0.75rem;
+    color: var(--colour-ink-muted);
+    letter-spacing: var(--tracking-wide);
+    text-align: right;
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .contact__item { grid-template-columns: 1fr; gap: var(--space-1); }
+    .contact__note { grid-column: 1; }
+    .contact__portrait {
+      max-width: 220px;
+      margin-inline: auto;
+    }
+  }
+</style>

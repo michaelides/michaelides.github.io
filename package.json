@@ -1,0 +1,32 @@
+{
+  "name": "michaelides-academic-site",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal academic website for Dr George Michaelides, Professor of Work Psychology at the University of East Anglia.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro",
+    "fetch-publications": "node scripts/fetch-publications.mjs",
+    "curate-publications": "node scripts/curate-publications.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^7.0.7",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.4",
+    "js-yaml": "^4.2.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/js-yaml": "^4.0.3",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

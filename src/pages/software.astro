@@ -1,0 +1,226 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { site } from '~/lib/data';
+
+const software = [
+  {
+    id: 'facet',
+    name: 'facet',
+    handle: '@michaelides',
+    type: 'R package',
+    href: 'https://github.com/michaelides/facet/tree/main',
+    gloss:
+      'An R package for Generalizability Theory analyses (G-studies, D-studies, and reliability sweeps) with frequentist (lme4, aov) and Bayesian (brms) estimators. Co-developed with Duncan Jackson (King\'s College London).',
+  },
+  {
+    id: 'lavaan',
+    name: 'lavaan tutorial',
+    handle: 'michaelides.github.io',
+    type: 'Tutorial site',
+    href: 'https://michaelides.github.io/lavaan-tutorial/',
+    gloss:
+      'A 17-tutorial, step-by-step introduction to structural equation modelling in R with lavaan: from R basics through CFA, path analysis, mediation, multilevel, growth, moderation, and measurement invariance. Written for the UEA MSc in Organisational Psychology; an R/lavaan port of Kevin Daniels\' original Mplus materials.',
+  },
+  {
+    id: 'apim',
+    name: 'APIM workshop',
+    handle: 'michaelides.github.io',
+    type: 'Workshop',
+    href: 'https://michaelides.github.io/apim/',
+    gloss:
+      'Dyadic Data Analysis in R: a hands-on guide to the Actor–Partner Interdependence Model with both multilevel and SEM approaches, covering indistinguishable and distinguishable dyads and moderated APIM. Originally developed for the EAOHP 2026 conference workshop.',
+  },
+];
+---
+
+<BaseLayout
+  title="Software"
+  description={`Open-source software by ${site.name}: the facet R package for Generalizability Theory, a lavaan SEM tutorial, and an online APIM workshop.`}
+>
+  <section class="section container-prose">
+    <div class="software__head">
+      <p class="eyebrow">Software</p>
+      <h1 class="section-heading">Open-source work.</h1>
+      <p class="software__sub">
+        A short list of the things I have built and maintain in the open: an R
+        package for generalizability theory, and two free teaching sites built
+        with Quarto. All three are released under open licences; please cite
+        the tutorial sites if you use them in your own teaching.
+      </p>
+    </div>
+
+    <ol class="selected">
+      {software.map((item, i) => (
+        <li class="selected__item reveal" data-glyph={item.id}>
+          <div class="selected__mark">
+            <div class="selected__num">{String(i + 1).padStart(2, '0')}</div>
+            <svg class="software__glyph" viewBox="0 0 56 56" aria-hidden="true">
+              {item.id === 'facet' && (
+                <>
+                  <!-- variance components: persons, tasks, residual -->
+                  <line x1="4" y1="52" x2="52" y2="52" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+                  <line x1="6" y1="12" x2="44" y2="12" stroke="var(--colour-accent)" stroke-width="3" stroke-linecap="round" data-draw />
+                  <line x1="6" y1="26" x2="30" y2="26" stroke="var(--motif-stroke)" stroke-width="3" stroke-linecap="round" data-draw />
+                  <line x1="6" y1="40" x2="18" y2="40" stroke="var(--motif-stroke)" stroke-width="3" stroke-linecap="round" data-draw />
+                </>
+              )}
+              {item.id === 'lavaan' && (
+                <>
+                  <!-- observed -> latent path -->
+                  <rect x="4" y="20" width="15" height="13" fill="none" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+                  <line x1="19" y1="26.5" x2="33" y2="26.5" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+                  <path d="M31 23 L 34 26.5 L 30.5 29.5" fill="none" stroke="var(--motif-stroke)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" data-draw />
+                  <ellipse cx="43" cy="26.5" rx="9" ry="8" fill="none" stroke="var(--colour-accent)" stroke-width="1.5" data-draw />
+                </>
+              )}
+              {item.id === 'apim' && (
+                <>
+                  <!-- dyad: actor and partner effects crossing -->
+                  <rect x="4" y="40" width="13" height="11" fill="none" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+                  <rect x="39" y="5" width="13" height="11" fill="none" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+                  <line x1="17" y1="42" x2="42" y2="17" stroke="var(--colour-accent)" stroke-width="1.5" stroke-linecap="round" data-draw />
+                  <line x1="41" y1="14" x2="14" y2="41" stroke="var(--motif-stroke)" stroke-width="1.5" stroke-linecap="round" data-draw />
+                </>
+              )}
+            </svg>
+          </div>
+          <div class="selected__body">
+            <p class="software__title-row">
+              <a
+                href={item.href}
+                class="software__title"
+                rel="noopener"
+                target="_blank"
+              >
+                {item.name}
+                <span class="software__ext" aria-hidden="true">↗</span>
+              </a>
+              <span class="software__handle">{item.handle}</span>
+            </p>
+            <p class="selected__gloss">{item.gloss}</p>
+            <div class="selected__tags">
+              <span class="badge badge--solid">{item.type}</span>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+</BaseLayout>
+
+<style>
+  .software__head {
+    margin-bottom: var(--space-7);
+  }
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: var(--step-4);
+    font-weight: 400;
+    color: var(--colour-ink);
+    margin-bottom: var(--space-5);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
+  }
+  .software__sub {
+    font-size: 1rem;
+    color: var(--colour-ink-muted);
+    line-height: var(--leading-loose);
+    max-width: 56ch;
+  }
+
+  /* Numbered list - mirrors the home page's selected publications pattern */
+  .selected {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: selected;
+  }
+  .selected__item {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--colour-rule);
+  }
+  .selected__item:last-child { border-bottom: 1px solid var(--colour-rule); }
+
+  .selected__num {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--colour-accent);
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .selected__mark {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .software__glyph {
+    width: 56px;
+    height: 56px;
+    overflow: visible;
+  }
+
+  .selected__body {
+    min-width: 0;
+  }
+
+  .software__title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.6em;
+    font-size: 1rem;
+    margin-bottom: var(--space-3);
+  }
+  .software__title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--colour-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--colour-rule);
+    letter-spacing: var(--tracking-tight);
+    transition: color var(--duration-fast) var(--ease-out),
+                border-color var(--duration-fast) var(--ease-out);
+  }
+  .software__title:hover,
+  .software__title:focus-visible {
+    color: var(--colour-accent);
+    border-color: var(--colour-accent);
+  }
+  .software__ext {
+    font-family: var(--font-body);
+    font-size: 0.7em;
+    color: var(--colour-ink-faint);
+    margin-left: 0.15em;
+  }
+  .software__handle {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--colour-ink-muted);
+  }
+
+  .selected__gloss {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.0625rem;
+    line-height: var(--leading-snug);
+    color: var(--colour-ink-muted);
+    margin-bottom: var(--space-4);
+    max-width: 60ch;
+  }
+
+  .selected__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  @media (max-width: 600px) {
+    .selected__item { grid-template-columns: 1fr; gap: var(--space-2); }
+    .selected__mark { flex-direction: row; align-items: center; gap: var(--space-4); }
+  }
+</style>

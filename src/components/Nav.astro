@@ -1,0 +1,348 @@
+---
+import { site } from '~/lib/data';
+
+const navItems: Array<{ href: string; label: string }> = [
+  { href: '/',                    label: 'About' },
+  { href: '/research/',           label: 'Research' },
+  { href: '/publications/',       label: 'Publications' },
+  { href: '/software/',           label: 'Software' },
+  { href: '/phd-supervision/',    label: 'PhD Supervision' },
+  { href: '/news/',               label: 'News' },
+  { href: '/contact/',            label: 'Contact' },
+];
+
+const path = Astro.url.pathname;
+function isActive(href: string): boolean {
+  if (href === '/') return path === '/' || path === '';
+  // For /publications/, also active on sub-pages like /publications/conferences/
+  return path === href || path.startsWith(href);
+}
+---
+
+<header class="site-nav" data-nav>
+  <div class="container-wide site-nav__inner">
+    <a href="/" class="site-nav__brand" aria-label={`${site.name} - home`}>
+      <span class="site-nav__enso" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="26" height="26" fill="none" aria-hidden="true">
+          <path
+            d="M25.5 9.5C23 6 19.8 4.4 15.9 4.7 10 5.2 5.3 10 5 16c-.3 6.2 4.6 11 10.6 11 4.6 0 8.6-2.7 10.2-6.8"
+            stroke="currentColor"
+            stroke-width="2.4"
+            stroke-linecap="round"
+          />
+        </svg>
+      </span>
+      <span class="site-nav__brand-text">
+        <span class="site-nav__brand-name">{site.name}</span>
+        <span class="site-nav__brand-role">{site.role}</span>
+      </span>
+    </a>
+
+    <nav class="site-nav__primary" aria-label="Primary navigation">
+      <ul class="site-nav__list">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={['site-nav__link', { 'is-active': isActive(item.href) }]}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-nav__actions">
+      <button
+        class="site-nav__theme"
+        type="button"
+        aria-label="Toggle light and dark theme"
+        data-theme-toggle
+      >
+        <svg class="site-nav__theme-icon site-nav__theme-icon--sun" viewBox="0 0 20 20" width="16" height="16" fill="none" aria-hidden="true">
+          <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5" />
+          <path d="M10 1.5v2M10 16.5v2M18.5 10h-2M3.5 10h-2M15.8 4.2l-1.4 1.4M5.6 14.4l-1.4 1.4M15.8 15.8l-1.4-1.4M5.6 5.6L4.2 4.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        <svg class="site-nav__theme-icon site-nav__theme-icon--moon" viewBox="0 0 20 20" width="16" height="16" fill="none" aria-hidden="true">
+          <path d="M16.5 12.5A7.5 7.5 0 0 1 7.5 3.5a7.5 7.5 0 1 0 9 9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+        </svg>
+      </button>
+
+      <button
+        class="site-nav__toggle"
+        type="button"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Toggle navigation menu"
+        data-nav-toggle
+      >
+        <span class="site-nav__toggle-bar"></span>
+        <span class="site-nav__toggle-bar"></span>
+        <span class="site-nav__toggle-bar"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="site-nav__mobile" id="mobile-menu" data-nav-mobile hidden>
+    <ul class="site-nav__mobile-list">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={['site-nav__mobile-link', { 'is-active': isActive(item.href) }]}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-nav]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const mobile = document.querySelector<HTMLElement>('[data-nav-mobile]');
+
+  if (root && toggle && mobile) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      mobile.hidden = !open;
+      root.dataset.open = String(open);
+    };
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      setOpen(!isOpen);
+    });
+
+    // Close on link click
+    mobile.querySelectorAll('a').forEach((a) => {
+      a.addEventListener('click', () => setOpen(false));
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // Close when window grows past mobile breakpoint
+    const mq = window.matchMedia('(min-width: 880px)');
+    mq.addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+  }
+
+  // Theme toggle
+  const themeToggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+  }
+</script>
+
+<style>
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    background: var(--nav-bg);
+    backdrop-filter: saturate(160%) blur(12px);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
+    border-bottom: 1px solid var(--colour-rule);
+  }
+
+  .site-nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    padding-block: var(--space-3);
+  }
+
+  .site-nav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    color: var(--colour-ink);
+  }
+
+  .site-nav__enso {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    color: var(--colour-accent);
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  .site-nav__brand:hover .site-nav__enso { transform: rotate(-14deg); }
+
+  .site-nav__brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .site-nav__brand-name {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+  }
+  .site-nav__brand-role {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    color: var(--colour-ink-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  @media (max-width: 640px) {
+    .site-nav__brand-role { display: none; }
+    .site-nav__brand-text { display: none; }
+  }
+
+  /* Primary nav - quiet mono labels */
+  .site-nav__primary { display: block; }
+  .site-nav__list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0;
+    margin: 0;
+  }
+  .site-nav__link {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 450;
+    letter-spacing: 0.02em;
+    color: var(--colour-ink-muted);
+    text-decoration: none;
+    border-radius: var(--radius-2);
+    position: relative;
+    transition: color var(--duration-fast) var(--ease-out),
+                background var(--duration-fast) var(--ease-out);
+  }
+  .site-nav__link:hover, .site-nav__link:focus-visible {
+    color: var(--colour-ink);
+    background: var(--colour-paper-deep);
+  }
+  .site-nav__link.is-active {
+    color: var(--colour-accent);
+  }
+  .site-nav__link.is-active::after {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 2px;
+    height: 1px;
+    background: var(--colour-accent);
+  }
+
+  @media (max-width: 880px) {
+    .site-nav__primary { display: none; }
+  }
+
+  /* Actions: theme + hamburger */
+  .site-nav__actions {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .site-nav__theme {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-2);
+    color: var(--colour-ink-muted);
+    border: 1px solid transparent;
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+  .site-nav__theme:hover {
+    color: var(--colour-accent);
+    border-color: var(--colour-rule);
+    background: var(--colour-paper-deep);
+  }
+  [data-theme='light'] .site-nav__theme-icon--moon { display: none; }
+  [data-theme='dark'] .site-nav__theme-icon--sun { display: none; }
+
+  /* Mobile toggle */
+  .site-nav__toggle {
+    display: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: var(--radius-2);
+  }
+  .site-nav__toggle:hover { background: var(--colour-paper-deep); }
+  .site-nav__toggle-bar {
+    display: block;
+    width: 1.25rem;
+    height: 1.5px;
+    background: var(--colour-ink);
+    border-radius: 1px;
+    transition: transform var(--duration-fast) var(--ease-out),
+                opacity var(--duration-fast) var(--ease-out);
+  }
+  [data-nav][data-open='true'] .site-nav__toggle-bar:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  [data-nav][data-open='true'] .site-nav__toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+  [data-nav][data-open='true'] .site-nav__toggle-bar:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  @media (max-width: 880px) {
+    .site-nav__toggle { display: inline-flex; }
+  }
+
+  /* Mobile menu */
+  .site-nav__mobile {
+    border-top: 1px solid var(--colour-rule);
+    background: var(--colour-paper);
+  }
+  .site-nav__mobile-list {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-3) var(--space-5) var(--space-5);
+  }
+  .site-nav__mobile-link {
+    display: block;
+    padding: 0.875rem 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--colour-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--colour-rule);
+  }
+  .site-nav__mobile-link:hover { color: var(--colour-accent); }
+  .site-nav__mobile-link.is-active {
+    color: var(--colour-accent);
+    font-weight: 500;
+  }
+  .site-nav__mobile-list li:last-child .site-nav__mobile-link {
+    border-bottom: 0;
+  }
+</style>

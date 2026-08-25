@@ -1,0 +1,210 @@
+---
+import { site } from '~/lib/data';
+import '~/styles/global.css';
+import Nav from '~/components/Nav.astro';
+import Footer from '~/components/Footer.astro';
+import JsonLd from '~/components/JsonLd.astro';
+
+export interface Props {
+  title: string;
+  description?: string;
+  ogType?: 'website' | 'article' | 'profile';
+  ogImage?: string;
+  publishedTime?: string;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description = site.description,
+  ogType = 'website',
+  ogImage = '/og-default.png',
+  publishedTime,
+  jsonLd,
+  bodyClass = '',
+} = Astro.props;
+
+const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = new URL(ogImage, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta name="theme-color" content="#F6F1E8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#191D24" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="index,follow" />
+
+    <!-- Set theme before first paint to avoid a flash -->
+    <script is:inline>
+      (function () {
+        var stored = null;
+        try { stored = localStorage.getItem('theme'); } catch (e) {}
+        var theme = stored === 'light' || stored === 'dark'
+          ? stored
+          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Preconnect to Google Fonts for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_GB" />
+
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Default Person JSON-LD (page-level JSON-LD can be added via the prop) -->
+    <JsonLd
+      data={{
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: site.name,
+        givenName: 'George',
+        familyName: 'Michaelides',
+        jobTitle: site.role,
+        affiliation: {
+          '@type': 'CollegeOrUniversity',
+          name: site.affiliation,
+          url: 'https://www.uea.ac.uk',
+        },
+        url: Astro.site?.toString(),
+        email: `mailto:${site.email}`,
+        identifier: site.orcid,
+        sameAs: [
+          `https://orcid.org/${site.orcid}`,
+          site.scholar,
+          site.linkedin,
+          site.github,
+          site.researchgate,
+          site.uea_profile,
+        ].filter(Boolean),
+      }}
+    />
+
+    {jsonLd && <JsonLd data={jsonLd} />}
+
+    <slot name="head" />
+  </head>
+
+  <body class={bodyClass}>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Scroll-triggered reveals + self-drawing line-art
+      const reveals = document.querySelectorAll<HTMLElement>('.reveal');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Prepare drawable strokes (paths, lines, rects, ellipses)
+      if (!reduced) {
+        document.querySelectorAll<SVGGeometryElement>('[data-draw]').forEach((p) => {
+          try {
+            const len = p.getTotalLength();
+            p.style.strokeDasharray = String(len);
+            p.style.strokeDashoffset = String(len);
+          } catch { /* not a geometry element */ }
+        });
+      }
+
+      const showDraws = (scope: Element, fallbackStagger = 110) => {
+        const staggerAttr = scope.getAttribute('data-stagger');
+        const stagger = staggerAttr ? Number(staggerAttr) || fallbackStagger : fallbackStagger;
+        scope.querySelectorAll<SVGGeometryElement>('[data-draw]').forEach((p: SVGGeometryElement, i: number) => {
+          window.setTimeout(() => { p.style.strokeDashoffset = '0'; }, i * stagger);
+        });
+      };
+
+      // Observer for line-art blocks that draw themselves on first scroll into view
+      const drawIO = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              showDraws(entry.target);
+              drawIO.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: '0px 0px -12% 0px', threshold: 0.1 }
+      );
+
+      document.querySelectorAll<HTMLElement>('[data-draw-root]').forEach((root) => {
+        drawIO.observe(root);
+      });
+
+      // Fade-up reveals; also trigger any line-art inside them
+      if (reveals.length > 0) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                showDraws(entry.target);
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+        );
+        reveals.forEach((el) => io.observe(el));
+      }
+
+      // Ink-stroke scroll progress
+      const bar = document.querySelector<HTMLElement>('[data-scroll-progress]');
+      if (bar) {
+        let ticking = false;
+        const update = () => {
+          const doc = document.documentElement;
+          const max = doc.scrollHeight - window.innerHeight;
+          bar.style.width = max > 0 ? `${(window.scrollY / max) * 100}%` : '0%';
+          ticking = false;
+        };
+        window.addEventListener(
+          'scroll',
+          () => {
+            if (!ticking) {
+              ticking = true;
+              requestAnimationFrame(update);
+            }
+          },
+          { passive: true }
+        );
+        update();
+      }
+    </script>
+  </body>
+</html>
