@@ -30,45 +30,6 @@ const fundingPaths = [
   },
 ];
 
-/* CFA diagram geometry: six observed variables loading onto one latent factor */
-const cfaTopics = [
-  'Work\u2013nonwork boundaries',
-  'Assessment centres',
-  'Wellbeing at work',
-  'Remote & hybrid work',
-  'AI ratings psychometrics',
-  'Diary & multilevel methods',
-];
-const CFA = (() => {
-  const boxW = 178, boxH = 34, gap = 60;
-  const boxes = cfaTopics.map((label, i) => ({
-    label,
-    x: 10,
-    y: 12 + i * gap,
-    cx: 10 + boxW / 2,
-    cy: 12 + i * gap + boxH / 2,
-  }));
-  // latent factor
-  const ex = 520, ey = 187, rx = 108, ry = 66;
-  // connector endpoints fanned along the left rim of the ellipse
-  const angles = [-35, -21, -7, 7, 21, 35].map((a) => (a * Math.PI) / 180);
-  const links = boxes.map((b, i) => {
-    const sx = b.x + boxW;
-    const sy = b.cy;
-    const tx = ex - rx * Math.cos(angles[i]);
-    const ty = ey + ry * Math.sin(angles[i]);
-    const dx = tx - sx, dy = ty - sy;
-    const len = Math.hypot(dx, dy);
-    const ux = dx / len, uy = dy / len;
-    const px = -uy, py = ux;
-    const bx = tx - ux * 9, by = ty - uy * 9;
-    return {
-      sx, sy, tx, ty,
-      chevron: `M ${(bx + px * 3.5).toFixed(1)} ${(by + py * 3.5).toFixed(1)} L ${tx.toFixed(1)} ${ty.toFixed(1)} L ${(bx - px * 3.5).toFixed(1)} ${(by - py * 3.5).toFixed(1)}`,
-    };
-  });
-  return { boxW, boxH, boxes, ex, ey, rx, ry, links };
-})();
 ---
 
 <BaseLayout
@@ -76,19 +37,15 @@ const CFA = (() => {
   description={`PhD supervision at the University of East Anglia with ${site.name}. Topics, expectations, and how to apply.`}
 >
   <section class="phd section">
-    <div class="container-prose">
+    <div class="container-wide phd__top">
       <header class="phd__head fade-in">
         <p class="eyebrow">PhD supervision</p>
         <h1 class="phd__title">If you are thinking about doing a PhD with me.</h1>
 
         <div class="phd__status phd__status--open">
-          <svg class="phd__status-write" viewBox="0 0 28 36" width="26" height="34" fill="none" aria-hidden="true">
-            <!-- single-stroke letters, written then erased in turn: p → h → d → repeat -->
-            <path class="phd-write__letter" d="M8 10V32 M8 13 C17 11 20 17 17 22 C14 27 8 24 8 19"
-              stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" pathLength="100"></path>
-            <path class="phd-write__letter" d="M8 8V30 M8 20 C10 15 18 15 18 21 L18 30"
-              stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" pathLength="100"></path>
-            <path class="phd-write__letter" d="M18 13 C10 11 7 17 10 22 C13 27 18 24 18 19 M18 8V30"
+          <svg class="phd__status-write" viewBox="0 0 44 44" width="38" height="38" fill="none" aria-hidden="true">
+            <!-- self-drawing ensō: brushed, held, dissolved, repeated -->
+            <path class="phd-enso__stroke" d="M36 13 C31 7.5 22 5.5 15 9 C8 12.5 4.5 20 6.5 27.5 C8.5 35 15.5 40 23.5 39 C31.5 38 37.5 32 38.5 24.5 C39.2 18.5 36.5 13.5 31.5 10.8"
               stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" pathLength="100"></path>
           </svg>
           <div>
@@ -98,6 +55,36 @@ const CFA = (() => {
         </div>
       </header>
 
+      <div class="phd__koi-col">
+      <!-- Two koi circling: a slow, patient lap -->
+      <figure class="phd__koi reveal">
+        <svg viewBox="0 0 680 420" data-draw-root data-stagger="400" aria-hidden="true">
+          <path d="M 460.0 210.0 Q 460.0 210.0 449.8 238.8 Q 439.7 267.5 419.7 290.5 Q 399.7 313.5 369.9 321.3 Q 340.0 329.2 311.2 319.5 Q 282.4 309.7 259.2 289.9 Q 235.9 270.1 228.8 240.0 Q 221.7 210.0 230.9 181.1 Q 240.0 152.3 259.8 128.9 Q 279.7 105.5 309.8 99.0 Q 340.0 92.6 369.0 101.1 Q 398.0 109.5 421.4 129.5 Q 444.7 149.5 452.4 179.8 Z" fill="none" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+          <path d="M 503.9 210.0 Q 503.9 210.0 496.0 252.8 Q 488.1 295.5 456.2 325.7 Q 424.3 355.9 382.1 365.1 Q 340.0 374.3 297.0 366.6 Q 254.1 358.8 224.6 326.2 Q 195.2 293.6 185.0 251.8 Q 174.9 210.0 182.9 167.0 Q 190.9 123.9 224.0 95.1 Q 257.0 66.3 298.5 55.0 Q 340.0 43.8 383.0 52.4 Q 426.1 60.9 454.4 94.2 Q 482.8 127.5 493.3 168.8 Z" fill="none" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
+          <g class="phd-koi-orbit" data-fade>
+            <g transform="translate(233.1 160.1) rotate(295)">
+              <path d="M 46 0 C 36 -14 12 -17 -6 -11 C -17 -7 -24 -3 -31 -2 C -40 -9 -47 -13 -54 -11 C -50 -5 -48 -1 -50 5 C -45 8 -39 3 -32 1 C -25 6 -16 9 -5 9 C 14 11 38 9 46 0 Z" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="2.20" stroke-linejoin="round"/>
+              <path d="M 6 -12 C 12 -20 20 -23 27 -22 C 23 -16 17 -12 10 -10" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="1.60" stroke-linejoin="round"/>
+              <path d="M 6 12 C 12 20 20 23 27 22 C 23 16 17 12 10 10" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="1.60" stroke-linejoin="round"/>
+              <path d="M 30 -6 C 22 -11 10 -11 4 -6 C 8 0 20 2 30 -6 Z" fill="var(--colour-accent)" fill-opacity="0.8"/>
+              <circle cx="38" cy="-4" r="1.80" fill="var(--colour-ink)"/>
+              <path d="M 44 -2 C 50 -3 54 -6 57 -10 M 44 2 C 50 3 54 6 57 10" fill="none" stroke="var(--colour-ink)" stroke-width="1.30" stroke-linecap="round"/>
+            </g>
+            <g transform="translate(442.2 269.0) rotate(120) scale(0.76)">
+              <path d="M 46 0 C 36 -14 12 -17 -6 -11 C -17 -7 -24 -3 -31 -2 C -40 -9 -47 -13 -54 -11 C -50 -5 -48 -1 -50 5 C -45 8 -39 3 -32 1 C -25 6 -16 9 -5 9 C 14 11 38 9 46 0 Z" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="2.09" stroke-linejoin="round"/>
+              <path d="M 6 -12 C 12 -20 20 -23 27 -22 C 23 -16 17 -12 10 -10" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="1.52" stroke-linejoin="round"/>
+              <path d="M 6 12 C 12 20 20 23 27 22 C 23 16 17 12 10 10" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="1.52" stroke-linejoin="round"/>
+              <circle cx="38" cy="-4" r="1.71" fill="var(--colour-ink)"/>
+              <path d="M 44 -2 C 50 -3 54 -6 57 -10 M 44 2 C 50 3 54 6 57 10" fill="none" stroke="var(--colour-ink)" stroke-width="1.23" stroke-linecap="round"/>
+            </g>
+          </g>
+          <path d="M 130 118 q 24 -6 48 0 M 476 330 q 24 -6 48 0 M 150 322 q 22 -5 44 0" fill="none" stroke="var(--motif-stroke)" stroke-width="1" stroke-linecap="round" data-draw />
+        </svg>
+      </figure>
+      </div>
+    </div>
+
+    <div class="container-prose">
       <p class="lead">
         I supervise PhD students within the <a href="/research/">Employment Systems and
         Institutions</a> research group at Norwich Business School. The work I supervise tends
@@ -105,59 +92,6 @@ const CFA = (() => {
         question that can be answered with a designed study.
       </p>
 
-      <!-- Live CFA diagram: observed topics loading onto one latent factor -->
-      <figure class="phd__cfa reveal" data-phd-cfa>
-        <svg viewBox="0 0 680 420" data-draw-root data-stagger="130" aria-hidden="true">
-          {/* observed variables */}
-          {CFA.boxes.map((b) => (
-            <>
-              <rect
-                x={b.x}
-                y={b.y}
-                width={CFA.boxW}
-                height={CFA.boxH}
-                fill="none"
-                stroke="var(--motif-stroke)"
-                stroke-width="1"
-                rx="2"
-                data-draw
-              />
-              <text
-                x={b.cx}
-                y={b.cy + 3.5}
-                text-anchor="middle"
-                class="phd-cfa__box-label"
-                data-fade
-              >
-                {b.label}
-              </text>
-            </>
-          ))}
-          {/* loadings: draw one at a time */}
-          {CFA.links.map((l) => (
-            <>
-              <line x1={l.sx} y1={l.sy} x2={l.tx} y2={l.ty} stroke="var(--motif-stroke)" stroke-width="1" data-draw />
-              <path d={l.chevron} fill="none" stroke="var(--motif-stroke)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" data-draw />
-            </>
-          ))}
-          {/* the latent factor */}
-          <ellipse
-            class="phd-cfa__latent"
-            cx={CFA.ex}
-            cy={CFA.ey}
-            rx={CFA.rx}
-            ry={CFA.ry}
-            fill="none"
-            stroke="var(--colour-accent)"
-            stroke-width="1.5"
-            data-draw
-          />
-          <text x={CFA.ex} y={CFA.ey + 8} text-anchor="middle" class="phd-cfa__eta" data-fade>η</text>
-        </svg>
-        <figcaption class="phd-cfa__caption">
-          things I'll happily supervise <span aria-hidden="true">(η)</span>
-        </figcaption>
-      </figure>
 
       <h2 class="phd__h2">Topics I can supervise.</h2>
       <p>
@@ -247,8 +181,38 @@ const CFA = (() => {
 
 
 <style>
+  /* Top row: prose-width header on the left, koi on the right at title height */
+  .phd__top {
+    display: grid;
+    grid-template-columns: minmax(0, var(--container-prose)) minmax(0, 24rem);
+    column-gap: var(--space-8);
+    align-items: start;
+    margin-bottom: var(--space-6);
+  }
+  .phd__koi-col {
+    --draw-duration: 2600ms;
+    margin-top: var(--space-6);
+    justify-self: end;
+    width: 100%;
+  }
+  .phd__koi-col svg {
+    display: block;
+    width: 100%;
+    max-width: 21rem;
+    height: auto;
+    margin-inline: auto;
+    overflow: visible;
+  }
+  .phd__koi-col figure,
+  .phd__cfa {
+    margin: 0;
+    --draw-duration: 2600ms;   /* slows the shared data-draw transition for these figures only */
+  }
+  @media (max-width: 72rem) {
+    .phd__koi-col { display: none; }
+  }
   .phd__head {
-    margin-bottom: var(--space-7);
+    margin-bottom: 0;
   }
   .phd__title {
     font-family: var(--font-display);
@@ -269,33 +233,30 @@ const CFA = (() => {
     background: var(--colour-accent-soft);
     border-radius: var(--radius-3);
   }
-  /* Writes p, erases, writes h, erases, writes d, repeats.
-     One shared 9s cycle; each letter phase-shifted by a third via negative delay. */
+  /* The ensō brushes itself, is held, dissolves, and rests in emptiness (ma) before returning.
+     One shared 12s cycle. */
   .phd__status-write {
     color: var(--colour-accent);
     flex-shrink: 0;
     margin-top: 0.1em;
     overflow: visible;
   }
-  .phd-write__letter {
+  .phd-enso__stroke {
     stroke-dasharray: 100;
-    stroke-dashoffset: 100;
+    stroke-dashoffset: 0;   /* static complete ensō when motion is reduced */
   }
   @media (prefers-reduced-motion: no-preference) {
-    .phd-write__letter {
-      animation: phd-write-cycle 9s linear infinite;
+    .phd-enso__stroke {
+      animation: phd-enso-cycle 12s var(--ease-in-out) infinite;
     }
-    .phd-write__letter:nth-of-type(2) { animation-delay: -6s; }
-    .phd-write__letter:nth-of-type(3) { animation-delay: -3s; }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .phd__status-write { display: none; }  /* ponytail: static fallback skipped, label carries the message */
-  }
-  @keyframes phd-write-cycle {
-    0%, 2%   { stroke-dashoffset: 100; }  /* hidden */
-    14%      { stroke-dashoffset: 0; }    /* written */
-    30%      { stroke-dashoffset: 0; }    /* hold */
-    40%, 100% { stroke-dashoffset: -100; } /* erased */
+  @keyframes phd-enso-cycle {
+    0%   { stroke-dashoffset: 100; opacity: 1; }  /* hidden */
+    10%  { stroke-dashoffset: 0;   opacity: 1; }  /* brushed */
+    52%  { stroke-dashoffset: 0;   opacity: 1; }  /* held */
+    64%  { stroke-dashoffset: 0;   opacity: 0; }  /* dissolves */
+    66%  { stroke-dashoffset: 100; opacity: 0; }  /* reset while unseen */
+    100% { stroke-dashoffset: 100; opacity: 1; }  /* ma: rest in emptiness */
   }
   .phd__status-label {
     font-family: var(--font-body);
@@ -319,46 +280,17 @@ const CFA = (() => {
     margin-bottom: var(--space-6);
   }
 
-  /* Live CFA diagram */
-  .phd__cfa {
-    margin: var(--space-6) 0 var(--space-8);
-  }
-  .phd__cfa svg {
-    display: block;
-    width: 100%;
-    height: auto;
-    overflow: visible;
-  }
-  .phd-cfa__box-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    fill: var(--colour-ink);
-    letter-spacing: 0.02em;
-  }
-  .phd-cfa__eta {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 34px;
-    fill: var(--colour-accent);
-  }
-  /* the latent factor pulses gently once assembled */
+  /* the koi lap the ring, slowly */
   @media (prefers-reduced-motion: no-preference) {
-    .phd-cfa__latent {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: phd-latent-pulse 2.6s var(--ease-in-out) 2.6s infinite;
+    .phd-koi-orbit {
+      transform-box: view-box;
+      transform-origin: 50% 50%;
+      animation: phd-koi-circle 90s linear infinite;
     }
-    @keyframes phd-latent-pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50%      { transform: scale(1.035); opacity: 0.82; }
+    @keyframes phd-koi-circle {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
     }
-  }
-  .phd-cfa__caption {
-    margin-top: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.08em;
-    color: var(--colour-ink-faint);
   }
 
   .phd__h2 {
