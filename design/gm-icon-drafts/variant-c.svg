@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#F6F1E8"/>
+  <!-- original C, unchanged -->
+  <path d="M50 20 C 44.5 13.5, 37.5 10.2, 29.5 10.8 C 18.5 11.7, 9.8 20.5, 9.2 31.6 C 8.6 43.4, 17.8 52.4, 29.3 53.2 C 38.2 53.8, 46.2 48.6, 49.4 40.6"
+        fill="none" stroke="#B3432B" stroke-width="5.5" stroke-linecap="round"/>
+  <!-- bimodal curve whose right tail rises to meet the C near its top terminal (G-like opening closure) -->
+  <path d="M 23 34 C 24 24, 30.5 23, 33 29.5 C 34.6 33.5, 36.4 33.5, 38 29.5 C 40.5 23, 47 24, 47.8 31.5 C 48.3 26.5, 49 23.5, 49.6 21.5"
+        fill="none" stroke="#B3432B" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

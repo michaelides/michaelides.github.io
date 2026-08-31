@@ -23,14 +23,20 @@ function isActive(href: string): boolean {
   <div class="container-wide site-nav__inner">
     <a href="/" class="site-nav__brand" aria-label={`${site.name} - home`}>
       <span class="site-nav__enso" aria-hidden="true">
-        <svg viewBox="0 0 32 32" width="26" height="26" fill="none" aria-hidden="true">
-          <path
-            d="M25.5 9.5C23 6 19.8 4.4 15.9 4.7 10 5.2 5.3 10 5 16c-.3 6.2 4.6 11 10.6 11 4.6 0 8.6-2.7 10.2-6.8"
-            stroke="currentColor"
-            stroke-width="2.4"
-            stroke-linecap="round"
-          />
-        </svg>
+        <img
+          src="/logo.svg"
+          alt=""
+          class="site-nav__logo site-nav__logo--light"
+          width="30"
+          height="30"
+        />
+        <img
+          src="/logo-dark.svg"
+          alt=""
+          class="site-nav__logo site-nav__logo--dark"
+          width="30"
+          height="30"
+        />
       </span>
       <span class="site-nav__brand-text">
         <span class="site-nav__brand-name">{site.name}</span>
@@ -186,6 +192,15 @@ function isActive(href: string): boolean {
     transition: transform var(--duration-base) var(--ease-out);
   }
   .site-nav__brand:hover .site-nav__enso { transform: rotate(-14deg); }
+
+  .site-nav__logo {
+    display: block;
+    width: 30px;
+    height: 30px;
+  }
+  .site-nav__logo--dark { display: none; }
+  [data-theme='dark'] .site-nav__logo--light { display: none; }
+  [data-theme='dark'] .site-nav__logo--dark { display: block; }
 
   .site-nav__brand-text {
     display: flex;

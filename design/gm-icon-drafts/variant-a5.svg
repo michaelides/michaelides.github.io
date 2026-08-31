@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#F6F1E8"/>
+  <!-- original C, unchanged -->
+  <path d="M50 20 C 44.5 13.5, 37.5 10.2, 29.5 10.8 C 18.5 11.7, 9.8 20.5, 9.2 31.6 C 8.6 43.4, 17.8 52.4, 29.3 53.2 C 38.2 53.8, 46.2 48.6, 49.4 40.6"
+        fill="none" stroke="#B3432B" stroke-width="5.5" stroke-linecap="round"/>
+  <!-- filled bimodal density curve: large peak + small peak, right tail meets the arc -->
+  <path d="M 13.8 41.5
+           C 17.5 26, 23 20.5, 26.5 27
+           C 28.5 31.5, 30 31.5, 32 27.5
+           C 34 23.5, 38 24, 41 34
+           C 42.5 38, 44.5 40.5, 47.5 42.3
+           L 13.8 41.5 Z"
+        fill="#B3432B" fill-opacity="0.15" stroke="#B3432B" stroke-width="2.75" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#F6F1E8"/>
+  <!-- original C, unchanged -->
+  <path d="M50 20 C 44.5 13.5, 37.5 10.2, 29.5 10.8 C 18.5 11.7, 9.8 20.5, 9.2 31.6 C 8.6 43.4, 17.8 52.4, 29.3 53.2 C 38.2 53.8, 46.2 48.6, 49.4 40.6"
+        fill="none" stroke="#B3432B" stroke-width="5.5" stroke-linecap="round"/>
+  <!-- bimodal density curve: wider separation, deeper valley, right tail flows into the C's lower terminal -->
+  <path d="M 23.5 36.5
+           C 24.5 28.5, 29.5 27.5, 31.5 31.5
+           C 32.4 33.3, 33.6 33.3, 34.5 31.5
+           C 36.5 27.5, 41.5 28.5, 42.5 36.5
+           C 43.5 39.3, 46.8 40.3, 50.1 41.7"
+        fill="none" stroke="#B3432B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

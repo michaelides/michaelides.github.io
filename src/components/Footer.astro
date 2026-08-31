@@ -14,14 +14,20 @@ const lastUpdated = site.lastUpdated;
     <div class="site-footer__col site-footer__col--main">
       <p class="site-footer__name">
         <span class="site-footer__enso" aria-hidden="true">
-          <svg viewBox="0 0 32 32" width="22" height="22" fill="none" aria-hidden="true">
-            <path
-              d="M25.5 9.5C23 6 19.8 4.4 15.9 4.7 10 5.2 5.3 10 5 16c-.3 6.2 4.6 11 10.6 11 4.6 0 8.6-2.7 10.2-6.8"
-              stroke="currentColor"
-              stroke-width="2.4"
-              stroke-linecap="round"
-            />
-          </svg>
+          <img
+            src="/logo.svg"
+            alt=""
+            class="site-footer__logo site-footer__logo--light"
+            width="26"
+            height="26"
+          />
+          <img
+            src="/logo-dark.svg"
+            alt=""
+            class="site-footer__logo site-footer__logo--dark"
+            width="26"
+            height="26"
+          />
         </span>
         {site.name}
       </p>
@@ -110,6 +116,14 @@ const lastUpdated = site.lastUpdated;
     display: inline-flex;
     color: var(--colour-accent);
   }
+  .site-footer__logo {
+    display: block;
+    width: 26px;
+    height: 26px;
+  }
+  .site-footer__logo--dark { display: none; }
+  [data-theme='dark'] .site-footer__logo--light { display: none; }
+  [data-theme='dark'] .site-footer__logo--dark { display: block; }
   .site-footer__role {
     margin-top: 0.4em;
     font-family: var(--font-mono);

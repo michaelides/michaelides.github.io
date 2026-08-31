@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 240" width="480" height="240">
+  <rect width="240" height="240" fill="#F6F1E8"/>
+  <rect x="240" width="240" height="240" fill="#191D24"/>
+  <g transform="translate(25,25) scale(1.0)">
+    <image href="logo-light-onpaper.svg" width="189" height="188"/>
+  </g>
+</svg>
