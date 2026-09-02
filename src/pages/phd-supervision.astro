@@ -37,7 +37,7 @@ const fundingPaths = [
   description={`PhD supervision at the University of East Anglia with ${site.name}. Topics, expectations, and how to apply.`}
 >
   <section class="phd section">
-    <div class="container-wide phd__top">
+    <div class="container-prose phd__top">
       <header class="phd__head fade-in">
         <p class="eyebrow">PhD supervision</p>
         <h1 class="phd__title">If you are thinking about doing a PhD with me.</h1>
@@ -54,34 +54,6 @@ const fundingPaths = [
           </div>
         </div>
       </header>
-
-      <div class="phd__koi-col">
-      <!-- Two koi circling: a slow, patient lap -->
-      <figure class="phd__koi reveal">
-        <svg viewBox="0 0 680 420" data-draw-root data-stagger="400" aria-hidden="true">
-          <path d="M 460.0 210.0 Q 460.0 210.0 449.8 238.8 Q 439.7 267.5 419.7 290.5 Q 399.7 313.5 369.9 321.3 Q 340.0 329.2 311.2 319.5 Q 282.4 309.7 259.2 289.9 Q 235.9 270.1 228.8 240.0 Q 221.7 210.0 230.9 181.1 Q 240.0 152.3 259.8 128.9 Q 279.7 105.5 309.8 99.0 Q 340.0 92.6 369.0 101.1 Q 398.0 109.5 421.4 129.5 Q 444.7 149.5 452.4 179.8 Z" fill="none" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
-          <path d="M 503.9 210.0 Q 503.9 210.0 496.0 252.8 Q 488.1 295.5 456.2 325.7 Q 424.3 355.9 382.1 365.1 Q 340.0 374.3 297.0 366.6 Q 254.1 358.8 224.6 326.2 Q 195.2 293.6 185.0 251.8 Q 174.9 210.0 182.9 167.0 Q 190.9 123.9 224.0 95.1 Q 257.0 66.3 298.5 55.0 Q 340.0 43.8 383.0 52.4 Q 426.1 60.9 454.4 94.2 Q 482.8 127.5 493.3 168.8 Z" fill="none" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
-          <g class="phd-koi-orbit" data-fade>
-            <g transform="translate(233.1 160.1) rotate(295)">
-              <path d="M 46 0 C 36 -14 12 -17 -6 -11 C -17 -7 -24 -3 -31 -2 C -40 -9 -47 -13 -54 -11 C -50 -5 -48 -1 -50 5 C -45 8 -39 3 -32 1 C -25 6 -16 9 -5 9 C 14 11 38 9 46 0 Z" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="2.20" stroke-linejoin="round"/>
-              <path d="M 6 -12 C 12 -20 20 -23 27 -22 C 23 -16 17 -12 10 -10" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="1.60" stroke-linejoin="round"/>
-              <path d="M 6 12 C 12 20 20 23 27 22 C 23 16 17 12 10 10" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="1.60" stroke-linejoin="round"/>
-              <path d="M 30 -6 C 22 -11 10 -11 4 -6 C 8 0 20 2 30 -6 Z" fill="var(--colour-accent)" fill-opacity="0.8"/>
-              <circle cx="38" cy="-4" r="1.80" fill="var(--colour-ink)"/>
-              <path d="M 44 -2 C 50 -3 54 -6 57 -10 M 44 2 C 50 3 54 6 57 10" fill="none" stroke="var(--colour-ink)" stroke-width="1.30" stroke-linecap="round"/>
-            </g>
-            <g transform="translate(442.2 269.0) rotate(120) scale(0.76)">
-              <path d="M 46 0 C 36 -14 12 -17 -6 -11 C -17 -7 -24 -3 -31 -2 C -40 -9 -47 -13 -54 -11 C -50 -5 -48 -1 -50 5 C -45 8 -39 3 -32 1 C -25 6 -16 9 -5 9 C 14 11 38 9 46 0 Z" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="2.09" stroke-linejoin="round"/>
-              <path d="M 6 -12 C 12 -20 20 -23 27 -22 C 23 -16 17 -12 10 -10" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="1.52" stroke-linejoin="round"/>
-              <path d="M 6 12 C 12 20 20 23 27 22 C 23 16 17 12 10 10" fill="var(--colour-paper-raise)" stroke="var(--colour-ink)" stroke-width="1.52" stroke-linejoin="round"/>
-              <circle cx="38" cy="-4" r="1.71" fill="var(--colour-ink)"/>
-              <path d="M 44 -2 C 50 -3 54 -6 57 -10 M 44 2 C 50 3 54 6 57 10" fill="none" stroke="var(--colour-ink)" stroke-width="1.23" stroke-linecap="round"/>
-            </g>
-          </g>
-          <path d="M 130 118 q 24 -6 48 0 M 476 330 q 24 -6 48 0 M 150 322 q 22 -5 44 0" fill="none" stroke="var(--motif-stroke)" stroke-width="1" stroke-linecap="round" data-draw />
-        </svg>
-      </figure>
-      </div>
     </div>
 
     <div class="container-prose">
@@ -181,36 +153,6 @@ const fundingPaths = [
 
 
 <style>
-  /* Top row: prose-width header on the left, koi on the right at title height */
-  .phd__top {
-    display: grid;
-    grid-template-columns: minmax(0, var(--container-prose)) minmax(0, 24rem);
-    column-gap: var(--space-8);
-    align-items: start;
-    margin-bottom: var(--space-6);
-  }
-  .phd__koi-col {
-    --draw-duration: 2600ms;
-    margin-top: var(--space-6);
-    justify-self: end;
-    width: 100%;
-  }
-  .phd__koi-col svg {
-    display: block;
-    width: 100%;
-    max-width: 21rem;
-    height: auto;
-    margin-inline: auto;
-    overflow: visible;
-  }
-  .phd__koi-col figure,
-  .phd__cfa {
-    margin: 0;
-    --draw-duration: 2600ms;   /* slows the shared data-draw transition for these figures only */
-  }
-  @media (max-width: 72rem) {
-    .phd__koi-col { display: none; }
-  }
   .phd__head {
     margin-bottom: 0;
   }
@@ -278,19 +220,6 @@ const fundingPaths = [
     line-height: var(--leading-snug);
     color: var(--colour-ink);
     margin-bottom: var(--space-6);
-  }
-
-  /* the koi lap the ring, slowly */
-  @media (prefers-reduced-motion: no-preference) {
-    .phd-koi-orbit {
-      transform-box: view-box;
-      transform-origin: 50% 50%;
-      animation: phd-koi-circle 90s linear infinite;
-    }
-    @keyframes phd-koi-circle {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
   }
 
   .phd__h2 {
