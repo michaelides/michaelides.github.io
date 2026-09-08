@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import { Picture } from 'astro:assets';
+import portrait from '~/assets/portrait.jpg';
 import { site } from '~/lib/data';
 
 const links = [
@@ -60,7 +62,7 @@ const links = [
         <h1 class="contact__title">How to reach me.</h1>
         <p class="contact__lede">
           A consolidated list of the places I can be found online. For academic and research
-          enquiries, email is best. For PhD supervision enquiries specifically, please
+          enquiries, email is best. For PhD supervision enquiries specifically, please{' '}
           <a href="/phd-supervision/">read the supervision page first</a>; it answers the most
           common questions and will save us both a round of email.
         </p>
@@ -89,7 +91,12 @@ const links = [
                   stroke-linecap="round"
                 />
               </svg>
-              {link.href.startsWith('http') && <span class="contact__ext" aria-hidden="true">↗</span>}
+              {link.href.startsWith('http') && (
+                <>
+                  <span class="contact__ext" aria-hidden="true">↗</span>
+                  <span class="visually-hidden"> (opens in a new tab)</span>
+                </>
+              )}
             </a>
             <p class="contact__note">{link.note}</p>
           </li>
@@ -98,11 +105,13 @@ const links = [
 
       <figure class="contact__portrait fade-in fade-in-2">
         <div class="contact__portrait-frame">
-          <img
-            src={site.portrait}
+          <Picture
+            src={portrait}
             alt={`Portrait of ${site.name}`}
-            width="270"
-            height="360"
+            widths={[270, 540, 810]}
+            sizes="(max-width: 600px) 220px, 270px"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpeg"
             loading="lazy"
             decoding="async"
           />
@@ -110,14 +119,14 @@ const links = [
       </figure>
 
       <div class="contact__office">
-        <p class="eyebrow">Office</p>
+        <h2 class="eyebrow">Office</h2>
         <p class="contact__office-addr">
-          2.30 Thomas Paine Study Center<br />
-          UEA, Research Park<br />
-          Norwich, NR4 7TJ
+          {site.office.room}<br />
+          {site.office.address}<br />
+          {site.office.postcode}
         </p>
         <p class="contact__office-meta">
-          Telephone (internal): 2310 · by appointment, please
+          By appointment, please — email is the reliable way to arrange one.
         </p>
       </div>
     </div>
@@ -160,7 +169,7 @@ const links = [
 
   .contact__label {
     font-family: var(--font-body);
-    font-size: 0.6875rem;
+    font-size: var(--step--2);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
@@ -268,21 +277,17 @@ const links = [
     pointer-events: none;
     z-index: 2;
   }
+  .contact__portrait picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
   .contact__portrait img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     filter: sepia(0.14) saturate(0.92);
   }
-  .contact__portrait-caption {
-    margin-top: var(--space-3);
-    font-size: 0.75rem;
-    color: var(--colour-ink-muted);
-    letter-spacing: var(--tracking-wide);
-    text-align: right;
-    font-style: italic;
-  }
-
   @media (max-width: 600px) {
     .contact__item { grid-template-columns: 1fr; gap: var(--space-1); }
     .contact__note { grid-column: 1; }

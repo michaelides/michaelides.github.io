@@ -2,11 +2,14 @@
 /**
  * curate-publications.mjs
  * -----------------------
- * One-time curation pass on src/data/publications.yaml:
- *   1. Removes obvious duplicates (UEA repository deposits when a published
+ * Curation pass on src/data/publications.yaml:
+ *   1. Drops works by other authors who share the ORCID iD or the name.
+ *   2. Removes obvious duplicates (repository deposits when a published
  *      version with a real DOI exists for the same year + title).
- *   2. Tags items with themes and awards, based on a hand-curated lookup
- *      table derived from the CV.
+ *   3. Re-applies award tags from a hand-curated lookup table.
+ *
+ * Safe to re-run after `npm run fetch-publications`; everything it does is
+ * derived from the table below, so hand edits to other fields survive.
  *
  * After running, review the file and adjust by hand.
  *
@@ -24,50 +27,17 @@ const ROOT = path.resolve(__dirname, '..');
 const YAML_PATH = path.join(ROOT, 'src/data/publications.yaml');
 
 /* ------------------------------------------------------------------------- */
-/* Hand-curated lookup                                                       */
+/* Hand-curated awards                                                       */
 /*                                                                           */
-/* Keys are DOI substrings or title substrings (case-insensitive).           */
-/* Only used to set theme / award; everything else stays as-is.              */
+/* Keys are title / DOI / URL substrings (case-insensitive).                 */
+/* Only used to set `award`; everything else stays as-is.                    */
 /* ------------------------------------------------------------------------- */
 
 const CURATION = [
-  { match: /Petrou.*leisure.*crafting|s0018726725|0018726726/i, theme: ['work-nonwork', 'wellbeing', 'intervention'] },
-  { match: /unconfounding multisource/i, theme: ['assessment-centres', 'methods', 'performance'] },
-  { match: /everything that you have ever been told about assessment center ratings is confounded/i, theme: ['assessment-centres', 'methods'] },
-  { match: /challenge and hindrance stressors and wellbeing-based/i, theme: ['work-nonwork', 'wellbeing', 'portfolios'] },
-
-  { match: /daily workplace embitterment/i, theme: ['work-nonwork', 'wellbeing', 'illegitimate-tasks'] },
-  { match: /dual-process model of the effects of boundary segmentation/i, theme: ['work-nonwork', 'wellbeing', 'boundary'] },
-  { match: /pandemic-informed framework for predicting well-being/i, theme: ['remote-work', 'wellbeing', 'covid'] },
-  { match: /satisfaction with one's job and working at home in the covid/i, theme: ['remote-work', 'wellbeing', 'covid'] },
-  { match: /uncertainty and well-being amongst homeworkers/i, theme: ['remote-work', 'wellbeing', 'covid'] },
-  { match: /clarifying the scope of generalizability theory/i, theme: ['assessment-centres', 'methods'] },
-  { match: /homeworking, well-being and the covid-19 pandemic: a diary/i, theme: ['remote-work', 'wellbeing', 'diary', 'covid'] },
-  { match: /curvilinear relationships between age and job performance/i, theme: ['age', 'performance'] },
-  { match: /reliability in assessment centres depends on general/i, theme: ['assessment-centres', 'methods'] },
-  { match: /crossover of work engagement/i, theme: ['engagement', 'personality'] },
-  { match: /testing the homogeneity hypothesis of personality/i, theme: ['personality', 'cross-cultural'] },
-  { match: /recessionary actions and absence/i, theme: ['absence', 'recession', 'workplace'] },
-  { match: /psychologically empowered/i, theme: ['leadership', 'empowerment'] },
-  { match: /job demands, job control, psychological climate/i, theme: ['job-demands', 'satisfaction'] },
-  { match: /workplace design/i, theme: ['workplace', 'motivation'] },
-  { match: /expert assessor perspective on assessment center/i, theme: ['assessment-centres'] },
-  { match: /on states and traits in work-family/i, theme: ['work-nonwork', 'methods'] },
-  { match: /effects of individual and team resilience/i, theme: ['team-resilience', 'wellbeing'] },
-  { match: /social support as protective factor/i, theme: ['part-time', 'wellbeing', 'social-support'] },
-  { match: /goal proximity of employee green behavior/i, theme: ['green-behaviour', 'sustainability'] },
-  { match: /microfoundations of environmental strategy/i, theme: ['green-behaviour', 'sustainability'] },
-  { match: /impose and i'll pose/i, theme: ['positivity', 'resources'] },
-  { match: /expanding the risk assessment methodology/i, theme: ['risk-assessment', 'methods'] },
-  { match: /rater variance and small dimension effects/i, theme: ['assessment-centres', 'methods'] },
-  { match: /uncertainty about rater variance/i, theme: ['assessment-centres', 'methods'] },
-
-  /* Award-winning */
-  { match: /mindfulness for performance and wellbeing in the police/i, theme: ['mindfulness', 'police', 'wellbeing', 'applied'], award: 'Best Paper Award 2024' },
-
-  /* Conferred chapters & reports */
-  { match: /paediatric renal transplant/i, theme: ['clinical', 'paediatric'] },
-  { match: /clinical risk stratification/i, theme: ['clinical', 'paediatric'] },
+  {
+    match: /mindfulness for performance and wellbeing in the police/i,
+    award: 'Best Paper Award 2024',
+  },
 ];
 
 /* ------------------------------------------------------------------------- */
@@ -131,11 +101,7 @@ function curate(entries) {
     const haystack = `${e.title || ''} ${e.doi || ''} ${e.url || ''}`;
     for (const rule of CURATION) {
       if (rule.match.test(haystack)) {
-        return {
-          ...e,
-          theme: rule.theme ?? e.theme ?? [],
-          award: rule.award ?? e.award ?? null,
-        };
+        return { ...e, award: rule.award ?? e.award ?? null };
       }
     }
     return e;
@@ -201,9 +167,9 @@ function main() {
   const header = [
     '# Publications — single source of truth.',
     `# Last curated: ${new Date().toISOString().slice(0, 10)}`,
-    `# ${curated.length} entries (deduplicated and tagged)`,
+    `# ${curated.length} entries (deduplicated)`,
     '#',
-    '# Tags: theme (slugs), award (string).',
+    '# Hand-curated fields: award, biblio, pdf, notes.',
     '# Edit freely; the site rebuilds on push.',
     '',
   ].join('\n');

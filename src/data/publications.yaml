@@ -12,9 +12,6 @@
   doi: null
   url: null
   pdf: null
-  theme:
-  - green-behaviour
-  - sustainability
   award: null
   role: middle
 - id: 2026-fitzhugh-hr-analysis-meets-organisational-reality-a-tale-of-two-e
@@ -31,7 +28,6 @@
   doi: null
   url: https://ueaeprints.uea.ac.uk/id/eprint/102375/1/HR_Analysis_Meets_Organisational_Reality_complete_repository.docx
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2026-shafag-garayeva-impose-and-ill-pose-a-vignette-experiment-exami
@@ -42,14 +38,12 @@
   year: 2026
   title: 'Impose and I''ll pose? A vignette experiment examining organizational positivity expectations:
     A conservation of resources and emotional labor perspective'
-  venue: Current Psychology, 45(12), 1094
+  venue: Current Psychology
+  biblio: 45(12), 1094
   type: article
   doi: 10.1007/s12144-026-09645-x
   url: https://doi.org/10.1007/s12144-026-09645-x
   pdf: null
-  theme:
-  - positivity
-  - resources
   award: null
   role: middle
 - id: 2026-duncan-maguire-microfoundations-of-environmental-strategy-how-sup
@@ -60,14 +54,12 @@
   year: 2026
   title: 'Microfoundations of Environmental Strategy: How Support and Climate Influence Proximal Versus
     Distal Employee Green Behaviours'
-  venue: Business Strategy and the Environment, 1–15
+  venue: Business Strategy and the Environment
+  biblio: 1–15
   type: article
   doi: 10.1002/bse.71267
   url: https://doi.org/10.1002/bse.71267
   pdf: null
-  theme:
-  - green-behaviour
-  - sustainability
   award: null
   role: middle
 - id: 2026-a-pietrusz-the-effect-of-corticosteroids-on-pulmonary-function-i
@@ -93,13 +85,12 @@
   year: 2026
   title: The Effect of Corticosteroids on Pulmonary Function in a Large Cohort of Late Adolescents and
     Adults With Duchenne Muscular Dystrophy
-  venue: Muscle & Nerve, 74(3), 570-579
+  venue: Muscle & Nerve
+  biblio: 74(3), 570-579
   type: article
   doi: 10.1002/mus.70312
   url: https://doi.org/10.1002/mus.70312
   pdf: null
-  theme:
-  - clinical
   award: null
   role: middle
 - id: 2026-paraskevas-petrou-the-leisure-crafting-intervention-effects-on-wo
@@ -115,7 +106,6 @@
   doi: 10.1177/00187267251407641
   url: https://doi.org/10.1177/00187267251407641
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2026-evie-michailidis-daily-workplace-embitterment-and-work-related-ru
@@ -126,15 +116,12 @@
   year: 2026
   title: 'Daily workplace embitterment and work-related rumination during off-job time: illegitimate tasks
     as antecedents and the buffering role of appreciation'
-  venue: Work & Stress, 40(1), 7-29
+  venue: Work & Stress
+  biblio: 40(1), 7-29
   type: article
   doi: 10.1080/02678373.2025.2484761
   url: https://doi.org/10.1080/02678373.2025.2484761
   pdf: null
-  theme:
-  - work-nonwork
-  - wellbeing
-  - illegitimate-tasks
   award: null
   role: last
 - id: 2026-garayeva-the-performativity-of-positivity-in-organisations-a-qual
@@ -144,12 +131,11 @@
   - George Michaelides
   year: 2026
   title: 'The Performativity of Positivity in Organisations: A Qualitative Investigation'
-  venue: UEA Digital Repository (University of East Anglia)
-  type: article
+  venue: Academy of Management Proceedings
+  type: conference
   doi: null
   url: https://ueaeprints.uea.ac.uk/id/eprint/103167/1/Performativity_of_Positivity_Manuscript.docx
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2025-duncan-j-r-jackson-the-expert-assessor-perspective-on-assessment-
@@ -160,13 +146,12 @@
   - Wei-Ning Yang
   year: 2025
   title: The Expert Assessor Perspective on Assessment Center Taxonomies
-  venue: Human Performance, 38(1), 1-27
+  venue: Human Performance
+  biblio: 38(1), 1-27
   type: article
   doi: 10.1080/08959285.2024.2428190
   url: https://doi.org/10.1080/08959285.2024.2428190
   pdf: null
-  theme:
-  - assessment-centres
   award: null
   role: middle
 - id: 2025-duncan-maguire-the-goal-proximity-of-employee-green-behaviour-val
@@ -176,12 +161,12 @@
   - Olga Tregaskis
   year: 2025
   title: 'The goal proximity of employee green behaviour: validating and refining the Green Five taxonomy'
-  venue: Journal of Environmental Management, 393, 126877
+  venue: Journal of Environmental Management
+  biblio: 393, 126877
   type: article
   doi: 10.1016/j.jenvman.2025.126877
   url: https://doi.org/10.1016/j.jenvman.2025.126877
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2024-george-michaelides-a-dualprocess-model-of-the-effects-of-boundary
@@ -191,13 +176,13 @@
   - Stephen Wood
   - Ilke Inceoglu
   year: 2024
-  title: A dual‐process model of the effects of boundary segmentation on work–nonwork conflict
-  venue: Journal of Occupational and Organizational Psychology, 97(4), 1502-1525
+  title: A dual-process model of the effects of boundary segmentation on work–nonwork conflict
+  venue: Journal of Occupational and Organizational Psychology
+  biblio: 97(4), 1502-1525
   type: article
   doi: 10.1111/joop.12526
   url: https://doi.org/10.1111/joop.12526
   pdf: null
-  theme: []
   award: null
   role: first
 - id: 2024-duncan-maguire-how-can-you-change-sustainability-behaviours-in-yo
@@ -207,15 +192,12 @@
   - George Michaelides
   year: 2024
   title: How can you change sustainability behaviours in your workplace?
-  venue: CAST Briefing, Paper 23
+  venue: CAST Briefing
+  biblio: Paper 23
   type: report
   doi: null
   url: https://cast.ac.uk/resources/briefings/
   pdf: null
-  theme:
-  - green-behaviour
-  - sustainability
-  - applied
   award: null
   role: last
 - id: 2024-helen-fitzhugh-mindfulness-for-performance-and-wellbeing-in-the-p
@@ -228,16 +210,12 @@
   year: 2024
   title: 'Mindfulness for Performance and Wellbeing in the Police: Linking Individual and Organizational
     Outcomes'
-  venue: Review of Public Personnel Administration, 44(3), 566-590
+  venue: Review of Public Personnel Administration
+  biblio: 44(3), 566-590
   type: article
   doi: 10.1177/0734371x231155794
   url: https://doi.org/10.1177/0734371x231155794
   pdf: null
-  theme:
-  - mindfulness
-  - police
-  - wellbeing
-  - applied
   award: Best Paper Award 2024
   role: middle
 - id: 2024-charles-e-lance-on-states-and-traits-in-work-family-research
@@ -251,14 +229,12 @@
   - Stephen Wood
   year: 2024
   title: On States and Traits in Work-Family Research
-  venue: Human Performance, 37(4), 143-162
+  venue: Human Performance
+  biblio: 37(4), 143-162
   type: article
   doi: 10.1080/08959285.2024.2366225
   url: https://doi.org/10.1080/08959285.2024.2366225
   pdf: null
-  theme:
-  - work-nonwork
-  - methods
   award: null
   role: middle
 - id: 2024-jasmeet-singh-the-effects-of-individual-and-team-resilience-on-ps
@@ -272,14 +248,12 @@
   year: 2024
   title: 'The effects of individual and team resilience on psychological health and team performance:
     a multi-level approach'
-  venue: Current Psychology, 43(44), 33828-33843
+  venue: Current Psychology
+  biblio: 43(44), 33828-33843
   type: article
   doi: 10.1007/s12144-024-06861-1
   url: https://doi.org/10.1007/s12144-024-06861-1
   pdf: null
-  theme:
-  - team-resilience
-  - wellbeing
   award: null
   role: middle
 - id: 2024-duncan-jr-jackson-well-being-and-empowerment-perceptions-in-a-sud
@@ -290,12 +264,12 @@
   - Chris Dewberry
   year: 2024
   title: Well-being and empowerment perceptions in a sudden shift to working from home
-  venue: Journal of Vocational Behavior, 151, 104000
+  venue: Journal of Vocational Behavior
+  biblio: 151, 104000
   type: article
   doi: 10.1016/j.jvb.2024.104000
   url: https://doi.org/10.1016/j.jvb.2024.104000
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2023-increase-valorisation-sociale-evaluation-report
@@ -313,7 +287,6 @@
   doi: null
   url: https://research-portal.uea.ac.uk/en/publications/increase-valorisation-sociale-evaluation-report
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2023-duncan-j-r-jackson-clarifying-the-scope-of-generalizability-theo
@@ -329,9 +302,6 @@
   doi: null
   url: null
   pdf: null
-  theme:
-  - assessment-centres
-  - methods
   award: null
   role: middle
 - id: 2023-olga-tregaskis-organizational-change-towards-sustainability
@@ -346,12 +316,12 @@
   - David Watson
   year: 2023
   title: Organizational Change towards Sustainability
-  venue: Psychology of Sustainability and Sustainable Development in Organizations, pp. 126-142
+  venue: Psychology of Sustainability and Sustainable Development in Organizations
+  biblio: pp. 126-142
   type: chapter
   doi: 10.4324/9781003212157-10
   url: https://doi.org/10.4324/9781003212157-10
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2023-kevin-daniels-the-measurement-of-well-being-at-work
@@ -363,12 +333,12 @@
   - Sara Connolly
   year: 2023
   title: The Measurement of Well-Being at Work
-  venue: Organizational Stress and Well-Being, pp. 347-386
+  venue: Organizational Stress and Well-Being
+  biblio: pp. 347-386
   type: chapter
   doi: 10.1017/9781009268332.015
   url: https://doi.org/10.1017/9781009268332.015
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2022-konstantinos-chiotis-crossover-of-work-engagement-encyclopedia-e
@@ -382,8 +352,6 @@
   doi: null
   url: https://encyclopedia.pub/entry/25203
   pdf: null
-  theme:
-  - engagement
   award: null
   role: last
 - id: 2022-konstantinos-chiotis-crossover-of-work-engagement-the-moderating-
@@ -392,14 +360,12 @@
   - George Michaelides
   year: 2022
   title: 'Crossover of Work Engagement: The Moderating Role of Agreeableness'
-  venue: International Journal of Environmental Research and Public Health, 19(13), 7622
+  venue: International Journal of Environmental Research and Public Health
+  biblio: 19(13), 7622
   type: article
   doi: 10.3390/ijerph19137622
   url: https://doi.org/10.3390/ijerph19137622
   pdf: null
-  theme:
-  - engagement
-  - personality
   award: null
   role: last
 - id: 2022-maria-karanika-murray-curvilinear-relationships-between-age-and-j
@@ -412,14 +378,12 @@
   - Natalie Harrison
   year: 2022
   title: Curvilinear Relationships Between Age and Job Performance and the Role of Job Complexity
-  venue: Work, Aging and Retirement, 10(2), 156-173
+  venue: Work, Aging and Retirement
+  biblio: 10(2), 156-173
   type: article
   doi: 10.1093/workar/waac006
   url: https://doi.org/10.1093/workar/waac006
   pdf: null
-  theme:
-  - age
-  - performance
   award: null
   role: middle
 - id: 2022-james-graham-pathways-and-tensions-in-zero-carbon-transition-a-re
@@ -438,7 +402,6 @@
   doi: 10.33774/coe-2022-x334w
   url: https://doi.org/10.33774/coe-2022-x334w
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2022-duncan-j-r-jackson-reliability-in-assessment-centres-depends-on-g
@@ -450,14 +413,12 @@
   - Catherine Stephens
   year: 2022
   title: Reliability in assessment centres depends on general and exercise performance, but not on dimensions
-  venue: Journal of Occupational and Organizational Psychology, 95(4), 739-757
+  venue: Journal of Occupational and Organizational Psychology
+  biblio: 95(4), 739-757
   type: article
   doi: 10.1111/joop.12398
   url: https://doi.org/10.1111/joop.12398
   pdf: null
-  theme:
-  - assessment-centres
-  - methods
   award: null
   role: middle
 - id: 2022-stephen-wood-satisfaction-with-ones-job-and-working-at-home-in-th
@@ -470,16 +431,13 @@
   - Elizabeth Hurren
   - Kevin Daniels
   year: 2022
-  title: 'Satisfaction with one''s job and working at home in the COVID‐19 pandemic: A two‐wave study'
-  venue: Applied Psychology, 72(4), 1409-1429
+  title: 'Satisfaction with one''s job and working at home in the COVID-19 pandemic: A two-wave study'
+  venue: Applied Psychology
+  biblio: 72(4), 1409-1429
   type: article
   doi: 10.1111/apps.12440
   url: https://doi.org/10.1111/apps.12440
   pdf: null
-  theme:
-  - remote-work
-  - wellbeing
-  - covid
   award: null
   role: middle
 - id: 2022-duncan-jackson-uncertainty-about-rater-variance-and-small-dimensi
@@ -494,14 +452,12 @@
   year: 2022
   title: Uncertainty about Rater Variance and Small Dimension Effects Impact Reliability in Supervisor
     Ratings
-  venue: Human Performance, 35(3-4), 278-301
+  venue: Human Performance
+  biblio: 35(3-4), 278-301
   type: article
   doi: 10.1080/08959285.2022.2111433
   url: https://doi.org/10.1080/08959285.2022.2111433
   pdf: null
-  theme:
-  - assessment-centres
-  - methods
   award: null
   role: middle
 - id: 2022-stephen-wood-uncertainty-and-well-being-amongst-homeworkers-in-th
@@ -513,15 +469,12 @@
   year: 2022
   title: 'Uncertainty and Well-Being amongst Homeworkers in the COVID-19 Pandemic: A Longitudinal Study
     of University Staff'
-  venue: International Journal of Environmental Research and Public Health, 19(16), 10435
+  venue: International Journal of Environmental Research and Public Health
+  biblio: 19(16), 10435
   type: article
   doi: 10.3390/ijerph191610435
   url: https://doi.org/10.3390/ijerph191610435
   pdf: null
-  theme:
-  - remote-work
-  - wellbeing
-  - covid
   award: null
   role: middle
 - id: 2021-stephen-wood-findings-of-the-worklife-balance-and-the-pandemic-st
@@ -540,24 +493,20 @@
   doi: null
   url: null
   pdf: null
-  theme:
-  - remote-work
-  - wellbeing
-  - covid
   award: null
   role: last
 - id: 2021-wood-stephen-homeworking-during-the-pandemic
   authors:
   - Stephen Wood
-  - Michaelides George
+  - George Michaelides
   year: 2021
   title: Homeworking during the Pandemic
-  venue: 'The Work Life Balance Bulletin: a DOP Publication, 5(1), 9-12'
+  venue: 'The Work Life Balance Bulletin: a DOP Publication'
+  biblio: 5(1), 9-12
   type: article
   doi: 10.53841/bpswlb.2021.1.5.9
   url: https://doi.org/10.53841/bpswlb.2021.1.5.9
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2021-stephen-james-wood-homeworking-well-being-and-the-covid-19-pandem
@@ -570,16 +519,12 @@
   - Karen Niven
   year: 2021
   title: 'Homeworking, Well-Being and the COVID-19 Pandemic: A Diary Study'
-  venue: International Journal of Environmental Research and Public Health, 18(14), 7575
+  venue: International Journal of Environmental Research and Public Health
+  biblio: 18(14), 7575
   type: article
   doi: 10.3390/ijerph18147575
   url: https://doi.org/10.3390/ijerph18147575
   pdf: null
-  theme:
-  - remote-work
-  - wellbeing
-  - diary
-  - covid
   award: null
   role: middle
 - id: 2021-alessia-damato-testing-the-homogeneity-hypothesis-of-personality-
@@ -589,14 +534,12 @@
   year: 2021
   title: 'Testing the Homogeneity Hypothesis of Personality: Replication and Extension across European
     Countries, Industry Sectors and Organizations'
-  venue: European Management Review, 18(2), 59-78
+  venue: European Management Review
+  biblio: 18(2), 59-78
   type: article
   doi: 10.1111/emre.12425
   url: https://doi.org/10.1111/emre.12425
   pdf: null
-  theme:
-  - personality
-  - cross-cultural
   award: null
   role: last
 - id: 2020-stephen-wood-recessionary-actions-and-absence-a-workplacelevel-st
@@ -605,16 +548,13 @@
   - George Michaelides
   - Chidiebere Ogbonnaya
   year: 2020
-  title: 'Recessionary actions and absence: A workplace‐level study'
-  venue: Human Resource Management, 59(6), 501-520
+  title: 'Recessionary actions and absence: A workplace-level study'
+  venue: Human Resource Management
+  biblio: 59(6), 501-520
   type: article
   doi: 10.1002/hrm.22008
   url: https://doi.org/10.1002/hrm.22008
   pdf: null
-  theme:
-  - absence
-  - recession
-  - workplace
   award: null
   role: middle
 - id: 2020-nadine-joelle-mellor-social-support-as-protective-factor-of-the-e
@@ -627,15 +567,12 @@
   year: 2020
   title: 'Social support as protective factor of the effects of part-time work on psychological health:
     a moderated mediation model'
-  venue: International Journal of Workplace Health Management, 13(5), 497-511
+  venue: International Journal of Workplace Health Management
+  biblio: 13(5), 497-511
   type: article
   doi: 10.1108/ijwhm-12-2019-0159
   url: https://doi.org/10.1108/ijwhm-12-2019-0159
   pdf: null
-  theme:
-  - part-time
-  - wellbeing
-  - social-support
   award: null
   role: middle
 - id: 2020-duncan-j-r-jackson-the-implications-of-unconfounding-multisource-
@@ -647,15 +584,12 @@
   - Simon Toms
   year: 2020
   title: The implications of unconfounding multisource performance ratings.
-  venue: Journal of Applied Psychology, 105(3), 312-329
+  venue: Journal of Applied Psychology
+  biblio: 105(3), 312-329
   type: article
   doi: 10.1037/apl0000434
   url: https://doi.org/10.1037/apl0000434
   pdf: null
-  theme:
-  - assessment-centres
-  - methods
-  - performance
   award: null
   role: middle
 - id: 2019-george-kuk-decoding-quality-in-an-app-based-ecosystem-the-reliabi
@@ -665,12 +599,12 @@
   - S Giamporcaro
   year: 2019
   title: 'Decoding quality in an app-based ecosystem: the reliability of signals'
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
-  type: article
+  venue: 11th International Symposium on Process Organization Studies
+  biblio: Chania, Crete, 19–22 June 2019
+  type: conference
   doi: null
   url: http://irep.ntu.ac.uk/id/eprint/38707/
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2019-helen-fitzhugh-mindfulness-in-policing-a-randomized-controlled-tr
@@ -682,12 +616,11 @@
   year: 2019
   title: 'Mindfulness in policing: A randomized controlled trial of two online mindfulness resources across
     five forces in England and Wales'
-  venue: UEA Digital Repository (University of East Anglia)
+  venue: College of Policing
   type: report
   doi: null
-  url: null
+  url: https://ueaeprints.uea.ac.uk/id/eprint/76876/
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2019-ccile-emery-the-importance-of-being-psychologically-empowered-buf
@@ -699,14 +632,12 @@
   year: 2019
   title: 'The importance of being psychologically empowered: Buffering the negative effects of employee
     perceptions of leader–member exchange differentiation'
-  venue: Journal of Occupational and Organizational Psychology, 92(3), 566-592
+  venue: Journal of Occupational and Organizational Psychology
+  biblio: 92(3), 566-592
   type: article
   doi: 10.1111/joop.12266
   url: https://doi.org/10.1111/joop.12266
   pdf: null
-  theme:
-  - leadership
-  - empowerment
   award: null
   role: middle
 - id: 2018-jon-jin-kim-clinical-risk-stratification-of-paediatric-renal-tran
@@ -724,14 +655,12 @@
   year: 2018
   title: Clinical risk stratification of paediatric renal transplant recipients using C1q and C3d fixing
     of de novo donor-specific antibodies
-  venue: Pediatric Nephrology, 33(1), 167-174
+  venue: Pediatric Nephrology
+  biblio: 33(1), 167-174
   type: article
   doi: 10.1007/s00467-017-3772-7
   url: https://doi.org/10.1007/s00467-017-3772-7
   pdf: null
-  theme:
-  - clinical
-  - paediatric
   award: null
   role: middle
 - id: 2017-george-kuk-a-multilevel-model-of-service-innovation-in-the-androi
@@ -742,12 +671,12 @@
   - Jian Shao
   year: 2017
   title: A Multilevel Model of Service Innovation in the Android App Market
-  venue: Academy of Management Proceedings, 2017(1), 14372
-  type: article
+  venue: Academy of Management Proceedings
+  biblio: 2017(1), 14372
+  type: conference
   doi: 10.5465/ambpp.2017.14372abstract
   url: https://doi.org/10.5465/ambpp.2017.14372abstract
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2017-maria-karanika-murray-job-demands-job-control-psychological-clima
@@ -757,14 +686,12 @@
   - Stephen Wood
   year: 2017
   title: Job demands, job control, psychological climate, and job satisfaction
-  venue: 'Journal of Organizational Effectiveness: People and Performance, 4(3), 238-255'
+  venue: 'Journal of Organizational Effectiveness: People and Performance'
+  biblio: 4(3), 238-255
   type: article
   doi: 10.1108/joepp-02-2017-0012
   url: https://doi.org/10.1108/joepp-02-2017-0012
   pdf: null
-  theme:
-  - job-demands
-  - satisfaction
   award: null
   role: middle
 - id: 2016-stephen-j-wood-challenge-and-hindrance-stressors-and-wellbeing-ba
@@ -774,15 +701,12 @@
   year: 2016
   title: 'Challenge and hindrance stressors and wellbeing-based work–nonwork interference: A diary study
     of portfolio workers'
-  venue: Human Relations, 69(1), 111-138
+  venue: Human Relations
+  biblio: 69(1), 111-138
   type: article
   doi: 10.1177/0018726715580866
   url: https://doi.org/10.1177/0018726715580866
   pdf: null
-  theme:
-  - work-nonwork
-  - wellbeing
-  - portfolios
   award: null
   role: last
 - id: 2016-duncan-j-r-jackson-everything-that-you-have-ever-been-told-about-
@@ -793,14 +717,12 @@
   - Young-Jae Kim
   year: 2016
   title: Everything that you have ever been told about assessment center ratings is confounded.
-  venue: Journal of Applied Psychology, 101(7), 976-994
+  venue: Journal of Applied Psychology
+  biblio: 101(7), 976-994
   type: article
   doi: 10.1037/apl0000102
   url: https://doi.org/10.1037/apl0000102
   pdf: null
-  theme:
-  - assessment-centres
-  - methods
   award: null
   role: middle
 - id: 2016-stephen-j-wood-occupational-health-diary-measures
@@ -814,7 +736,6 @@
   doi: 10.1037/t48783-000
   url: https://doi.org/10.1037/t48783-000
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2016-duncan-j-r-jackson-when-effects-are-confounded-they-cannot-be-int
@@ -825,12 +746,12 @@
   year: 2016
   title: 'When effects are confounded, they cannot be interpreted: A study of confounding in assessment
     centre ratings'
-  venue: BIROn (Birkbeck, University of London)
-  type: article
+  venue: European Academy of Occupational Health Psychology
+  biblio: Athens, 11–13 April 2016
+  type: conference
   doi: null
-  url: null
+  url: https://eprints.bbk.ac.uk/id/eprint/14218/
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2015-alessia-damato-a-15-year-long-worry-set-how-multilevel-shows-pers
@@ -839,12 +760,12 @@
   - George Michaelides
   year: 2015
   title: 'A 15-year long worry set: how Multilevel shows personality is NOT homogeneous within-orgs'
-  venue: Academy of Management Proceedings, 2015(1), 17098
-  type: article
+  venue: Academy of Management Proceedings
+  biblio: 2015(1), 17098
+  type: conference
   doi: 10.5465/ambpp.2015.177
   url: https://doi.org/10.5465/ambpp.2015.177
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2015-jonathan-edward-booth-leader-member-exchange-and-differentiation-
@@ -854,12 +775,12 @@
   - George Michaelides
   year: 2015
   title: 'Leader Member Exchange and Differentiation: Stress Remedy for Customer-Instigated Aggression?'
-  venue: Academy of Management Proceedings, 2015(1), 14480
-  type: article
+  venue: Academy of Management Proceedings
+  biblio: 2015(1), 14480
+  type: conference
   doi: 10.5465/ambpp.2015.14480abstract
   url: https://doi.org/10.5465/ambpp.2015.14480abstract
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2015-stephen-wood-new-and-emerging-research
@@ -868,12 +789,12 @@
   - George Michaelides
   year: 2015
   title: 'New and Emerging Research: Freelancers experience ''enthusiasm-based'' work-nonwork conflict'
-  venue: 'The Work-Life Balance Bulletin: A DOP Publication, 1(8), 15–16'
+  venue: 'The Work-Life Balance Bulletin: A DOP Publication'
+  biblio: 1(8), 15–16
   type: article
   doi: 10.53841/bpswlb.2015.1.8.15
   url: https://doi.org/10.53841/bpswlb.2015.1.8.15
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2015-maria-karanika-murray-workplace-design
@@ -882,14 +803,12 @@
   - George Michaelides
   year: 2015
   title: Workplace design
-  venue: 'Journal of Organizational Effectiveness: People and Performance, 2(3), 224-243'
+  venue: 'Journal of Organizational Effectiveness: People and Performance'
+  biblio: 2(3), 224-243
   type: article
   doi: 10.1108/joepp-08-2014-0048
   url: https://doi.org/10.1108/joepp-08-2014-0048
   pdf: null
-  theme:
-  - workplace
-  - motivation
   award: null
   role: last
 - id: 2014-jj-kim-the-clinical-spectrum-of-de-novo-donor-specific-antibodies
@@ -905,12 +824,12 @@
   - S.D. Marks
   year: 2014
   title: The Clinical Spectrum of De Novo Donor-Specific Antibodies in Pediatric Renal Transplant Recipients
-  venue: American Journal of Transplantation, 14(10), 2350-2358
+  venue: American Journal of Transplantation
+  biblio: 14(10), 2350-2358
   type: article
   doi: 10.1111/ajt.12859
   url: https://doi.org/10.1111/ajt.12859
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2013-george-michaelides-conceptualising-organizational-context-in-rela
@@ -924,9 +843,6 @@
   doi: null
   url: null
   pdf: null
-  theme:
-  - workplace
-  - wellbeing
   award: null
   role: first
 - id: 2013-stephen-wood-successful-extreme-programming-fidelity-to-the-metho
@@ -936,12 +852,12 @@
   - Chris Thomson
   year: 2013
   title: 'Successful extreme programming: Fidelity to the methodology or good teamworking?'
-  venue: Information and Software Technology, 55(4), 660-672
+  venue: Information and Software Technology
+  biblio: 55(4), 660-672
   type: article
   doi: 10.1016/j.infsof.2012.10.002
   url: https://doi.org/10.1016/j.infsof.2012.10.002
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2013-stephen-wood-the-impact-of-fluctuating-workloads-on-well-being-an
@@ -950,30 +866,27 @@
   - George Michaelides
   - Peter Totterdell
   year: 2013
-  title: The impact of fluctuating workloads on well-being and the mediating role of work−nonwork interference
+  title: The impact of fluctuating workloads on well-being and the mediating role of work–nonwork interference
     in this relationship.
-  venue: Journal of Occupational Health Psychology, 18(1), 106-119
+  venue: Journal of Occupational Health Psychology
+  biblio: 18(1), 106-119
   type: article
   doi: 10.1037/a0031067
   url: https://doi.org/10.1037/a0031067
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2013-maria-karanikamurray-the-workplace-makes-a-difference-principles-
   authors:
-  - Maria Karanika‐Murray
+  - Maria Karanika-Murray
   - George Michaelides
   year: 2013
   title: 'The workplace makes a difference: principles of workplace design for employee well-being (v2.0)'
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
-  type: article
+  venue: Nottingham Trent University
+  type: report
   doi: null
-  url: null
+  url: https://irep.ntu.ac.uk/id/eprint/10035/
   pdf: null
-  theme:
-  - workplace
-  - motivation
   award: null
   role: last
 - id: 2012-lu-m-shannon-a-multi-level-congruence-effect-of-perceptual-distan
@@ -983,27 +896,27 @@
   - Henry Moon
   year: 2012
   title: A multi-level congruence effect of perceptual distance between leaders and their teams
-  venue: Academy of Management Proceedings, 2012(1), 16642
-  type: article
+  venue: Academy of Management Proceedings
+  biblio: 2012(1), 16642
+  type: conference
   doi: 10.5465/ambpp.2012.16642abstract
   url: https://doi.org/10.5465/ambpp.2012.16642abstract
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2012-maria-karanikamurray-the-four-pillars-of-organisational-intervent
   authors:
-  - Maria Karanika‐Murray
+  - Maria Karanika-Murray
   - George Michaelides
   year: 2012
   title: 'The four pillars of organisational interventions: incorporating context into process, content
     and criterion issues'
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
-  type: article
+  venue: International Process Evaluation Partnership (IPEP) meeting, EAWOP Small Group Meeting
+  biblio: Nottingham, May 2012
+  type: conference
   doi: null
   url: http://irep.ntu.ac.uk/id/eprint/1770/
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2011-karanika-murray-a-multilevel-perspective-on-understanding-the-rel
@@ -1013,27 +926,26 @@
   year: 2011
   title: A multilevel perspective on understanding the relationships between the organisation, the leader,
     and employee well-being
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
-  type: article
+  venue: BPS Division of Occupational Psychology Annual Conference
+  biblio: Stratford-upon-Avon, 12–14 January 2011
+  type: conference
   doi: null
   url: http://irep.ntu.ac.uk/id/eprint/7506/
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2011-maria-karanikamurray-a-questionnaire-to-assess-enabling-work-envi
   authors:
-  - Maria Karanika‐Murray
+  - Maria Karanika-Murray
   - George Michaelides
   year: 2011
   title: A questionnaire to assess enabling work environments for psychological health (Manual v 1.0)
     [questionnaire]
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
-  type: article
+  venue: Nottingham Trent University
+  type: report
   doi: null
-  url: null
+  url: https://irep.ntu.ac.uk/id/eprint/14301/
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2011-stephen-wood-team-approach-idea-generation-conflict-and-performan
@@ -1043,34 +955,33 @@
   - Chris Thomson
   year: 2011
   title: Team approach, idea generation, conflict and performance
-  venue: 'Team Performance Management: An International Journal, 17(7/8), 382-404'
+  venue: 'Team Performance Management: An International Journal'
+  biblio: 17(7/8), 382-404
   type: article
   doi: 10.1108/13527591111182643
   url: https://doi.org/10.1108/13527591111182643
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2011-maria-karanikamurray-the-workplace-makes-a-difference-developing-
   authors:
-  - Maria Karanika‐Murray
+  - Maria Karanika-Murray
   - Charles J. Hardy
   - George Michaelides
   - Miriam Gayle Wardle
   year: 2011
   title: 'The workplace makes a difference: developing healthy work environments for employee well-being:
     guidance for employers (v1.0)'
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
-  type: article
+  venue: Nottingham Trent University
+  type: report
   doi: null
-  url: null
+  url: https://irep.ntu.ac.uk/id/eprint/3523/
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2011-maria-karanikamurray-work-well-being-in-context-feedback-reports-
   authors:
-  - Maria Karanika‐Murray
+  - Maria Karanika-Murray
   - George Michaelides
   - Claire Hardy
   year: 2011
@@ -1080,7 +991,6 @@
   doi: null
   url: http://irep.ntu.ac.uk/id/eprint/24539/
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2010-michaelides-all-we-need-is-context
@@ -1089,27 +999,28 @@
   - Maria Karanika-Murray
   year: 2010
   title: All we need is context
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
-  type: article
+  venue: '2nd Biennial Institute of Work Psychology International Conference: Work, Well-being and
+    Performance'
+  biblio: Sheffield, 29 June – 1 July 2010
+  type: conference
   doi: null
   url: http://irep.ntu.ac.uk/id/eprint/23108/
   pdf: null
-  theme: []
   award: null
   role: first
 - id: 2010-george-michaelides-conceptualizing-organizational-context-for-emp
   authors:
   - George Michaelides
-  - Maria Karanika‐Murray
+  - Maria Karanika-Murray
   year: 2010
   title: 'Conceptualizing organizational context for employee health, and well-being: Development of a
     theoretical model and evaluation of a measure'
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
-  type: article
+  venue: 4th CIS/ISCTE-IUL International Seminar of Positive Occupational Health Psychology
+  biblio: Lisbon, 21 May – 2 June 2010
+  type: conference
   doi: null
   url: http://irep.ntu.ac.uk/id/eprint/933/
   pdf: null
-  theme: []
   award: null
   role: first
 - id: 2010-george-michaelides-measuring-fidelity-to-extreme-programming-a-ps
@@ -1119,27 +1030,27 @@
   - Stephen Wood
   year: 2010
   title: 'Measuring fidelity to extreme programming: a psychometric approach'
-  venue: Empirical Software Engineering, 15(6), 599-617
+  venue: Empirical Software Engineering
+  biblio: 15(6), 599-617
   type: article
   doi: 10.1007/s10664-010-9130-z
   url: https://doi.org/10.1007/s10664-010-9130-z
   pdf: null
-  theme: []
   award: null
   role: first
 - id: 2010-george-michaelides-symposium-on-the-importance-of-multilevel-appr
   authors:
   - George Michaelides
   - Veldhoven Van
-  - Maria Karanika‐Murray
+  - Maria Karanika-Murray
   year: 2010
   title: 'Symposium: On the importance of multilevel approaches'
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
-  type: article
+  venue: 'Institute of Work Psychology International Conference: Work, Well-being and Performance'
+  biblio: Sheffield, 29 June – 1 July 2010
+  type: conference
   doi: null
   url: http://irep.ntu.ac.uk/id/eprint/16913/
   pdf: null
-  theme: []
   award: null
   role: first
 - id: 2009-maria-karanika-murray-expanding-the-risk-assessment-methodology-fo
@@ -1156,23 +1067,19 @@
   doi: null
   url: null
   pdf: null
-  theme:
-  - risk-assessment
-  - methods
   award: null
   role: middle
 - id: 2009-maria-karanikamurray-how-does-your-organisation-impact-on-work-re
   authors:
-  - Maria Karanika‐Murray
+  - Maria Karanika-Murray
   - George Michaelides
   year: 2009
   title: How does your organisation impact on work-related health?
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
+  venue: Sift Media
   type: article
   doi: null
   url: http://irep.ntu.ac.uk/id/eprint/1696/
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2009-j-karn-the-shodan-adherence-survey-for-extreme-programming-sheff
@@ -1188,26 +1095,24 @@
   doi: null
   url: null
   pdf: null
-  theme:
-  - software-engineering
   award: null
   role: last
 - id: 2008-christopher-thomson-a-pilot-study-of-comparative-customer-compreh
   authors:
   - Christopher Thomson
-  - Mike Holcome
+  - Mike Holcombe
   - Tony Cowling
   - Tony Simons
   - George Michaelides
   year: 2008
   title: A pilot study of comparative customer comprehension between extreme x-machine and uml models
-  venue: Proceedings of the Second ACM-IEEE international symposium on Empirical software engineering
-    and measurement, 270-272
-  type: article
+  venue: Proceedings of the Second ACM-IEEE international symposium on Empirical software
+    engineering and measurement
+  biblio: 270-272
+  type: conference
   doi: 10.1145/1414004.1414048
   url: https://doi.org/10.1145/1414004.1414048
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2008-maria-karanika-murray-conceptualising-nonlinear-dynamic-systems-f
@@ -1216,12 +1121,12 @@
   - George Michaelides
   year: 2008
   title: Conceptualising nonlinear dynamic systems for health psychology research
-  venue: Health Psychology Update, 17(1), 28-36
+  venue: Health Psychology Update
+  biblio: 17(1), 28-36
   type: article
   doi: 10.53841/bpshpu.2008.17.1.28
   url: https://doi.org/10.53841/bpshpu.2008.17.1.28
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2008-athina-karatzogianni-cyberconflict-at-the-edge-of-chaos-cryptohie
@@ -1231,28 +1136,29 @@
   year: 2008
   title: 'Cyberconflict at the edge of chaos: Cryptohierarchies and self-organisation in the open-source
     movement'
-  venue: Capital & Class, 33(1), 143-157
+  venue: Capital & Class
+  biblio: 33(1), 143-157
   type: article
   doi: 10.1177/030981680909700108
   url: https://doi.org/10.1177/030981680909700108
   pdf: null
-  theme: []
   award: null
   role: last
 - id: 2008-maria-karanikamurray-incorporating-linear-and-curvilinear-relatio
   authors:
-  - Maria Karanika‐Murray
+  - Maria Karanika-Murray
   - George Michaelides
   - Tom Cox
   year: 2008
   title: Incorporating linear and curvilinear relationships in risk assessment for work-related health
     and well-being
-  venue: Nottingham Trent University's Institutional Repository (Nottingham Trent Repository)
-  type: article
+  venue: 'Institute of Work Psychology International Conference: Work, Well-being and Performance:
+    New Perspectives for the Modern Workplace'
+  biblio: Sheffield, 18–20 June 2008
+  type: conference
   doi: null
   url: null
   pdf: null
-  theme: []
   award: null
   role: middle
 - id: 2006-george-michaelides-emergence-of-core-teams-in-open-source-communi
@@ -1266,7 +1172,6 @@
   doi: 10.1037/e666812007-001
   url: https://doi.org/10.1037/e666812007-001
   pdf: null
-  theme: []
   award: null
   role: first
 - id: 2002-kuk-knowledge-exchange-and-process-diversification-in-open-source
@@ -1280,6 +1185,5 @@
   doi: null
   url: https://aisel.aisnet.org/pacis2002/79
   pdf: null
-  theme: []
   award: null
   role: last

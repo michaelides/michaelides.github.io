@@ -1,169 +1,156 @@
 # George Michaelides — personal site
 
-A small, hand-built academic website for Dr George Michaelides (Professor of Work
-Psychology, UEA). Lives at `https://michaelides.github.io/`. Built with
-[Astro](https://astro.build), deployed via GitHub Pages.
+Personal academic website for George Michaelides (Professor of Work Psychology,
+Norwich Business School, UEA). Lives at `https://michaelides.github.io/`. Built
+with [Astro](https://astro.build), deployed via GitHub Pages.
 
-The site is intentionally simple: a few static pages, a YAML-driven publications
-list, a Markdown-driven news log, RSS, JSON-LD, a sitemap, and a `mailto:` for
-contact. No tracking, no dark mode, no search, no comments.
+Static, self-contained, and dependency-light: a handful of pages, a YAML-driven
+publications list, a Markdown-driven news log, RSS, JSON-LD, a sitemap, and a
+`mailto:` for contact. No analytics, no tracking, no third-party requests at
+runtime — fonts are self-hosted at build time.
 
 ---
 
 ## Local development
 
-Requires Node 20+.
+Requires Node 20+ (CI uses 22).
 
 ```sh
 npm install
-npm run dev          # start dev server on http://localhost:4321
+npm run dev          # dev server on http://localhost:4321
+npm run check        # type-check pages + validate the YAML data files
+npm run build        # static build into dist/
+npm run preview      # serve the production build
 ```
 
-Build the static site into `dist/`:
-
-```sh
-npm run build        # astro build
-```
-
-Preview the production build:
-
-```sh
-npm run preview
-```
-
-Other one-shot scripts:
-
-```sh
-npm run fetch-publications   # re-pull publications from OpenAlex (using ORCID iD)
-npm run curate-publications  # re-apply theme / award tags from the lookup table
-```
+`npm run build` needs network access on a cold cache: Astro downloads the web
+fonts once and caches them under `node_modules/.astro`.
 
 ---
 
 ## Deployment
 
-The repo is set up to deploy via GitHub Pages using
-`actions/deploy-pages@v4`. Push to `main` on the `michaelides.github.io` repo
-and the workflow in `.github/workflows/deploy.yml` will:
+Push to `main`. `.github/workflows/deploy.yml` runs `npm ci`, `npm run check`,
+`npm run build`, then publishes `dist/` with `actions/deploy-pages@v4`.
 
-1. Install Node 20
-2. Run `npm ci`
-3. Run `npm run build`
-4. Upload `dist/` as a Pages artifact and deploy it
-
-### First-time setup on a fresh GitHub repo
-
-1. Create a repo called `michaelides.github.io` (this exact name — it must
-   match the user/org name for the user site to work).
-2. Push this directory to it: `git remote add origin git@github.com:michaelides/michaelides.github.io.git`
-   then `git push -u origin main`.
-3. In the repo settings → **Pages**, set Source to **GitHub Actions**. The
-   workflow will handle the rest.
-4. Wait ~60 seconds. The site should be live at
-   `https://michaelides.github.io/`.
-
-### Subsequent updates
-
-```sh
-git add -A
-git commit -m "what changed"
-git push
-```
-
-That's it. The GitHub Action rebuilds and redeploys.
+`npm run check` is a gate, not a formality: it type-checks every page and
+validates `site.yaml` and `publications.yaml` against the Zod schemas in
+`src/lib/data.ts`. A malformed data edit fails the build with the offending
+field path rather than rendering as `undefined` on the live site.
 
 ---
 
 ## Maintenance — the things you will actually do
 
-### 1. Add a new publication
+### 1. Add or correct a publication
 
-The publications list is driven by `src/data/publications.yaml`. Each entry
-looks like this:
+`src/data/publications.yaml` is the source of truth (74 entries, 2002–2026).
+Each entry:
 
 ```yaml
-- id: openalex:W1234567890
-  type: article          # article | chapter | conference | book | other
-  title: The title of the paper
-  authors:
-    - Surname, A. B.
-    - Surname, C. D.
-  year: 2025
-  venue: Journal Name
-  doi: 10.1234/abc.def
-  url:                    # optional, used when there's no DOI
-  themes:                 # zero or more of: work-nonwork | assessment | wellbeing | remote | teams | personality
-    - work-nonwork
-  award: Best Paper 2025  # optional
-  notes:                 # optional
-  openalex: W1234567890
-  curated: true
+- id: 2024-michaelides-a-dual-process-model-of-the-effects-of-boundary
+  authors:                 # as published, in order
+    - George Michaelides
+    - Karen Niven
+  year: 2024               # integer
+  title: A dual-process model of the effects of boundary segmentation…
+  venue: Journal of Occupational and Organizational Psychology   # journal/book name ONLY
+  biblio: 97(4), 1502-1525 # volume/issue/pages — kept separate so it is not italicised
+  type: article            # article | chapter | report | conference | preprint
+  doi: 10.1111/joop.12526  # bare DOI, no https:// prefix
+  url: https://doi.org/10.1111/joop.12526
+  pdf: null                # path under public/, if a copy is permitted
+  award: null              # e.g. "Best Paper Award 2024"
+  role: first              # first | middle | last
 ```
 
-To **re-pull from OpenAlex** (which already dedupes, filters to English /
-journal articles, and writes the YAML in this shape):
+Keep `venue` free of volume and page numbers — the page italicises `venue` and
+prints `biblio` upright after it. `type` is a closed set; anything else fails
+validation.
+
+### 2. Re-pull from OpenAlex
 
 ```sh
-npm run fetch-publications
-npm run curate-publications
+npm run fetch-publications   # pull works for the ORCID iD, merge with existing
+npm run curate-publications  # drop namesakes, dedupe, re-apply awards
 ```
 
-That second command reads from `scripts/curate-publications.mjs`, which has
-a hand-maintained lookup table of themes keyed by OpenAlex
-ID. If a new paper doesn't yet have a theme tag, edit
-`scripts/curate-publications.mjs` to add it, then re-run.
+`fetch-publications.mjs` preserves hand-corrected `venue`, `biblio`, `award`,
+`pdf` and `notes` on re-import, so curation survives a refresh.
 
-If a paper has no OpenAlex record (rare, e.g. a forthcoming chapter), you
-can add it by hand to the YAML with a custom `id: manual:slug-here`.
+**OpenAlex attributes works by other people with this name and ORCID.** Anything
+that is not his belongs in the `EXCLUDE` list in `curate-publications.mjs`
+(which already covers a topologist, a psychiatrist and a clinical immunologist).
+Always read the diff after a re-pull.
 
-### 2. Promote a paper to the "Selected" shortlist on the About page
+### 3. Add a news post
 
-Edit `src/pages/index.astro`, find the `const selected = [...]` block, and
-add (or replace) an entry. Each selected paper has the same shape as a YAML
-entry plus a `gloss` field with a one-sentence plain-English summary.
-
-The current shortlist (July 2026): Petrou 2026, Jackson 2016,
-Jackson 2020, Michaelides 2024, Fitzhugh 2024 (Best Paper
-Award).
-
-### 3. Add a News post
-
-Drop a Markdown file in `src/content/news/` named `YYYY-MM-DD-slug.md` with
-this frontmatter:
+Drop a Markdown file in `src/content/news/` named `YYYY-MM-DD-slug.md`:
 
 ```yaml
 ---
 title: A short, honest title
 date: 2026-06-12
-type: note           # talk | podcast | press | reflection | award | note
-summary: One-line preview that shows on the index page.
+type: note           # talk | podcast | press | reflection | award | publication | note
+summary: One-line preview shown on the index page.
+venue: Human Relations           # optional
+external: https://doi.org/…      # optional; adds an "Original source" link
 ---
 
-The body of the post in plain Markdown. Keep it light, first-person,
-specific. Two to four paragraphs is usually right.
+Two to four paragraphs of plain Markdown.
 ```
 
-Save the file. The next `npm run build` picks it up automatically. The
-post will appear on `/news/`, in the RSS feed, and in the sitemap.
+The post appears on `/news/`, in `/rss.xml` and in the sitemap on the next
+build. Posts with an `external` link still get their own page — the title links
+internally and the external link sits below the summary.
 
-### 4. Update the "Currently" board on the About page
+### 4. Update the PhD recruitment status
 
-Edit `src/pages/index.astro` and find the `<ul class="currently">` block.
-Each `<li>` has a label and a status: a `<span class="dot dot--on">` for
-on, or `<span class="dot">` for off. The "PhD applications" item is the
-only one that flips seasonally.
+All of it lives in `src/data/site.yaml`:
 
-### 5. Swap the portrait
+```yaml
+phdStatus: open                     # open | closed | seasonal
+phdStatusLabel: Open for 2026/27 entry
+phdStatusNote: I am currently welcoming applications for …
+```
 
-Replace `public/images/portrait.jpg`. Aim for ~933×1248 (3:4), JPEG, and
-neutral lighting. The CSS already converts it to greyscale, but starting
-from a colour original gives you the freedom to remove that filter later.
+`phdStatus` drives the indicator dot on the home page and the styling of the
+status box on `/phd-supervision/`; `closed` renders both in a neutral tone.
 
-### 6. Change colours, type, or spacing
+### 5. Update the "Selected" shortlist on the home page
 
-All design tokens are in `src/styles/tokens.css`. Edit the CSS custom
-properties at the top of the file — every page will pick up the change.
-Type families are declared in `src/styles/global.css`.
+Edit the `const selected = [...]` block in `src/pages/index.astro`. Each entry
+carries the citation fields plus a `gloss` — one plain-English sentence. Five
+entries is the intended length.
+
+### 6. Swap the portrait
+
+Replace `src/assets/portrait.jpg` (~810px wide, 3:4, JPEG). It is processed by
+`astro:assets` into AVIF/WebP/JPEG at 270/540/810w.
+
+**Strip the metadata first.** The previous portrait shipped with GPS
+coordinates and the phone model in its EXIF:
+
+```sh
+npx sharp-cli -i original.jpg -o src/assets/portrait.jpg resize 810 -- jpeg --quality 82
+# or: sharp(input).rotate().resize({width:810}).jpeg({quality:82}).toFile(output)
+```
+
+`.rotate()` bakes in the EXIF orientation before the metadata is dropped.
+
+### 7. Change colours, type, or spacing
+
+All design tokens are in `src/styles/tokens.css`. Both themes are defined there;
+`[data-theme='dark']` overrides the same custom properties.
+
+Two gotchas when editing component styles:
+
+- **Theme selectors must use `:global`.** Inside a scoped `<style>`, write
+  `:global([data-theme='dark']) .thing { … }`. A bare `[data-theme='dark'] .thing`
+  gets the component's scope attribute added to *both* compounds, including the
+  `<html>` selector, and silently never matches.
+- **Text colours must clear 4.5:1.** The token comments record the ratio of each
+  ink tone against paper. `--colour-ink-faint` is the floor at ~5:1.
 
 ---
 
@@ -171,67 +158,63 @@ Type families are declared in `src/styles/global.css`.
 
 ```
 .
-├── astro.config.mjs
-├── package.json
-├── tsconfig.json
-├── public/
-│   ├── favicon.svg
-│   ├── og-default.png       # 1200×630 social card
-│   ├── robots.txt
-│   ├── images/portrait.jpg
+├── astro.config.mjs              # site URL, sitemap, mdx, self-hosted fonts
+├── .github/workflows/deploy.yml  # check → build → GitHub Pages
+├── public/                       # copied verbatim: favicon, OG card, robots.txt
 ├── scripts/
-│   ├── fetch-publications.mjs   # OpenAlex pull
-│   └── curate-publications.mjs  # apply theme tags
-├── .github/workflows/deploy.yml # GitHub Pages deploy
+│   ├── fetch-publications.mjs    # OpenAlex pull, preserves curated fields
+│   └── curate-publications.mjs   # exclude namesakes, dedupe, apply awards
 └── src/
-    ├── content.config.ts
-    ├── content/news/*.md        # News posts
+    ├── assets/portrait.jpg       # processed by astro:assets
+    ├── content.config.ts         # news collection schema
+    ├── content/news/*.md
     ├── data/
-    │   ├── site.yaml            # identity, links, "last updated" date
-    │   └── publications.yaml    # the publication list
-    ├── layouts/BaseLayout.astro
-    ├── components/
-    │   ├── Nav.astro
-    │   ├── Footer.astro
-    │   └── JsonLd.astro
+    │   ├── site.yaml             # identity, links, office, PhD status
+    │   └── publications.yaml
+    ├── layouts/BaseLayout.astro  # head, meta, JSON-LD, fonts, scroll reveals
+    ├── components/               # Nav, Footer, Logo, JsonLd
     ├── lib/
-    │   ├── data.ts              # YAML loaders
-    │   └── format.ts            # date / slug helpers
+    │   ├── data.ts               # Zod-validated YAML loaders
+    │   └── format.ts             # date + search-normalisation helpers
     ├── pages/
-    │   ├── index.astro          # /          (Home + About, merged)
-    │   ├── research.astro       # /research/
-    │   ├── publications.astro   # /publications/
-    │   ├── phd-supervision.astro# /phd-supervision/
-    │   ├── news/
-    │   │   ├── index.astro      # /news/
-    │   │   └── [...slug].astro  # /news/<slug>/
-    │   ├── contact.astro        # /contact/
-    │   ├── rss.xml.ts           # /rss.xml
+    │   ├── index.astro           # /            (About + selected work)
+    │   ├── research.astro        # /research/
+    │   ├── publications.astro    # /publications/   (filter + search)
+    │   ├── software.astro        # /software/
+    │   ├── phd-supervision.astro # /phd-supervision/
+    │   ├── news/{index,[...slug]}.astro
+    │   ├── contact.astro         # /contact/
+    │   ├── rss.xml.ts            # /rss.xml
     │   └── 404.astro
-    └── styles/
-        ├── tokens.css
-        └── global.css
+    └── styles/{tokens,global}.css
 ```
 
 ---
 
-## Design notes (for the curious)
+## Design notes
 
-- **Type stack:** Fraunces (display, optical-size 144, weight 400/600),
-  Inter (body, weight 400/500/600), JetBrains Mono (eyebrows, code).
-  All served from Google Fonts.
-- **Colour:** one accent — deep teal `#0F4C4C` — on paper-white `#FAF8F5`
-  with `#1A1A1A` text. The teal also renders as the favicon monogram.
-- **Motion:** a single `fade-in` animation on first paint, 600ms,
-  no other JS-driven motion. Everything else is CSS hover / focus.
-- **No dark mode, no analytics, no search, no comments.** Those are
-  choices, not oversights.
+- **Type:** Newsreader (display), Inter (body), JetBrains Mono (eyebrows and
+  meta). Declared in `astro.config.mjs` and **self-hosted** — the build
+  downloads them, so the site makes no request to Google Fonts. Metric-matched
+  fallbacks are generated automatically to avoid layout shift.
+- **Colour:** vermilion `#B3432B` on washi `#F6F1E8` with sumi ink `#26221C`.
+  Dark mode is first-class ("night studio"), toggled in the nav and persisted to
+  `localStorage`, with the choice applied before first paint to avoid a flash.
+- **Motion:** a page-load fade, scroll-triggered reveals, self-drawing SVG
+  line-art, and one interactive piece — the ensō framing a Gaussian mixture that
+  follows the cursor. All of it respects `prefers-reduced-motion`; the ensō loop
+  pauses when off-screen or in a background tab.
+- **Progressive enhancement:** the scroll-reveal styles are gated behind a `.js`
+  class set in the head, so with JavaScript disabled the content is simply never
+  hidden. Printing forces the light palette and reveals everything.
+- **Accessibility:** WCAG 2.1 AA. Skip link, visible focus rings, a focus-trapped
+  mobile menu, live-region announcements on the publications filters, and
+  "(opens in a new tab)" on every external link. Verified clean with axe-core in
+  both themes.
 
 ---
 
 ## Licences & credits
 
-The site code is MIT. Typefaces are OFL (Fraunces, JetBrains Mono) and
-OFL (Inter). Portrait image is © UEA, used with permission. Publication
-metadata is sourced from [OpenAlex](https://openalex.org) (CC0 public
-domain dedication).
+Site code is MIT. Newsreader, Inter and JetBrains Mono are OFL. Publication
+metadata comes from [OpenAlex](https://openalex.org) (CC0).

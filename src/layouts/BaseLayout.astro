@@ -1,4 +1,5 @@
 ---
+import { Font } from 'astro:assets';
 import { site } from '~/lib/data';
 import '~/styles/global.css';
 import Nav from '~/components/Nav.astro';
@@ -10,6 +11,7 @@ export interface Props {
   description?: string;
   ogType?: 'website' | 'article' | 'profile';
   ogImage?: string;
+  ogImageAlt?: string;
   publishedTime?: string;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
   bodyClass?: string;
@@ -20,6 +22,7 @@ const {
   description = site.description,
   ogType = 'website',
   ogImage = '/og-default.png',
+  ogImageAlt = `${site.name} — ${site.role}, ${site.affiliation}`,
   publishedTime,
   jsonLd,
   bodyClass = '',
@@ -46,9 +49,12 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
     <meta name="color-scheme" content="light dark" />
     <meta name="robots" content="index,follow" />
 
-    <!-- Set theme before first paint to avoid a flash -->
+    <!-- Set theme, and flag that JS is running, before first paint.
+         The .js flag gates the scroll-reveal styles: without it the content
+         stays visible instead of waiting forever for an observer. -->
     <script is:inline>
       (function () {
+        document.documentElement.classList.add('js');
         var stored = null;
         try { stored = localStorage.getItem('theme'); } catch (e) {}
         var theme = stored === 'light' || stored === 'dark'
@@ -60,9 +66,18 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Preconnect to Google Fonts for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.name} · News`}
+      href={new URL('/rss.xml', Astro.site).toString()}
+    />
+
+    <!-- Self-hosted fonts. Body and display faces are preloaded; the mono face
+         is only used for small meta labels, so it can wait. -->
+    <Font cssVariable="--font-inter" preload />
+    <Font cssVariable="--font-newsreader" preload />
+    <Font cssVariable="--font-jetbrains-mono" />
 
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
@@ -71,6 +86,7 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="en_GB" />
@@ -82,6 +98,7 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <!-- Default Person JSON-LD (page-level JSON-LD can be added via the prop) -->
     <JsonLd
@@ -120,7 +137,7 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
     <a href="#main" class="skip-link">Skip to main content</a>
     <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
     <Nav />
-    <main id="main">
+    <main id="main" tabindex="-1">
       <slot />
     </main>
     <Footer />
@@ -181,6 +198,24 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
           { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
         );
         reveals.forEach((el) => io.observe(el));
+      }
+
+      // Printing does not scroll, so any reveal still waiting on the observer
+      // would come out as a blank gap. Bring everything in before the dialog opens.
+      const revealAll = () => {
+        document.querySelectorAll<HTMLElement>('.reveal').forEach((el) => {
+          el.classList.add('is-visible');
+        });
+        document.querySelectorAll<SVGGeometryElement>('[data-draw]').forEach((p) => {
+          p.style.strokeDashoffset = '0';
+        });
+      };
+      window.addEventListener('beforeprint', revealAll);
+      const printMq = window.matchMedia('print');
+      if (typeof printMq.addEventListener === 'function') {
+        printMq.addEventListener('change', (e) => {
+          if (e.matches) revealAll();
+        });
       }
 
       // Ink-stroke scroll progress

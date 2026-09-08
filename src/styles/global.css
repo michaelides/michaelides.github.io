@@ -3,13 +3,17 @@
    "Sumi & Washi" - zen editorial, warm paper, sumi ink, shu accent
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..700;1,6..72,200..700&family=Inter:wght@300..600&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Fonts are declared in astro.config.mjs and self-hosted; the <Font> components
+   in BaseLayout emit the @font-face rules and preload hints. */
 @import './tokens.css';
 
 /* ---------- Reset (light) ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
-html, body { height: 100%; }
+/* Only `html` gets a fixed height. Giving `body` height:100% caps its box at
+   one viewport, which silently confines `position: sticky` on the header to
+   the first screenful; `min-height` below keeps the sticky footer working. */
+html { height: 100%; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 img, picture, video, canvas, svg { display: block; max-width: 100%; }
 input, button, textarea, select { font: inherit; color: inherit; }
@@ -22,13 +26,26 @@ html {
   background: var(--colour-paper);
   color: var(--colour-ink);
   font-family: var(--font-body);
-  font-size: 17px;
+  /* A percentage, not a px value: this scales with the reader's own browser
+     font-size setting, which a fixed 17px would silently override. */
+  font-size: 106.25%;
   line-height: var(--leading-normal);
   font-feature-settings: 'kern', 'liga', 'calt', 'onum';
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  /* Clears the sticky header, so #anchors do not land underneath it. */
+  scroll-padding-top: 5rem;
+}
+
+/* While the mobile menu is open the page behind it must not scroll:
+   the header is taller than the viewport when expanded, so scrolling
+   would carry the menu and its close button off screen. */
+html.is-nav-open,
+html.is-nav-open body {
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
@@ -74,24 +91,46 @@ a {
   border-radius: var(--radius-1);
 }
 
+/* Target of the skip link. It is focusable so the skip actually moves focus,
+   but a ring around the whole page would be noise. */
+main:focus { outline: none; }
+
+/* ---------- Utility: visually hidden (still announced) ---------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ---------- Utility: container ---------- */
 .container-wide   { width: 100%; max-width: var(--container-wide); margin-inline: auto; padding-inline: var(--space-5); }
 .container-prose  { width: 100%; max-width: var(--container-prose); margin-inline: auto; padding-inline: var(--space-5); }
 .container-narrow { width: 100%; max-width: var(--container-narrow); margin-inline: auto; padding-inline: var(--space-5); }
 
 .section { padding-block: var(--space-8); }
-.section-tight { padding-block: var(--space-6); }
-.section-hero { padding-block: var(--space-9) var(--space-7); }
 
 /* ---------- Utility: eyebrow (mono measurement label) ---------- */
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--step--2);
   font-weight: 500;
   letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
   color: var(--colour-accent);
   margin-bottom: var(--space-4);
+}
+/* Some eyebrows label a section that has no other heading, so they are
+   marked up as headings. They must not inherit the display-serif h2 styling. */
+h2.eyebrow {
+  font-weight: 500;
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-caps);
 }
 
 /* Hairline statistical divider (inline SVG supplied by pages) */
@@ -122,11 +161,12 @@ a {
   [data-draw] {
     transition: stroke-dashoffset var(--draw-duration, 1200ms) var(--ease-out);
   }
-  .reveal [data-fade] {
+  /* Scoped to .js: only hide what JavaScript is able to bring back. */
+  .js .reveal [data-fade] {
     opacity: 0;
     transition: opacity 700ms var(--ease-out) 500ms;
   }
-  .reveal.is-visible [data-fade] {
+  .js .reveal.is-visible [data-fade] {
     opacity: 1;
   }
 }
@@ -137,7 +177,7 @@ a {
   align-items: center;
   gap: 0.35em;
   padding: 0.25em 0.7em;
-  font-size: 0.6875rem;
+  font-size: var(--step--2);
   font-weight: 500;
   letter-spacing: var(--tracking-wide);
   border-radius: var(--radius-pill);
@@ -149,6 +189,9 @@ a {
   background: var(--colour-accent-2-soft);
   color: var(--colour-accent-2);
 }
+/* Must out-specify `[data-theme='dark'] .badge` above, which would otherwise
+   paint vermilion text onto the sage badge. */
+[data-theme='dark'] .badge--solid { color: var(--colour-accent-2); }
 
 /* ---------- Utility: chip (filter pills) ---------- */
 .chip {
@@ -175,8 +218,8 @@ a {
 }
 .chip__count {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  opacity: 0.65;
+  font-size: var(--step--2);
+  opacity: 0.75;
 }
 
 /* ---------- Skip link ---------- */
@@ -203,17 +246,16 @@ a {
   }
   .fade-in-2 { animation-delay: 80ms; }
   .fade-in-3 { animation-delay: 160ms; }
-  .fade-in-4 { animation-delay: 240ms; }
-  .fade-in-5 { animation-delay: 320ms; }
-  .fade-in-6 { animation-delay: 400ms; }
 
-  /* Scroll-triggered reveal (JS adds .is-visible) */
-  .reveal {
+  /* Scroll-triggered reveal (JS adds .is-visible).
+     The `.js` gate is set by the inline head script, so with JavaScript off
+     the content is simply never hidden rather than hidden forever. */
+  .js .reveal {
     opacity: 0;
     transform: translateY(14px);
     transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
   }
-  .reveal.is-visible {
+  .js .reveal.is-visible {
     opacity: 1;
     transform: none;
   }
@@ -235,7 +277,52 @@ a {
 
 /* ---------- Print ---------- */
 @media print {
-  .site-nav, .site-footer { display: none; }
-  body { background: white; }
-  .container-prose { max-width: 100%; }
+  /* Always print the day studio. Someone reading in dark mode would otherwise
+     print cream ink onto white paper, because browsers drop the background. */
+  :root,
+  [data-theme='dark'] {
+    --colour-paper:        #FFFFFF;
+    --colour-paper-deep:   #FFFFFF;
+    --colour-paper-raise:  #FFFFFF;
+    --colour-ink:          #1A1A1A;
+    --colour-ink-muted:    #4A4A4A;
+    --colour-ink-faint:    #6A6A6A;
+    --colour-rule:         #BBBBBB;
+    --colour-accent:       #8E3220;
+    --colour-accent-deep:  #8E3220;
+    --colour-accent-soft:  #F0DCD2;
+    --colour-accent-2:     #4A5643;
+    --colour-accent-2-soft:#E4E8DB;
+    --colour-on-accent:    #FFFFFF;
+    --wash-hero-a:  transparent;
+    --wash-hero-b:  transparent;
+    --motif-stroke: rgba(26, 26, 26, 0.28);
+    --shadow-1: none;
+    --shadow-2: none;
+    --shadow-3: none;
+  }
+
+  html, body {
+    background: #fff;
+    color: var(--colour-ink);
+  }
+  body { background-image: none; }
+
+  .site-nav, .site-footer, .scroll-progress, .skip-link { display: none; }
+  .container-prose, .container-wide, .container-narrow { max-width: 100%; }
+
+  /* Printing never scrolls, so anything still waiting on the IntersectionObserver
+     would otherwise print as a blank gap. */
+  .js .reveal,
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .js .reveal [data-fade],
+  .reveal [data-fade] { opacity: 1 !important; }
+  /* No transition, or a stroke can be captured half-drawn on the page. */
+  [data-draw] {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
 }

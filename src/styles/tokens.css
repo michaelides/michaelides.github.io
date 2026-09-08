@@ -9,16 +9,17 @@
   --colour-paper:        #F6F1E8;   /* washi paper background */
   --colour-paper-deep:   #EFE8DB;   /* secondary surface */
   --colour-paper-raise:  #FBF8F1;   /* raised card surface */
-  --colour-ink:          #26221C;   /* sumi charcoal text */
-  --colour-ink-muted:    #6B6357;
-  --colour-ink-faint:    #9A9184;
-  --colour-rule:         #DDD3C2;   /* hairlines */
+  --colour-ink:          #26221C;   /* sumi charcoal text      14.1:1 on paper */
+  --colour-ink-muted:    #5C554A;   /*                          6.5:1 on paper */
+  --colour-ink-faint:    #6E6659;   /*                          5.0:1 on paper */
+  --colour-rule:         #DDD3C2;   /* hairlines (non-text) */
   --colour-accent:       #B3432B;   /* vermilion shu */
   --colour-accent-deep:  #8E3220;
   --colour-accent-soft:  #F0DCD2;   /* vermilion wash */
-  --colour-accent-2:     #64745A;   /* matcha sage */
+  --colour-accent-2:     #5A6951;   /* matcha sage              5.2:1 on paper */
   --colour-accent-2-soft:#E4E8DB;
   --colour-on-accent:    #FBF8F1;
+  --colour-logo:         #BA6E57;   /* ensō mark, softer than the link accent */
   --colour-selection:    #B3432B;
   --colour-on-selection: #FBF8F1;
 
@@ -29,11 +30,15 @@
   --motif-stroke: rgba(38, 34, 28, 0.10);   /* line-art strokes */
 
   /* ---------- Typography ---------- */
-  --font-display: 'Newsreader', 'Iowan Old Style', 'Apple Garamond', 'Times New Roman', serif;
-  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-mono:    'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+  /* Stacks (family + fallbacks) come from the astro:fonts config. */
+  --font-display: var(--font-newsreader);
+  --font-body:    var(--font-inter);
+  --font-mono:    var(--font-jetbrains-mono);
 
-  /* Modular type scale (1.250 - major third) */
+  /* Modular type scale (1.250 - major third).
+     --step--2 is the floor for meta/eyebrow text: below ~12px the mono caps
+     with 0.12em tracking stop being comfortably readable. */
+  --step--2: 0.75rem;
   --step--1: 0.875rem;
   --step-0:  1.0625rem;
   --step-1:  1.25rem;
@@ -102,15 +107,16 @@
   --colour-paper-deep:   #20252E;
   --colour-paper-raise:  #232935;
   --colour-ink:          #EDE7DA;
-  --colour-ink-muted:    #A79E8F;
-  --colour-ink-faint:    #6E6759;
+  --colour-ink-muted:    #A79E8F;   /*                          6.4:1 on paper */
+  --colour-ink-faint:    #999283;   /*                          5.5:1 on paper */
   --colour-rule:         #333945;
   --colour-accent:       #E06A4A;
   --colour-accent-deep:  #C55537;
-  --colour-accent-soft:  #3A2B26;
+  --colour-accent-soft:  #2E211D;   /* deep enough for accent text at 4.7:1 */
   --colour-accent-2:     #8FA07E;
   --colour-accent-2-soft:#2A3028;
   --colour-on-accent:    #191D24;
+  --colour-logo:         #E06A4A;
   --colour-selection:    #E06A4A;
   --colour-on-selection: #191D24;
 

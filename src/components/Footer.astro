@@ -1,6 +1,7 @@
 ---
 import { site } from '~/lib/data';
 import { formatDate } from '~/lib/format';
+import Logo from '~/components/Logo.astro';
 
 const year = new Date().getFullYear();
 const lastUpdated = site.lastUpdated;
@@ -14,20 +15,7 @@ const lastUpdated = site.lastUpdated;
     <div class="site-footer__col site-footer__col--main">
       <p class="site-footer__name">
         <span class="site-footer__enso" aria-hidden="true">
-          <img
-            src="/logo.svg"
-            alt=""
-            class="site-footer__logo site-footer__logo--light"
-            width="26"
-            height="26"
-          />
-          <img
-            src="/logo-dark.svg"
-            alt=""
-            class="site-footer__logo site-footer__logo--dark"
-            width="26"
-            height="26"
-          />
+          <Logo size={26} class="site-footer__logo" />
         </span>
         {site.name}
       </p>
@@ -39,10 +27,10 @@ const lastUpdated = site.lastUpdated;
       <h2 class="site-footer__heading">Elsewhere</h2>
       <ul class="site-footer__links">
         <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-        <li><a href={`https://orcid.org/${site.orcid}`} rel="noopener" target="_blank">ORCID <span class="site-footer__ext" aria-hidden="true">↗</span></a></li>
-        <li><a href={site.scholar} rel="noopener" target="_blank">Google Scholar <span class="site-footer__ext" aria-hidden="true">↗</span></a></li>
-        <li><a href={site.linkedin} rel="noopener" target="_blank">LinkedIn <span class="site-footer__ext" aria-hidden="true">↗</span></a></li>
-        <li><a href={site.uea_profile} rel="noopener" target="_blank">UEA Profile <span class="site-footer__ext" aria-hidden="true">↗</span></a></li>
+        <li><a href={`https://orcid.org/${site.orcid}`} rel="noopener" target="_blank">ORCID <span class="site-footer__ext" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+        <li><a href={site.scholar} rel="noopener" target="_blank">Google Scholar <span class="site-footer__ext" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+        <li><a href={site.linkedin} rel="noopener" target="_blank">LinkedIn <span class="site-footer__ext" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a></li>
+        <li><a href={site.uea_profile} rel="noopener" target="_blank">UEA Profile <span class="site-footer__ext" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a></li>
       </ul>
     </div>
 
@@ -50,7 +38,7 @@ const lastUpdated = site.lastUpdated;
       <h2 class="site-footer__heading">Colophon</h2>
       <p class="site-footer__meta">
         Set in <em>Newsreader</em> &amp; <em>Inter</em>.<br />
-        Built with <a href="https://astro.build" rel="noopener" target="_blank">Astro</a>, hosted on GitHub Pages.
+        Built with <a href="https://astro.build" rel="noopener" target="_blank">Astro<span class="visually-hidden"> (opens in a new tab)</span></a>, hosted on GitHub Pages.
       </p>
     </div>
   </div>
@@ -114,20 +102,17 @@ const lastUpdated = site.lastUpdated;
   }
   .site-footer__enso {
     display: inline-flex;
-    color: var(--colour-accent);
+    color: var(--colour-logo);
   }
   .site-footer__logo {
     display: block;
     width: 26px;
     height: 26px;
   }
-  .site-footer__logo--dark { display: none; }
-  [data-theme='dark'] .site-footer__logo--light { display: none; }
-  [data-theme='dark'] .site-footer__logo--dark { display: block; }
   .site-footer__role {
     margin-top: 0.4em;
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--step--2);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--colour-ink-muted);
@@ -142,7 +127,7 @@ const lastUpdated = site.lastUpdated;
 
   .site-footer__heading {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--step--2);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
@@ -171,7 +156,7 @@ const lastUpdated = site.lastUpdated;
     border-color: var(--colour-accent);
   }
   .site-footer__ext {
-    font-size: 0.75em;
+    font-size: var(--step--2);
     color: var(--colour-ink-faint);
     margin-left: 0.2em;
   }
@@ -198,7 +183,7 @@ const lastUpdated = site.lastUpdated;
     background: var(--colour-paper-deep);
     border-top: 1px solid var(--colour-rule);
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--step--2);
     color: var(--colour-ink-muted);
     letter-spacing: 0.04em;
   }

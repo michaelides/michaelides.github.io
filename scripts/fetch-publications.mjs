@@ -13,11 +13,10 @@
  *   1. Paginates through OpenAlex works where the ORCID is an author
  *   2. Maps each work to the publications.yaml schema
  *   3. Merges with existing entries to PRESERVE any curated fields
- *      (theme, award, pdf, notes)
+ *      (award, pdf, notes, biblio, and a hand-corrected venue)
  *   4. Writes the result to src/data/publications.yaml
  *
  * After running, review and add:
- *   - theme: list of theme slugs
  *   - award: any prize information
  *   - pdf: path to a permitted PDF copy (if any)
  *   - notes: rare editorial notes
@@ -141,11 +140,11 @@ function mapWork(work) {
     year,
     title,
     venue,
+    biblio: null,
     type: mapType(work.type),
     doi,
     url: doi ? `https://doi.org/${doi}` : work.primary_location?.landing_page_url || null,
     pdf: null,
-    theme: [],
     award: null,
     role: george?.author_position || null,
   };
@@ -187,10 +186,13 @@ function preserveCuratedFields(incoming, existing) {
 
     if (!prior) return entry;
 
-    // Preserve curated fields if they exist
+    // Preserve curated fields if they exist.
+    // `venue` and `biblio` are hand-corrected (OpenAlex often reports a repository
+    // or a venue string with volume/pages baked in), so a prior value always wins.
     return {
       ...entry,
-      theme: Array.isArray(prior.theme) && prior.theme.length ? prior.theme : entry.theme,
+      venue: prior.venue ?? entry.venue,
+      biblio: prior.biblio ?? null,
       award: prior.award ?? entry.award,
       pdf: prior.pdf ?? entry.pdf,
       notes: prior.notes ?? entry.notes,
@@ -208,19 +210,19 @@ function emitHeader(count) {
     `# Last import: ${new Date().toISOString().slice(0, 10)}`,
     '# Source: OpenAlex (https://api.openalex.org)',
     `# ${count} works fetched for ORCID ${ORCID}`,
-    '# Curate theme/award tags manually.',
+    '# Run curate-publications.mjs after this to dedupe and re-apply awards.',
     '',
     '# Schema (all fields optional except id, year, title, venue, type):',
     '#   id:        unique slug',
     '#   authors:   list of names as published (Surname, F.)',
     '#   year:      integer',
     '#   title:     paper title',
-    '#   venue:     journal or book title',
+    '#   venue:     journal or book title (no volume/issue/pages)',
+    '#   biblio:    volume/issue/pages, e.g. "97(4), 1502-1525"',
     '#   type:      article | chapter | report | conference | preprint',
     '#   doi:       DOI string, no URL prefix',
     '#   url:       canonical URL (publisher preferred)',
     '#   pdf:       path to a permitted PDF copy, relative to /public',
-    '#   theme:     list of theme slugs (e.g. work-nonwork, wellbeing)',
     '#   award:     string, e.g. "Best Paper Award 2024"',
     '#   role:      first | middle | last',
     '#   notes:     free-text editorial note (rare)',
@@ -266,7 +268,7 @@ async function main() {
   console.log(`Wrote ${merged.length} publications to ${path.relative(ROOT, YAML_PATH)}`);
   console.log('\nNext steps:');
   console.log('  1. Review the YAML, correct any obvious mapping issues');
-  console.log('  2. Add theme: [...] slugs to enable filtering later');
+  console.log('  2. Run `npm run curate-publications` to dedupe and re-apply awards');
   console.log('  3. git add src/data/publications.yaml && git commit');
 }
 

@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
-import { site } from '~/lib/data';
 import { formatDate } from '~/lib/format';
 
 export async function getStaticPaths() {
@@ -32,7 +31,7 @@ const typeLabel: Record<string, string> = {
   ogType="article"
   publishedTime={post.data.date.toISOString()}
 >
-  <article class="post">
+  <article class="post section">
     <div class="container-prose">
       <header class="post__head">
         <p class="eyebrow">
@@ -49,12 +48,13 @@ const typeLabel: Record<string, string> = {
           <p class="post__external">
             <a href={post.data.external} rel="noopener" target="_blank">
               Original source <span aria-hidden="true">↗</span>
+              <span class="visually-hidden"> (opens in a new tab)</span>
             </a>
           </p>
         )}
       </header>
 
-      <div class="post__body has-dropcap">
+      <div class="post__body">
         <Content />
       </div>
 

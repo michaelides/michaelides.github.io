@@ -42,7 +42,7 @@ const fundingPaths = [
         <p class="eyebrow">PhD supervision</p>
         <h1 class="phd__title">If you are thinking about doing a PhD with me.</h1>
 
-        <div class="phd__status phd__status--open">
+        <div class:list={['phd__status', `phd__status--${site.phdStatus}`]}>
           <svg class="phd__status-write" viewBox="0 0 44 44" width="38" height="38" fill="none" aria-hidden="true">
             <!-- self-drawing ensō: brushed, held, dissolved, repeated -->
             <path class="phd-enso__stroke" d="M36 13 C31 7.5 22 5.5 15 9 C8 12.5 4.5 20 6.5 27.5 C8.5 35 15.5 40 23.5 39 C31.5 38 37.5 32 38.5 24.5 C39.2 18.5 36.5 13.5 31.5 10.8"
@@ -58,8 +58,13 @@ const fundingPaths = [
 
     <div class="container-prose">
       <p class="lead">
-        I supervise PhD students within the <a href="/research/">Employment Systems and
-        Institutions</a> research group at Norwich Business School. The work I supervise tends
+        I supervise PhD students within the{' '}
+        <a
+          href="https://www.uea.ac.uk/groups-and-centres/employment-systems-and-institutions-group"
+          rel="noopener"
+          target="_blank"
+        >Employment Systems and Institutions<span class="visually-hidden"> (opens in a new tab)</span></a>{' '}
+        research group at Norwich Business School. The work I supervise tends
         to be quantitative, organisational-psychology in flavour, and tightly scoped around a
         question that can be answered with a designed study.
       </p>
@@ -105,7 +110,7 @@ const fundingPaths = [
         {fundingPaths.map((f) => (
           <li>
             <h3 class="phd__funding-title">
-              <a href={f.href} rel="noopener" target="_blank">{f.title}</a>
+              <a href={f.href} rel="noopener" target="_blank">{f.title}<span class="visually-hidden"> (opens in a new tab)</span></a>
             </h3>
             <p>{f.note}</p>
           </li>
@@ -127,13 +132,13 @@ const fundingPaths = [
       <ul class="phd__funding">
         <li>
           <h3 class="phd__funding-title">
-            <a href="https://www.uea.ac.uk/apply/postgraduate/research" rel="noopener" target="_blank">Apply for a postgraduate research degree (UEA)</a>
+            <a href="https://www.uea.ac.uk/apply/postgraduate/research" rel="noopener" target="_blank">Apply for a postgraduate research degree (UEA)<span class="visually-hidden"> (opens in a new tab)</span></a>
           </h3>
           <p>The starting point for the formal application, with links to begin or resume an application.</p>
         </li>
         <li>
           <h3 class="phd__funding-title">
-            <a href="https://www.uea.ac.uk/research/research-with-us/postgraduate-research/latest-phds-and-research-studentships/how-to-apply" rel="noopener" target="_blank">How to apply: UEA guidance</a>
+            <a href="https://www.uea.ac.uk/research/research-with-us/postgraduate-research/latest-phds-and-research-studentships/how-to-apply" rel="noopener" target="_blank">How to apply: UEA guidance<span class="visually-hidden"> (opens in a new tab)</span></a>
           </h3>
           <p>What the application involves: documents, proposal structure, references, and timing.</p>
         </li>
@@ -144,7 +149,7 @@ const fundingPaths = [
         Email me at <a href={`mailto:${site.email}`}>{site.email}</a>. Attach a CV and a
         research proposal or a one-page project sketch. I read everything that comes in,
         though I cannot always reply within a week, particularly around teaching and editorial
-        deadlines. For the formal UEA application and funding deadlines, see the
+        deadlines. For the formal UEA application and funding deadlines, see the{' '}
         <a href="#how-to-apply">How to apply</a> section above.
       </p>
     </div>
@@ -175,6 +180,15 @@ const fundingPaths = [
     background: var(--colour-accent-soft);
     border-radius: var(--radius-3);
   }
+  /* Not recruiting: the same box, without the invitation of the accent wash. */
+  .phd__status--closed {
+    border-color: var(--colour-rule);
+    background: var(--colour-paper-deep);
+  }
+  .phd__status--closed .phd__status-write,
+  .phd__status--closed .phd__status-label {
+    color: var(--colour-ink-muted);
+  }
   /* The ensō brushes itself, is held, dissolves, and rests in emptiness (ma) before returning.
      One shared 12s cycle. */
   .phd__status-write {
@@ -203,10 +217,14 @@ const fundingPaths = [
   .phd__status-label {
     font-family: var(--font-body);
     font-weight: 500;
-    color: var(--colour-accent);
+    /* The deep tone on the vermilion wash; plain --colour-accent is only 4.2:1 */
+    color: var(--colour-accent-deep);
     font-size: 0.9375rem;
     letter-spacing: 0.01em;
   }
+  /* :global on the theme host — Astro otherwise scoped the cid onto the
+     <html> selector here, producing a rule that could never match. */
+  :global([data-theme='dark']) .phd__status-label { color: var(--colour-accent); }
   .phd__status-note {
     margin-top: 0.4em;
     font-size: 0.9375rem;

@@ -28,8 +28,8 @@ const typeLabel: Record<string, string> = {
         <p class="eyebrow">News</p>
         <h1 class="news__title">Recent notes.</h1>
         <p class="news__lede">
-          A short log of what I have been doing: talks, podcasts, press, awards, occasional
-          reflections. Subscribe via <a href="/rss.xml">RSS</a> if you would like updates
+          A short log of what I have been doing: new papers and software, awards, and the
+          occasional note. Subscribe via <a href="/rss.xml">RSS</a> if you would like updates
           without checking the page.
         </p>
       </header>
@@ -52,20 +52,26 @@ const typeLabel: Record<string, string> = {
               </div>
               <div class="news__body">
                 <h2 class="news__heading">
-                  {post.data.external ? (
-                    <a href={post.data.external} rel="noopener" target="_blank">
-                      {post.data.title}
-                      <span class="news__ext" aria-hidden="true">↗</span>
-                    </a>
-                  ) : (
-                    <a href={`/news/${post.id}/`}>{post.data.title}</a>
-                  )}
+                  <a href={`/news/${post.id}/`}>{post.data.title}</a>
                 </h2>
                 {post.data.venue && (
                   <p class="news__venue">{post.data.venue}</p>
                 )}
                 {post.data.summary && (
                   <p class="news__summary">{post.data.summary}</p>
+                )}
+                {post.data.external && (
+                  <p class="news__source">
+                    <a
+                      href={post.data.external}
+                      rel="noopener"
+                      target="_blank"
+                      aria-label={`Original source for “${post.data.title}” (opens in a new tab)`}
+                    >
+                      Original source
+                      <span class="news__ext" aria-hidden="true">↗</span>
+                    </a>
+                  </p>
                 )}
               </div>
             </li>
@@ -77,9 +83,6 @@ const typeLabel: Record<string, string> = {
 </BaseLayout>
 
 <style>
-  .news__head {
-    margin-bottom: var(--space-7);
-  }
   .news__title {
     font-family: var(--font-display);
     font-size: var(--step-5);
@@ -156,7 +159,7 @@ const typeLabel: Record<string, string> = {
     letter-spacing: 0;
   }
   .news__type {
-    font-size: 0.6875rem;
+    font-size: var(--step--2);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     color: var(--colour-accent);
@@ -195,6 +198,25 @@ const typeLabel: Record<string, string> = {
     font-size: 1rem;
     line-height: var(--leading-loose);
     color: var(--colour-ink);
+  }
+  .news__source {
+    margin-top: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+  .news__source a {
+    color: var(--colour-ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--colour-rule);
+    padding-bottom: 2px;
+    transition: color var(--duration-fast) var(--ease-out),
+                border-color var(--duration-fast) var(--ease-out);
+  }
+  .news__source a:hover,
+  .news__source a:focus-visible {
+    color: var(--colour-accent);
+    border-color: var(--colour-accent);
   }
 
   @media (max-width: 600px) {

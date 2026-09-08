@@ -8,7 +8,7 @@ affiliation: University of East Anglia
 tagline: Researching work and standard deviations.
 
 description: >-
-  Personal academic site of Dr George Michaelides, Professor of Work Psychology
+  Personal academic site of George Michaelides, Professor of Work Psychology
   at the University of East Anglia. Research on work-nonwork boundary, wellbeing,
   assessment centres, team resilience, and personality at work.
 
@@ -20,14 +20,23 @@ github: https://github.com/michaelides/
 researchgate: https://www.researchgate.net/profile/George-Michaelides
 uea_profile: https://research-portal.uea.ac.uk/en/persons/george-michaelides/
 
-# Portrait
-portrait: /images/portrait.jpg
+# The portrait lives at src/assets/portrait.jpg and is imported directly by the
+# pages that use it, so Astro can generate resized AVIF/WebP variants.
+
+# Office (shown on the contact page)
+office:
+  room: 2.30 Thomas Paine Study Centre
+  address: UEA, Research Park
+  postcode: Norwich, NR4 7TJ
 
 # Last site-wide content update (YYYY-MM-DD). Bump when meaningful changes ship.
-lastUpdated: '2026-07-22'
+lastUpdated: '2026-09-08'
 
-# PhD recruitment status (single line shown on the home page and PhD Supervision page)
+# PhD recruitment status. `phdStatus` drives the indicator dot and highlighting;
+# the two strings are the only place this wording lives.
+#   open | closed | seasonal
 phdStatus: open
+phdStatusLabel: Open for 2026/27 entry
 phdStatusNote: I am currently welcoming applications for PhD supervision starting in the 2026/27 academic year.
 
 # Defaults for content collections

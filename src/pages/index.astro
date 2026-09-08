@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import { Picture } from 'astro:assets';
+import portrait from '~/assets/portrait.jpg';
 import { site, publications } from '~/lib/data';
-import { formatDate } from '~/lib/format';
 
 /* ------------------------------------------------------------------------- */
 /* Selected publications for the home page                                   */
@@ -39,7 +40,7 @@ const selected = [
     year: 2024,
     authors: 'Michaelides, G., Niven, K., Wood, S., & Inceoglu, I.',
     authorList: ['Michaelides, G.', 'Niven, K.', 'Wood, S.', 'Inceoglu, I.'],
-    title: 'A dual-process model of the effects of boundary segmentation enactment on work–nonwork conflict',
+    title: 'A dual-process model of the effects of boundary segmentation on work–nonwork conflict',
     venue: 'Journal of Occupational and Organizational Psychology',
     doi: '10.1111/joop.12526',
     gloss: 'A model explaining why integrating work and life is not always better than keeping them apart, and what predicts the difference.',
@@ -117,11 +118,14 @@ const worksJsonLd = selected.map((s) => ({
 
       <div class="hero__figure fade-in fade-in-3">
         <figure class="hero__portrait">
-          <img
-            src={site.portrait}
+          <Picture
+            src={portrait}
             alt={`Portrait of ${site.name}`}
-            width="270"
-            height="360"
+            widths={[270, 540, 810]}
+            sizes="(max-width: 880px) 240px, 216px"
+            formats={['avif', 'webp']}
+            fallbackFormat="jpeg"
+            loading="eager"
             fetchpriority="high"
             decoding="async"
           />
@@ -152,7 +156,6 @@ const worksJsonLd = selected.map((s) => ({
             <path class="enso-fill" fill="var(--colour-accent)" opacity="0.12" d="" />
             <path class="enso-curve" fill="none" stroke="var(--colour-accent)" stroke-width="2" stroke-linecap="round" d="" />
           </svg>
-          <p class="hero__enso-note">f(x), gently breathing</p>
         </div>
       </div>
     </div>
@@ -162,7 +165,7 @@ const worksJsonLd = selected.map((s) => ({
   <!-- Intro / Bio                                                    -->
   <!-- ============================================================== -->
   <section class="section container-prose">
-    <p class="eyebrow fade-in">In brief</p>
+    <h2 class="eyebrow fade-in">In brief</h2>
     <p class="lead fade-in fade-in-2">
       I study how people navigate the boundary between work and the rest of their lives,
       and how organisations can design work that leaves people more whole than it found
@@ -174,10 +177,10 @@ const worksJsonLd = selected.map((s) => ({
       ratings are probably confounded.
     </p>
 
-    <div class="bio has-dropcap fade-in fade-in-3">
+    <div class="bio fade-in fade-in-3">
       <p>
         I'm Professor of Work Psychology at Norwich Business School, University of East
-        Anglia, where I am Programme Director for the <a href="https://www.uea.ac.uk/course/postgraduate/msc-organisational-psychology" rel="noopener" target="_blank">MSc in Organisational Psychology</a>. I
+        Anglia, where I am Programme Director for the <a href="https://www.uea.ac.uk/course/postgraduate/msc-organisational-psychology" rel="noopener" target="_blank">MSc in Organisational Psychology<span class="visually-hidden"> (opens in a new tab)</span></a>. I
         arrived in 2018 as an Associate Professor and was promoted to full Professor in
         2024.
       </p>
@@ -192,7 +195,7 @@ const worksJsonLd = selected.map((s) => ({
         Laboratory, and the College of Policing, a list that sounds incongruous until you
         realise it's all "how do people cope at work, and can we measure it?" I'm an
         Associate Editor at the <em><a href="https://onlinelibrary.wiley.com/journal/20448325" rel="noopener" target="_blank">Journal of Occupational and Organizational
-        Psychology</a></em>, sit on the editorial board of <em><a href="https://www.tandfonline.com/journals/hhup20" rel="noopener" target="_blank">Human Performance</a></em>, and
+        Psychology<span class="visually-hidden"> (opens in a new tab)</span></a></em>, sit on the editorial board of <em><a href="https://www.tandfonline.com/journals/hhup20" rel="noopener" target="_blank">Human Performance<span class="visually-hidden"> (opens in a new tab)</span></a></em>, and
         review for the
         ESRC Peer Review College and a rogues' gallery of leading journals. Chartered
         Psychologist, Fellow of the Higher Education Academy, and, despite everything, an
@@ -209,35 +212,39 @@ const worksJsonLd = selected.map((s) => ({
     <h2 class="section-heading">Where things stand.</h2>
 
     <ul class="currently">
-      <li class="currently__item currently__item--flag">
+      <li class:list={['currently__item', { 'currently__item--flag': site.phdStatus === 'open' }]}>
         <span class="currently__label">PhD applications</span>
         <span class="currently__value">
-          <span class="dot dot--on" aria-hidden="true"></span>
-          Open for 2026/27 entry
+          <span class:list={['dot', { 'dot--on': site.phdStatus === 'open' }]} aria-hidden="true"></span>
+          {site.phdStatusLabel}
         </span>
       </li>
       <li class="currently__item">
         <span class="currently__label">Research group</span>
         <span class="currently__value">
-          <a href="/research/">Employment Systems and Institutions</a> · NBS
+          <a
+            href="https://www.uea.ac.uk/groups-and-centres/employment-systems-and-institutions-group"
+            rel="noopener"
+            target="_blank"
+          >Employment Systems and Institutions<span class="visually-hidden"> (opens in a new tab)</span></a> · NBS
         </span>
       </li>
       <li class="currently__item">
         <span class="currently__label">Editorial</span>
         <span class="currently__value">
-          Associate Editor, <em><a href="https://onlinelibrary.wiley.com/journal/20448325" rel="noopener" target="_blank">Journal of Occupational and Organizational Psychology</a></em>
+          Associate Editor, <em><a href="https://onlinelibrary.wiley.com/journal/20448325" rel="noopener" target="_blank">Journal of Occupational and Organizational Psychology<span class="visually-hidden"> (opens in a new tab)</span></a></em>
         </span>
       </li>
       <li class="currently__item">
         <span class="currently__label">Editorial</span>
         <span class="currently__value">
-          Editorial Board, <em><a href="https://www.tandfonline.com/journals/hhup20" rel="noopener" target="_blank">Human Performance</a></em>
+          Editorial Board, <em><a href="https://www.tandfonline.com/journals/hhup20" rel="noopener" target="_blank">Human Performance<span class="visually-hidden"> (opens in a new tab)</span></a></em>
         </span>
       </li>
       <li class="currently__item">
         <span class="currently__label">Programme Director</span>
         <span class="currently__value">
-          <a href="https://www.uea.ac.uk/course/postgraduate/msc-organisational-psychology" rel="noopener" target="_blank">MSc Organisational Psychology</a> · NBS
+          <a href="https://www.uea.ac.uk/course/postgraduate/msc-organisational-psychology" rel="noopener" target="_blank">MSc Organisational Psychology<span class="visually-hidden"> (opens in a new tab)</span></a> · NBS
         </span>
       </li>
     </ul>
@@ -251,7 +258,7 @@ const worksJsonLd = selected.map((s) => ({
     <h2 class="section-heading">A short reading list.</h2>
     <p class="selected__sub">
       Five papers that, taken together, sketch the shape of what I work on. For the full list
-      (sorted, filterable, and updated as things go to press), see the
+      (sorted, filterable, and updated as things go to press), see the{' '}
       <a href="/publications/">publications page</a>.
     </p>
 
@@ -284,7 +291,7 @@ const worksJsonLd = selected.map((s) => ({
 
     <p class="selected__more">
       <a href="/publications/" class="more-link">
-        See all {publicationCount} publications
+        See all {publicationCount} works
         <span aria-hidden="true">→</span>
       </a>
     </p>
@@ -298,7 +305,7 @@ const worksJsonLd = selected.map((s) => ({
     <h2 class="section-heading">If my work is relevant to yours.</h2>
     <p class="getintouch__lede">
       I read everything that lands in my inbox, though I cannot always reply quickly. The
-      quickest way to reach me is by email. For prospective PhD applicants, please see the
+      quickest way to reach me is by email. For prospective PhD applicants, please see the{' '}
       <a href="/phd-supervision/">supervision page</a> before writing.
     </p>
     <ul class="getintouch__links">
@@ -308,11 +315,13 @@ const worksJsonLd = selected.map((s) => ({
       </li>
       <li>
         <span class="getintouch__label">ORCID</span>
-        <a href={`https://orcid.org/${site.orcid}`} rel="noopener" target="_blank">0000-0002-4224-7728</a>
+        <a href={`https://orcid.org/${site.orcid}`} rel="noopener" target="_blank">{site.orcid}<span class="visually-hidden"> (opens in a new tab)</span></a>
       </li>
       <li>
         <span class="getintouch__label">Office</span>
-        <span>Norwich Business School · UEA · NR4 7TJ</span>
+        <span>
+          Norwich Business School, UEA · <a href="/contact/">full address</a>
+        </span>
       </li>
     </ul>
   </section>
@@ -341,7 +350,7 @@ const worksJsonLd = selected.map((s) => ({
       requestAnimationFrame(() => { arc.style.strokeDashoffset = '0'; });
     }
 
-    const W = 340, BASE = 212, LEFT = 86, RIGHT = 254, AMP = 96;
+    const BASE = 212, LEFT = 86, RIGHT = 254, AMP = 96;
     const curveEl = curve;
     const fillEl = fill;
 
@@ -383,15 +392,50 @@ const worksJsonLd = selected.map((s) => ({
       });
       enso.addEventListener('pointerleave', () => { targetW2 = 0.45; });
 
+      // The loop only runs while the ensū is actually on screen and the tab is
+      // in the foreground; otherwise it would burn a frame budget forever.
+      let frame = 0;
+      let onScreen = true;
+      let tabVisible = !document.hidden;
+      const shouldRun = () => onScreen && tabVisible;
+
       const tick = () => {
+        if (!shouldRun()) {
+          frame = 0;
+          return;
+        }
         t += 0.016;
         m2 += (targetM2 - m2) * 0.06;
         w2 += (targetW2 - w2) * 0.06;
         s2 = 0.08 + 0.03 * Math.sin(t * 0.7);
         render();
-        requestAnimationFrame(tick);
+        frame = requestAnimationFrame(tick);
       };
-      requestAnimationFrame(tick);
+
+      const sync = () => {
+        if (shouldRun()) {
+          if (!frame) frame = requestAnimationFrame(tick);
+        } else if (frame) {
+          cancelAnimationFrame(frame);
+          frame = 0;
+        }
+      };
+
+      new IntersectionObserver(
+        (entries) => {
+          onScreen = entries.some((entry) => entry.isIntersecting);
+          sync();
+        },
+        { threshold: 0 }
+      ).observe(enso);
+
+      document.addEventListener('visibilitychange', () => {
+        tabVisible = !document.hidden;
+        sync();
+      });
+
+      render();
+      sync();
     }
   }
 </script>
@@ -433,7 +477,7 @@ const worksJsonLd = selected.map((s) => ({
 
   .hero__eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--step--2);
     font-weight: 500;
     letter-spacing: var(--tracking-caps);
     text-transform: uppercase;
@@ -530,6 +574,7 @@ const worksJsonLd = selected.map((s) => ({
     box-shadow: var(--shadow-2);
     transform: rotate(-1.2deg);
   }
+  .hero__portrait picture { display: block; }
   .hero__portrait img {
     width: 100%;
     height: auto;
@@ -554,32 +599,18 @@ const worksJsonLd = selected.map((s) => ({
     letter-spacing: 0.02em;
     box-shadow: var(--shadow-1);
   }
-  .hero__credit {
-    margin-top: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: 0.5625rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--colour-ink-faint);
-    text-align: right;
-  }
-
   .hero__enso {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--space-2);
-    touch-action: none;
+    /* pan-y, not none: the pointer interaction is horizontal, and `none`
+       swallowed vertical drags so the page would not scroll from here. */
+    touch-action: pan-y;
   }
   .hero__enso svg {
     width: min(300px, 72vw);
     height: auto;
-  }
-  .hero__enso-note {
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.08em;
-    color: var(--colour-ink-faint);
   }
 
   @media (max-width: 880px) {
@@ -642,7 +673,7 @@ const worksJsonLd = selected.map((s) => ({
 
   .currently__label {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--step--2);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     color: var(--colour-ink-muted);
@@ -669,6 +700,8 @@ const worksJsonLd = selected.map((s) => ({
     border-radius: 50%;
     margin-right: 0.5em;
     vertical-align: 0.1em;
+    /* Visible when recruitment is closed, too — without this the dot vanished. */
+    background: var(--colour-ink-faint);
   }
   .dot--on {
     background: var(--colour-accent);
@@ -794,7 +827,7 @@ const worksJsonLd = selected.map((s) => ({
   .getintouch__links li:last-child { border-bottom: 1px solid var(--colour-rule); }
   .getintouch__label {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--step--2);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     color: var(--colour-ink-muted);

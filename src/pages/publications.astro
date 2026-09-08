@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { site, publications } from '~/lib/data';
+import { normaliseSearch } from '~/lib/format';
 
 /* Group by year, newest first; sort within year alphabetically by title */
 const byYear = new Map<number, typeof publications>();
@@ -16,6 +17,7 @@ const years = [...byYear.keys()].sort((a, b) => b - a);
 const counts = {
   all: publications.length,
   article: publications.filter((p) => p.type === 'article').length,
+  conference: publications.filter((p) => p.type === 'conference').length,
   chapter: publications.filter((p) => p.type === 'chapter').length,
   report: publications.filter((p) => p.type === 'report' || p.type === 'preprint').length,
 };
@@ -62,7 +64,7 @@ const buildCitation = (p: (typeof publications)[number]): string => {
   if (authors) parts.push(authors);
   parts.push(`(${p.year}).`);
   if (p.title) parts.push(`${p.title}.`);
-  if (p.venue) parts.push(`${p.venue}.`);
+  if (p.venue) parts.push(p.biblio ? `${p.venue}, ${p.biblio}.` : `${p.venue}.`);
   if (p.doi) parts.push(`https://doi.org/${p.doi}`);
   return parts.join(' ');
 };
@@ -87,7 +89,7 @@ const worksJsonLd = publications
 
 <BaseLayout
   title="Publications"
-  description={`Full list of ${publications.length} peer-reviewed publications by ${site.name}.`}
+  description={`Full list of ${publications.length} publications and other research outputs by ${site.name}.`}
   jsonLd={worksJsonLd}
 >
   <section class="pubs section">
@@ -96,10 +98,11 @@ const worksJsonLd = publications
         <p class="eyebrow">Publications</p>
         <h1 class="pubs__title">Everything I've published</h1>
         <p class="pubs__lede">
-          A complete, chronologically ordered list of my peer-reviewed outputs, fetched
-          automatically from <a href="https://openalex.org" rel="noopener" target="_blank">OpenAlex</a>
-          and curated by hand. For citation counts, see
-          <a href={site.scholar} rel="noopener" target="_blank">Google Scholar</a>.
+          A complete, chronologically ordered list of my published work: journal articles, book
+          chapters, reports, and preprints. Fetched automatically from{' '}
+          <a href="https://openalex.org" rel="noopener" target="_blank">OpenAlex<span class="visually-hidden"> (opens in a new tab)</span></a>{' '}
+          and curated by hand. For citation counts, see{' '}
+          <a href={site.scholar} rel="noopener" target="_blank">Google Scholar<span class="visually-hidden"> (opens in a new tab)</span></a>.
         </p>
       </header>
 
@@ -107,24 +110,25 @@ const worksJsonLd = publications
       <dl class="pubs__stats fade-in fade-in-2" aria-label="Publication statistics">
         <div class="pubs__stat">
           <dt>Works</dt>
-          <dd>{counts.all}</dd>
+          <dd data-stat="works">{counts.all}</dd>
         </div>
         <div class="pubs__stat">
           <dt>Span</dt>
-          <dd>{yearSpan}</dd>
+          <dd data-stat="span">{yearSpan}</dd>
         </div>
         <div class="pubs__stat">
           <dt>Venues</dt>
-          <dd>{venueCount}</dd>
+          <dd data-stat="venues">{venueCount}</dd>
         </div>
       </dl>
 
       <div class="pubs__controls">
         <div class="pubs__filters" role="toolbar" aria-label="Filter publications by type">
-          <button class="chip is-active" data-filter="all" aria-pressed="true">All <span class="chip__count">{counts.all}</span></button>
-          <button class="chip" data-filter="article" aria-pressed="false">Articles <span class="chip__count">{counts.article}</span></button>
-          <button class="chip" data-filter="chapter" aria-pressed="false">Chapters <span class="chip__count">{counts.chapter}</span></button>
-          <button class="chip" data-filter="report" aria-pressed="false">Reports &amp; preprints <span class="chip__count">{counts.report}</span></button>
+          <button class="chip is-active" data-filter="all" aria-pressed="true">All <span class="chip__count" data-chip-count>{counts.all}</span></button>
+          <button class="chip" data-filter="article" aria-pressed="false">Articles <span class="chip__count" data-chip-count>{counts.article}</span></button>
+          <button class="chip" data-filter="conference" aria-pressed="false">Conference <span class="chip__count" data-chip-count>{counts.conference}</span></button>
+          <button class="chip" data-filter="chapter" aria-pressed="false">Chapters <span class="chip__count" data-chip-count>{counts.chapter}</span></button>
+          <button class="chip" data-filter="report" aria-pressed="false">Reports &amp; preprints <span class="chip__count" data-chip-count>{counts.report}</span></button>
         </div>
 
         <div class="pubs__search">
@@ -144,6 +148,10 @@ const worksJsonLd = publications
         <button class="chip chip--surprise" type="button" data-surprise>Random paper</button>
       </div>
 
+      <p class="pubs__status" role="status" data-pubs-status>
+        Showing all {counts.all} works.
+      </p>
+
       <p class="pubs__empty" data-pubs-empty hidden>
         Nothing matches that search; try a different term.
       </p>
@@ -162,26 +170,52 @@ const worksJsonLd = publications
                   class="pubs__entry"
                   data-type={p.type}
                   data-year={p.year}
-                  data-text={`${formatAuthors(p.authors || [])} ${p.title} ${p.venue || ''} ${p.year}`.toLowerCase()}
+                  data-venue={p.venue || ''}
+                  data-title={p.title}
+                  data-text={normaliseSearch(
+                    [(p.authors || []).join(' '), p.title, p.venue || '', p.biblio || '', p.year].join(' ')
+                  )}
                 >
                   <div class="pubs__entry-body">
                     <p class="pubs__cite">
                       <span class="pubs__authors">{formatAuthors(p.authors || [])}</span>{' '}
                       (<span class="pubs__year-inline">{p.year}</span>).{' '}
-                      <em class="pubs__paper-title">{p.title}</em>.{' '}
-                      <span class="pubs__venue">{p.venue}</span>.
+                      <em class="pubs__paper-title">{p.title}</em>.
+                      {p.venue && (
+                        <>
+                          {' '}<span class="pubs__venue">{p.venue}</span>{p.biblio && <span class="pubs__biblio">, {p.biblio}</span>}.
+                        </>
+                      )}
                     </p>
                     <div class="pubs__links">
                       {p.doi && (
-                        <a href={`https://doi.org/${p.doi}`} class="pubs__link" rel="noopener" target="_blank">
+                        <a
+                          href={`https://doi.org/${p.doi}`}
+                          class="pubs__link"
+                          rel="noopener"
+                          target="_blank"
+                          aria-label={`doi:${p.doi} for “${p.title}” (opens in a new tab)`}
+                        >
                           doi:{p.doi}
                         </a>
                       )}
                       {p.url && !p.doi && (
-                        <a href={p.url} class="pubs__link" rel="noopener" target="_blank">Link</a>
+                        <a
+                          href={p.url}
+                          class="pubs__link"
+                          rel="noopener"
+                          target="_blank"
+                          aria-label={`Link for “${p.title}” (opens in a new tab)`}
+                        >Link</a>
                       )}
                       {p.pdf && (
-                        <a href={p.pdf} class="pubs__link pubs__link--pdf" target="_blank">PDF</a>
+                        <a
+                          href={p.pdf}
+                          class="pubs__link pubs__link--pdf"
+                          rel="noopener"
+                          target="_blank"
+                          aria-label={`PDF of “${p.title}” (opens in a new tab)`}
+                        >PDF</a>
                       )}
                       {(p.doi || p.title) && (
                         <button
@@ -209,39 +243,91 @@ const worksJsonLd = publications
 </BaseLayout>
 
 <script>
+  import { normaliseSearch } from '~/lib/format';
+
   const chips = document.querySelectorAll<HTMLButtonElement>('.pubs__filters .chip');
   // Only the year <section> wrappers — entry <li> elements also carry data-year,
   // and treating them as sections would hide every entry on the first apply().
   const yearSections = document.querySelectorAll<HTMLElement>('section.pubs__year[data-year]');
+  const allEntries = Array.from(document.querySelectorAll<HTMLElement>('.pubs__entry'));
   const searchInput = document.querySelector<HTMLInputElement>('[data-pubs-search]');
   const emptyNote = document.querySelector<HTMLElement>('[data-pubs-empty]');
+  const statusNote = document.querySelector<HTMLElement>('[data-pubs-status]');
+  const statWorks = document.querySelector<HTMLElement>('[data-stat="works"]');
+  const statSpan = document.querySelector<HTMLElement>('[data-stat="span"]');
+  const statVenues = document.querySelector<HTMLElement>('[data-stat="venues"]');
 
+  const total = allEntries.length;
   let activeFilter = 'all';
   let query = '';
 
+  const matchesType = (type: string, filter: string) =>
+    filter === 'all' ||
+    (filter === 'report' ? type === 'report' || type === 'preprint' : type === filter);
+
+  const matchesQuery = (el: HTMLElement) =>
+    query === '' || (el.dataset.text || '').includes(query);
+
+  const matches = (el: HTMLElement, filter: string) =>
+    matchesType(el.dataset.type || 'article', filter) && matchesQuery(el);
+
   function apply() {
-    let totalShown = 0;
+    const visible: HTMLElement[] = [];
+
     yearSections.forEach((y) => {
-      const entries = y.querySelectorAll<HTMLElement>('.pubs__entry');
       let shown = 0;
-      entries.forEach((e) => {
-        const t = e.dataset.type || 'article';
-        const matchType = activeFilter === 'all' || (
-          activeFilter === 'report' ? (t === 'report' || t === 'preprint') : t === activeFilter
-        );
-        const matchQuery =
-          query === '' ||
-          (e.dataset.text || '').includes(query);
-        const match = matchType && matchQuery;
+      y.querySelectorAll<HTMLElement>('.pubs__entry').forEach((e) => {
+        const match = matches(e, activeFilter);
         e.hidden = !match;
-        if (match) shown += 1;
+        if (match) {
+          shown += 1;
+          visible.push(e);
+        }
       });
       y.hidden = shown === 0;
       const countEl = y.querySelector('.pubs__year-count');
       if (countEl) countEl.textContent = `${shown} ${shown === 1 ? 'item' : 'items'}`;
-      totalShown += shown;
     });
-    if (emptyNote) emptyNote.hidden = totalShown !== 0;
+
+    // Chip counts answer "how many would I get if I picked this?", so they
+    // respect the search but ignore whichever type filter is currently active.
+    chips.forEach((chip) => {
+      const filter = chip.dataset.filter || 'all';
+      const countEl = chip.querySelector('[data-chip-count]');
+      if (countEl) {
+        countEl.textContent = String(allEntries.filter((e) => matches(e, filter)).length);
+      }
+    });
+
+    // The stats strip describes what is on screen, not the whole corpus.
+    const years = visible
+      .map((e) => Number(e.dataset.year))
+      .filter((n) => Number.isFinite(n));
+    const venues = new Set(visible.map((e) => e.dataset.venue).filter(Boolean));
+    if (statWorks) statWorks.textContent = String(visible.length);
+    if (statVenues) statVenues.textContent = String(venues.size);
+    if (statSpan) {
+      if (years.length === 0) {
+        statSpan.textContent = '—';
+      } else {
+        const lo = Math.min(...years);
+        const hi = Math.max(...years);
+        statSpan.textContent = lo === hi ? String(lo) : `${lo}–${hi}`;
+      }
+    }
+
+    if (emptyNote) emptyNote.hidden = visible.length !== 0;
+    announce(
+      visible.length === 0
+        ? 'No works match the current filter.'
+        : visible.length === total
+          ? `Showing all ${total} works.`
+          : `Showing ${visible.length} of ${total} works.`
+    );
+  }
+
+  function announce(message: string) {
+    if (statusNote) statusNote.textContent = message;
   }
 
   chips.forEach((chip) => {
@@ -262,7 +348,7 @@ const worksJsonLd = publications
     searchInput.addEventListener('input', () => {
       clearTimeout(debounce);
       debounce = setTimeout(() => {
-        query = searchInput.value.trim().toLowerCase();
+        query = normaliseSearch(searchInput.value);
         apply();
       }, 120);
     });
@@ -277,6 +363,9 @@ const worksJsonLd = publications
         const original = btn.textContent;
         btn.classList.add('is-copied');
         btn.textContent = 'Copied';
+        // The visible label changes but the aria-label does not, so the
+        // confirmation would otherwise be silent for screen readers.
+        announce('Citation copied to the clipboard.');
         window.setTimeout(() => {
           btn.classList.remove('is-copied');
           btn.textContent = original;
@@ -291,13 +380,27 @@ const worksJsonLd = publications
   const surpriseBtn = document.querySelector<HTMLButtonElement>('[data-surprise]');
   if (surpriseBtn) {
     surpriseBtn.addEventListener('click', () => {
-      const visible = Array.from(document.querySelectorAll<HTMLElement>('.pubs__entry:not([hidden])'));
-      if (visible.length === 0) return;
+      const visible = allEntries.filter((e) => !e.hidden);
+      if (visible.length === 0) {
+        announce('Nothing to pick from; no works match the current filter.');
+        return;
+      }
       const pick = visible[Math.floor(Math.random() * visible.length)];
-      visible.forEach((e) => e.classList.remove('is-highlight'));
+      allEntries.forEach((e) => e.classList.remove('is-highlight'));
       pick.classList.add('is-highlight');
-      pick.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      window.setTimeout(() => pick.classList.remove('is-highlight'), 3500);
+
+      // Move focus to the entry so keyboard and screen-reader users land on it
+      // too, not just sighted ones watching the page scroll.
+      pick.tabIndex = -1;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      pick.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+      pick.focus({ preventScroll: true });
+      announce(`Picked at random: ${pick.dataset.title || 'a publication'}.`);
+
+      window.setTimeout(() => {
+        pick.classList.remove('is-highlight');
+        pick.removeAttribute('tabindex');
+      }, 3500);
     });
   }
 </script>
@@ -334,7 +437,7 @@ const worksJsonLd = publications
   }
   .pubs__stat dt {
     font-family: var(--font-mono);
-    font-size: 0.625rem;
+    font-size: var(--step--2);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     color: var(--colour-ink-muted);
@@ -367,7 +470,7 @@ const worksJsonLd = publications
 
   .chip--surprise {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--step--2);
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
@@ -391,7 +494,7 @@ const worksJsonLd = publications
   }
   .pubs__search-label {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--step--2);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
     color: var(--colour-ink-muted);
@@ -415,6 +518,14 @@ const worksJsonLd = publications
   @media (max-width: 700px) {
     .pubs__controls { flex-direction: column; align-items: stretch; }
     .pubs__search-input { min-width: 0; width: 100%; }
+  }
+
+  .pubs__status {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: var(--colour-ink-muted);
+    margin-block: var(--space-5) var(--space-4);
   }
 
   .pubs__empty {
@@ -450,7 +561,7 @@ const worksJsonLd = publications
   }
   .pubs__year-count {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--step--2);
     color: var(--colour-ink-muted);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
@@ -482,6 +593,7 @@ const worksJsonLd = publications
   .pubs__year-inline { color: var(--colour-ink-muted); }
   .pubs__paper-title { font-style: italic; }
   .pubs__venue { font-style: italic; color: var(--colour-ink-muted); }
+  .pubs__biblio { color: var(--colour-ink-muted); }
 
   .pubs__links {
     margin-top: var(--space-2);
@@ -490,8 +602,11 @@ const worksJsonLd = publications
     gap: var(--space-3);
   }
   .pubs__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--step--2);
     color: var(--colour-ink-muted);
     text-decoration: none;
     letter-spacing: 0;
@@ -502,10 +617,13 @@ const worksJsonLd = publications
 
   /* Copy-citation button */
   .pubs__copy {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: var(--step--2);
     color: var(--colour-ink-muted);
-    padding: 0.15em 0.7em;
+    padding: 0.25em 0.85em;
     border: 1px solid var(--colour-rule);
     border-radius: var(--radius-pill);
     transition: all var(--duration-fast) var(--ease-out);
@@ -530,6 +648,11 @@ const worksJsonLd = publications
     box-shadow: inset 0 0 0 1px var(--colour-accent);
     border-radius: var(--radius-3);
   }
+  .pubs__entry:focus-visible {
+    outline: 2px solid var(--colour-accent);
+    outline-offset: 4px;
+    border-radius: var(--radius-3);
+  }
 
   .pubs__badges {
     display: flex;
@@ -542,7 +665,7 @@ const worksJsonLd = publications
     background: #F4E4C1;
     color: #6B4F1A;
   }
-  [data-theme='dark'] .badge--award {
+  :global([data-theme='dark']) .badge--award {
     background: #3A3323;
     color: #D8BC7E;
   }
