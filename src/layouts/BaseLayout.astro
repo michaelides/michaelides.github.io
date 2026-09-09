@@ -34,7 +34,10 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
 ---
 
 <!doctype html>
-<html lang="en">
+<!-- Dark is the default. Rendered on the element itself so it holds even with
+     JavaScript disabled; the inline script below only switches to light when the
+     visitor has explicitly chosen it. -->
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,9 +47,8 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
 
-    <meta name="theme-color" content="#F6F1E8" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#191D24" media="(prefers-color-scheme: dark)" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#191D24" data-theme-color />
+    <meta name="color-scheme" content="dark light" />
     <meta name="robots" content="index,follow" />
 
     <!-- Set theme, and flag that JS is running, before first paint.
@@ -57,10 +59,11 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
         document.documentElement.classList.add('js');
         var stored = null;
         try { stored = localStorage.getItem('theme'); } catch (e) {}
-        var theme = stored === 'light' || stored === 'dark'
-          ? stored
-          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        // Default dark; only an explicit stored choice moves it to light.
+        var theme = stored === 'light' ? 'light' : 'dark';
         document.documentElement.dataset.theme = theme;
+        var meta = document.querySelector('meta[data-theme-color]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#191D24' : '#F6F1E8');
       })();
     </script>
 

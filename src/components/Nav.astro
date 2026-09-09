@@ -170,6 +170,9 @@ function isActive(href: string): boolean {
       const current = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.dataset.theme = next;
+      // Keep the browser chrome (address bar, task switcher) in step.
+      const meta = document.querySelector('meta[data-theme-color]');
+      if (meta) meta.setAttribute('content', next === 'dark' ? '#191D24' : '#F6F1E8');
       try { localStorage.setItem('theme', next); } catch (e) {}
     });
   }
