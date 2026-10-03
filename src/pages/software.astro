@@ -30,12 +30,21 @@ const software = [
     gloss:
       'Dyadic Data Analysis in R: a hands-on guide to the Actor–Partner Interdependence Model with both multilevel and SEM approaches, covering indistinguishable and distinguishable dyads and moderated APIM. Originally developed for the EAOHP 2026 conference workshop.',
   },
+  {
+    id: 'esi',
+    name: 'ESI',
+    handle: 'michaelides.github.io',
+    type: 'Web app',
+    href: 'https://michaelides.github.io/esi/',
+    gloss:
+      'An AI research assistant for MSc and Doctoral students in organisational psychology. It helps you define a research question, develop hypotheses, design a methodology, and analyse uploaded documents or data, and it keeps a formal research specification alongside the conversation so you can see what you have pinned down so far. It runs on free open-weight models, and is a thinking partner rather than a substitute for supervision.',
+  },
 ];
 ---
 
 <BaseLayout
   title="Software"
-  description={`Open-source software by ${site.name}: the facet R package for Generalizability Theory, a lavaan SEM tutorial, and an online APIM workshop.`}
+  description={`Software by ${site.name}: facet, an R package for Generalizability Theory; lavaan and APIM teaching sites; and ESI, an AI research assistant for doctoral students.`}
 >
   <section class="section container-prose">
     <div class="software__head">
@@ -43,9 +52,10 @@ const software = [
       <h1 class="section-heading">Open-source work.</h1>
       <p class="software__sub">
         A short list of the things I have built and maintain in the open: an R
-        package for generalizability theory, and two free teaching sites built
-        with Quarto. All three are released under open licences; please cite
-        the tutorial sites if you use them in your own teaching.
+        package for generalizability theory, two free teaching sites built with
+        Quarto, and ESI, an AI research assistant for doctoral students. All
+        four are released under open licences; please cite the teaching sites if
+        you use them in your own teaching.
       </p>
     </div>
 
@@ -80,6 +90,16 @@ const software = [
                   <rect x="39" y="5" width="13" height="11" fill="none" stroke="var(--motif-stroke)" stroke-width="1" data-draw />
                   <line x1="17" y1="42" x2="42" y2="17" stroke="var(--colour-accent)" stroke-width="1.5" stroke-linecap="round" data-draw />
                   <line x1="41" y1="14" x2="14" y2="41" stroke="var(--motif-stroke)" stroke-width="1.5" stroke-linecap="round" data-draw />
+                </>
+              )}
+              {item.id === 'esi' && (
+                <>
+                  <!-- research specification: a /spec bracket holding its entries -->
+                  <path d="M13 10 L8 10 L8 48 L13 48" fill="none" stroke="var(--colour-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-draw />
+                  <line x1="17" y1="14" x2="45" y2="14" stroke="var(--colour-accent)" stroke-width="2" stroke-linecap="round" data-draw />
+                  <line x1="17" y1="24" x2="45" y2="24" stroke="var(--motif-stroke)" stroke-width="2" stroke-linecap="round" data-draw />
+                  <line x1="17" y1="34" x2="45" y2="34" stroke="var(--motif-stroke)" stroke-width="2" stroke-linecap="round" data-draw />
+                  <line x1="17" y1="44" x2="45" y2="44" stroke="var(--motif-stroke)" stroke-width="2" stroke-linecap="round" data-draw />
                 </>
               )}
             </svg>
