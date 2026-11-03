@@ -69,8 +69,12 @@ const buildCitation = (p: (typeof publications)[number]): string => {
   return parts.join(' ');
 };
 
-const yearSpan = years.length > 0 ? `${years[years.length - 1]}–${years[0]}` : '';
-const venueCount = new Set(publications.map((p) => p.venue).filter(Boolean)).size;
+/* The page opens on journal articles; the other types are one click away. */
+const DEFAULT_FILTER = 'article';
+const isDefault = (p: (typeof publications)[number]) => p.type === DEFAULT_FILTER;
+const defaultYears = years.filter((y) => byYear.get(y)!.some(isDefault));
+const yearSpan =
+  defaultYears.length > 0 ? `${defaultYears[defaultYears.length - 1]}–${defaultYears[0]}` : '';
 
 /* JSON-LD for the publications collection */
 const worksJsonLd = publications
@@ -99,7 +103,7 @@ const worksJsonLd = publications
         <h1 class="pubs__title">Everything I've published</h1>
         <p class="pubs__lede">
           A complete, chronologically ordered list of my published work: journal articles, book
-          chapters, reports, and preprints. Fetched automatically from{' '}
+          chapters, conference presentations, reports, and preprints. Fetched automatically from{' '}
           <a href="https://openalex.org" rel="noopener" target="_blank">OpenAlex<span class="visually-hidden"> (opens in a new tab)</span></a>{' '}
           and curated by hand. For citation counts, see{' '}
           <a href={site.scholar} rel="noopener" target="_blank">Google Scholar<span class="visually-hidden"> (opens in a new tab)</span></a>.
@@ -110,22 +114,18 @@ const worksJsonLd = publications
       <dl class="pubs__stats fade-in fade-in-2" aria-label="Publication statistics">
         <div class="pubs__stat">
           <dt>Works</dt>
-          <dd data-stat="works">{counts.all}</dd>
+          <dd data-stat="works">{counts.article}</dd>
         </div>
         <div class="pubs__stat">
           <dt>Span</dt>
           <dd data-stat="span">{yearSpan}</dd>
         </div>
-        <div class="pubs__stat">
-          <dt>Venues</dt>
-          <dd data-stat="venues">{venueCount}</dd>
-        </div>
       </dl>
 
       <div class="pubs__controls">
         <div class="pubs__filters" role="toolbar" aria-label="Filter publications by type">
-          <button class="chip is-active" data-filter="all" aria-pressed="true">All <span class="chip__count" data-chip-count>{counts.all}</span></button>
-          <button class="chip" data-filter="article" aria-pressed="false">Articles <span class="chip__count" data-chip-count>{counts.article}</span></button>
+          <button class="chip" data-filter="all" aria-pressed="false">All <span class="chip__count" data-chip-count>{counts.all}</span></button>
+          <button class="chip is-active" data-filter="article" aria-pressed="true">Articles <span class="chip__count" data-chip-count>{counts.article}</span></button>
           <button class="chip" data-filter="conference" aria-pressed="false">Conference <span class="chip__count" data-chip-count>{counts.conference}</span></button>
           <button class="chip" data-filter="chapter" aria-pressed="false">Chapters <span class="chip__count" data-chip-count>{counts.chapter}</span></button>
           <button class="chip" data-filter="report" aria-pressed="false">Reports &amp; preprints <span class="chip__count" data-chip-count>{counts.report}</span></button>
@@ -149,7 +149,7 @@ const worksJsonLd = publications
       </div>
 
       <p class="pubs__status" role="status" data-pubs-status>
-        Showing all {counts.all} works.
+        Showing {counts.article} of {counts.all} works.
       </p>
 
       <p class="pubs__empty" data-pubs-empty hidden>
@@ -158,19 +158,19 @@ const worksJsonLd = publications
 
       <div class="pubs__list" data-pubs-list>
         {years.map((year) => (
-          <section class="pubs__year" data-year={year}>
+          <section class="pubs__year" data-year={year} hidden={!byYear.get(year)!.some(isDefault)}>
             <h2 class="pubs__year-label">
               <span class="pubs__year-num">{year}</span>
               <span class="pubs__year-rule" aria-hidden="true"></span>
-              <span class="pubs__year-count">{byYear.get(year)!.length} {byYear.get(year)!.length === 1 ? 'item' : 'items'}</span>
+              <span class="pubs__year-count">{byYear.get(year)!.filter(isDefault).length} {byYear.get(year)!.filter(isDefault).length === 1 ? 'item' : 'items'}</span>
             </h2>
             <ol class="pubs__entries">
               {byYear.get(year)!.map((p) => (
                 <li
                   class="pubs__entry"
                   data-type={p.type}
+                  hidden={!isDefault(p)}
                   data-year={p.year}
-                  data-venue={p.venue || ''}
                   data-title={p.title}
                   data-text={normaliseSearch(
                     [(p.authors || []).join(' '), p.title, p.venue || '', p.biblio || '', p.year].join(' ')
@@ -255,10 +255,9 @@ const worksJsonLd = publications
   const statusNote = document.querySelector<HTMLElement>('[data-pubs-status]');
   const statWorks = document.querySelector<HTMLElement>('[data-stat="works"]');
   const statSpan = document.querySelector<HTMLElement>('[data-stat="span"]');
-  const statVenues = document.querySelector<HTMLElement>('[data-stat="venues"]');
 
   const total = allEntries.length;
-  let activeFilter = 'all';
+  let activeFilter = 'article';
   let query = '';
 
   const matchesType = (type: string, filter: string) =>
@@ -303,9 +302,7 @@ const worksJsonLd = publications
     const years = visible
       .map((e) => Number(e.dataset.year))
       .filter((n) => Number.isFinite(n));
-    const venues = new Set(visible.map((e) => e.dataset.venue).filter(Boolean));
     if (statWorks) statWorks.textContent = String(visible.length);
-    if (statVenues) statVenues.textContent = String(venues.size);
     if (statSpan) {
       if (years.length === 0) {
         statSpan.textContent = '—';
